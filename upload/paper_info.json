@@ -1,0 +1,48 @@
+{
+  "password": "admin123",
+  "daily": [
+    {
+      "pdfPath": "/uploads/1786975407857-839445547.pdf",
+      "editor": "रविंद्र विठ्ठलराव देशमुख",
+      "mobile": "९९२११५५००२",
+      "year": "१ ",
+      "issue": "१२३",
+      "date_mr": "बुधवार,२९ जुलै २०२६",
+      "date_en": "Wednesday,29 July 2026 ",
+      "rni": "PRGI/MHMAR/26/A1903",
+      "price": "५ रूपये",
+      "pages": "४",
+      "uploadTime": 1786975407865
+    },
+    {
+      "pdfPath": "/uploads/1786969347208-756365024.pdf",
+      "editor": "रविंद्र विठ्ठलराव देशमुख",
+      "mobile": "९९२११५५००२",
+      "year": "1",
+      "issue": "123",
+      "date_mr": "budhwar",
+      "date_en": "Wednsday",
+      "rni": "MHMAR/26/A1903",
+      "price": "५ रूपये",
+      "pages": "४",
+      "uploadTime": 1786969347214
+    }
+  ],
+  "weekly": [
+    {
+      "pdfPath": "/uploads/1786970424069-979741249.pdf",
+      "editor": "रविंद्र विठ्ठलराव देशमुख",
+      "mobile": "९९२११५५००२",
+      "year": "2",
+      "issue": "124",
+      "date_mr": "ravivar",
+      "date_en": "sunday",
+      "rni": "http://localhost:3000/",
+      "price": "५ रूपये",
+      "pages": "४",
+      "uploadTime": 1786970424078
+    }
+  ],
+  "username": "admin",
+  "monthly": []
+}

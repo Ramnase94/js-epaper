@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>दैनिक लोकभारती - सुरक्षित ॲडमिन पॅनल</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
+        .form-container { max-width: 600px; background: white; margin: 0 auto 30px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #e61a22; font-size: 26px; margin-bottom: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; position: relative; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
+        input[type="text"], input[type="password"], input[type="file"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 15px; }
+        
+        /* 🌟 पासवर्ड शो/हाईड बटन स्टाईल */
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .toggle-btn { position: absolute; right: 12px; cursor: pointer; font-size: 14px; font-weight: bold; color: #666; user-select: none; background: #eee; padding: 4px 8px; border-radius: 4px; }
+        
+        button { background: #e61a22; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #b8141a; }
+        .btn-blue { background: #007bff; }
+        .btn-blue:hover { background: #0056b3; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        hr { border: 0; height: 1px; background: #ddd; margin: 25px 0; }
+    </style>
+</head>
+<body>
+
+<!-- विभाग १: पेपर अपलोड करण्याचा फॉर्म -->
+<div class="form-container">
+    <h2>🗞️ दैनिक लोकभारती - नवीन अंक अपलोड</h2>
+    <form action="/upload-paper" method="POST" enctype="multipart/form-data">
+        
+        <!-- 🌟 सुरक्षेसाठी ॲडमिन पासवर्ड रकाना -->
+        <div class="form-group">
+            <label>ॲडमिन सिक्युरिटी पासवर्ड टाका:</label>
+            <div class="password-wrapper">
+                <input type="password" id="pass_upload" name="admin_password" placeholder="पेपर अपलोड करण्यासाठी पासवर्ड आवश्यक" required>
+                <span class="toggle-btn" onclick="togglePassword('pass_upload')">पहा</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label>वृत्तपत्र प्रकार (कॅटेगरी) निवडा:</label>
+            <select name="category" required>
+                <option value="daily">दैनिक (Daily)</option>
+                <option value="weekly">साप्ताहिक (Weekly)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>वृत्तपत्र मुख्य फाईल (PDF):</label>
+            <input type="file" name="epaper_pdf" accept="application/pdf" required>
+        </div>
+        <div class="grid">
+            <div class="form-group"><label>संपादकांचे नाव:</label><input type="text" name="editor" value="रविंद्र विठ्ठलराव देशमुख" required></div>
+            <div class="form-group"><label>मोबाईल नंबर:</label><input type="text" name="mobile" value="९९२११५५००२" required></div>
+        </div>
+        <div class="grid">
+            <div class="form-group"><label>वर्ष (उदा. वर्ष १ ले):</label><input type="text" name="year" placeholder="१ ले" required></div>
+            <div class="form-group"><label>अंक क्रमांक:</label><input type="text" name="issue" placeholder="१२३" required></div>
+        </div>
+        <div class="grid">
+            <div class="form-group"><label>तारीख (मराठी):</label><input type="text" name="date_mr" placeholder="बुधवार, दि. २९ जुलै २०२६" required></div>
+            <div class="form-group"><label>तारीख (इंग्रजी):</label><input type="text" name="date_en" placeholder="Wednesday, 29 July 2026" required></div>
+        </div>
+        <div class="form-group">
+            <label>RNI / PRGI नोंदणी क्रमांक:</label>
+            <input type="text" name="rni" placeholder="MHMAR/26/A1903" required>
+        </div>
+        <div class="grid">
+            <div class="form-group"><label>किंमत:</label><input type="text" name="price" value="५ रूपये" required></div>
+            <div class="form-group"><label>एकूण पृष्ठे:</label><input type="text" name="pages" value="४" required></div>
+        </div>
+        <button type="submit">अंक प्रकाशित करा</button>
+    </form>
+</div>
+
+<!-- 🌟 विभाग २: पासवर्ड बदलण्याचा स्वतंत्र फॉर्म -->
+<div class="form-container">
+    <h2>🔐 ॲडमिन पासवर्ड बदला</h2>
+    <form action="/change-password" method="POST">
+        <div class="form-group">
+            <label>चालू (जुना) पासवर्ड टाका:</label>
+            <div class="password-wrapper">
+                <input type="password" id="pass_old" name="old_password" required>
+                <span class="toggle-btn" onclick="togglePassword('pass_old')">पहा</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>नवीन सुरक्षित पासवर्ड सेट करा:</label>
+            <div class="password-wrapper">
+                <input type="password" id="pass_new" name="new_password" required>
+                <span class="toggle-btn" onclick="togglePassword('pass_new')">पहा</span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-blue">नवीन पासवर्ड सेव्ह करा</button>
+    </form>
+</div>
+
+<script>
+// 🌟 पासवर्ड दाखवणे किंवा लपवण्याचे JavaScript फंक्शन (Show/Hide Logic)
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const btn = input.nextElementSibling;
+    
+    if (input.type === "password") {
+        input.type = "text";
+        btn.innerText = "लपवा";
+        btn.style.background = "#e61a22";
+        btn.style.color = "white";
+    } else {
+        input.type = "password";
+        btn.innerText = "पहा";
+        btn.style.background = "#eee";
+        btn.style.color = "#666";
+    }
+}
+</script>
+</body>
+</html>

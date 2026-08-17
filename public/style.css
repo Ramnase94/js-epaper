@@ -1,0 +1,756 @@
+/* -------------------------------------------------------------------------- */
+/* १. व्यावसायिक कलर थिम आणि व्हेरिएबल्स (:root Colors)                    */
+/* -------------------------------------------------------------------------- */
+:root {
+    --primary-color: #e61a22;    /* ब्रँड मुख्य लाल रंग (दैनिक लोकभारती थीम) */
+    --primary-dark: #b8141a;     /* गडद लाल (बटन होव्हरसाठी) */
+    --secondary-color: #111111;   /* मुख्य गडद काळा रंग */
+    
+    /* 🌟 प्रोफेशनल ग्रेडियंट कलर्स (Rich Deep Corporate Gradient) */
+    --gradient-bg: linear-gradient(135deg, #1f2124 0%, #111315 50%, #08090a 100%);
+    --gradient-header: linear-gradient(180deg, #1a1c1e 0%, #0f1011 100%);
+    
+    --text-main: #222222;         /* मुख्य मजकुराचा रंग */
+    --border-color: #dddddd;      /* फिकट बॉर्डर रंग */
+    --shadow-soft: 0 4px 25px rgba(0, 0, 0, 0.08); /* मऊ सावली */
+    --shadow-dark: 0 15px 50px rgba(0, 0, 0, 0.5);  /* पॉप-अप आणि पेजेसची शॅडो */
+    --radius-sm: 6px;             /* लहान कोपरे */
+    --radius-md: 14px;            /* मध्यम कोपरे */
+}
+
+/* -------------------------------------------------------------------------- */
+/* २. बेसिक रीसेट आणि स्मूथ स्क्रोलिंग                                       */
+/* -------------------------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth; /* गुळगुळीत स्क्रोलिंगसाठी */
+}
+
+body {
+    background: var(--gradient-bg); /* 🌟 संपूर्ण वेबसाईटसाठी प्रीमियम डार्क ग्रेडियंट */
+    background-attachment: fixed;
+    color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ३. कॅटेगरी बार आणि टॅब बटने (Category Bar)                               */
+/* -------------------------------------------------------------------------- */
+.category-bar {
+    background: var(--gradient-header);
+    text-align: center;
+    padding: 18px 0;
+    border-bottom: 4px solid var(--primary-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tab-btn {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 38px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 0 8px;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+}
+
+.tab-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-color);
+    transform: translateY(-2px); /* हलका लिफ्ट इफेक्ट */
+}
+
+.tab-btn.active {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(230, 26, 34, 0.5);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ४. जुने अंक निवडण्याचा विभाग (Archive Section)                           */
+/* -------------------------------------------------------------------------- */
+.archive-section {
+    text-align: center;
+    margin: 30px 0 20px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+#paper-select {
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    width: 320px;
+    cursor: pointer;
+    transition: all 0.3s;
+    outline: none;
+    backdrop-filter: blur(10px);
+}
+
+#paper-select option {
+    background-color: #1f2124; /* ड्रॉपडाउनमधील टेक्स्ट दिसण्यासाठी डार्क बॅकग्राउंड */
+    color: #ffffff;
+}
+
+#paper-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(230, 26, 34, 0.3);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ५. वृत्तपत्र हेडर डिझाईन (Masthead/Brand Header)                        */
+/* -------------------------------------------------------------------------- */
+.brand-header {
+    background-color: #ffffff; /* मुख्य वर्तमानपत्राचा कागद पांढराच राहील */
+    color: var(--text-main);
+    padding: 35px 30px 25px 30px;
+    text-align: center;
+    border: 4px solid var(--secondary-color);
+    border-width: 5px 1px 5px 1px;
+    max-width: 1140px;
+    margin: 20px auto;
+    box-shadow: var(--shadow-dark);
+    border-radius: var(--radius-sm);
+}
+
+.sub-logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-bottom: 5px;
+}
+
+.main-logo {
+    font-size: 102px;
+    font-weight: 900;
+    color: var(--primary-color);
+    margin: 0;
+    line-height: 0.9;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    letter-spacing: -1px;
+}
+
+.english-title {
+    font-size: 38px;
+    font-weight: 700;
+    font-family: 'Times New Roman', serif;
+    color: var(--secondary-color);
+    margin: 14px 0;
+    letter-spacing: 5px;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 8px;
+}
+
+.meta-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 4px;
+    color: var(--text-main);
+    border-bottom: 1px dashed var(--border-color);
+    margin-bottom: 10px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.info-table td {
+    border: 1px solid var(--secondary-color);
+    padding: 10px 8px;
+    text-align: center;
+    background-color: #fafafa;
+}
+
+.info-table tr:nth-child(2) td {
+    font-family: 'Times New Roman', serif;
+    font-size: 15px;
+    background-color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ६. मुख्य ई-पेपर व्ह्यूअर आणि कॅनव्हास (PDF Container)                       */
+/* -------------------------------------------------------------------------- */
+#epaper-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 600px;
+}
+
+/* 🌟 स्क्रोल ॲनिमेशनसह पेपर रॅपर (Professional Scroll Animation) */
+.canvas-wrapper {
+    position: relative;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-dark);
+    cursor: crosshair;
+    border: 4px solid #111;
+    border-radius: var(--radius-sm);
+    background-color: #ffffff;
+    
+    /* आधुनिक ब्राऊझर्ससाठी ऑन-स्क्रोल ॲनिमेशन */
+    view-timeline-name: --pageReveal;
+    view-timeline-axis: block;
+    animation-name: revealPage;
+    animation-fill-mode: both;
+    animation-timeline: --pageReveal;
+    animation-range: entry 10% cover 40%;
+}
+
+/* 🌟 स्क्रोल गर्ताना हळुवारपणे वर येणारे ॲनिमेशन (Fade-in + Scale + Shift) */
+@keyframes revealPage {
+    from {
+        opacity: 0;
+        transform: translateY(60px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+}
+
+/* बातमी निवडताना दिसणारा लाल डॅश बॉक्स */
+.crop-box {
+    position: absolute;
+    border: 2.5px dashed var(--primary-color);
+    background-color: rgba(230, 26, 34, 0.2);
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 0 10px rgba(230, 26, 34, 0.6);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ७. व्यावसायिक पॉप-अप विंडो (Download Modal)                              */
+/* -------------------------------------------------------------------------- */
+#modalBackground {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px); /* बॅकग्राउंड अंधुक (Blur) करण्यासाठी प्रीमियम इफेक्ट */
+    z-index: 1999;
+}
+
+#downloadModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    color: var(--text-main);
+    padding: 35px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-dark);
+    z-index: 2000;
+    text-align: center;
+    width: 560px;
+    max-width: 92%;
+    animation: modalPopup 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPopup {
+    from { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+#downloadModal h3 {
+    font-size: 24px;
+    margin-bottom: 18px;
+    font-weight: 800;
+    color: var(--secondary-color);
+}
+
+#newsHeadingInput {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: all 0.3s;
+}
+
+#newsHeadingInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(230, 26, 34, 0.2);
+}
+
+#downloadArea {
+    background-color: #ffffff;
+    padding: 22px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+}
+
+#liveHeading {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--secondary-color);
+    border-bottom: 3px double var(--primary-color);
+    padding-bottom: 12px;
+    line-height: 1.35;
+}
+
+#croppedPreview {
+    max-width: 100%;
+    max-height: 45vh;
+    border: 1px solid #eeeeee;
+    display: block;
+    margin: 0 auto;
+}
+
+/* बटने (Buttons) */
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn {
+    padding: 14px 32px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-success {background-color: var(--primary-color);color: #ffffff;box-shadow: 0 4px 12px rgba(230, 26, 34, 0.3);}.btn-success:hover {background-color: var(--primary-dark);box-shadow: 0 6px 16px rgba(230, 26, 34, 0.4);}.btn-danger {background-color: #555555;color: #ffffff;}.btn-danger:hover {background-color: #333333;}
+
+/* =====================================================
+   AUTOMATIC NEWSPAPER CROP HEADING
+===================================================== */
+
+#automaticPaperHeading{
+    text-align:center;
+    color:#b3131b;
+    font-family:Georgia,"Noto Sans Devanagari",serif;
+    font-size:30px;
+    line-height:1.25;
+    font-weight:900;
+    padding:8px 10px 14px;
+    border-bottom:3px solid #b3131b;
+    margin-bottom:15px;
+}
+
+/* CROP PREVIEW AREA */
+
+#downloadArea{
+    margin-top:0;
+    padding:16px;
+    background:#f7f7f7;
+    border:1px solid #ddd;
+    border-radius:10px;
+    text-align:center;
+}
+
+/* HD PREVIEW */
+
+#croppedPreview{
+    display:block;
+    width:auto;
+    max-width:100%;
+    max-height:55vh;
+    margin:0 auto;
+    border:1px solid #ccc;
+    background:#fff;
+}
+
+/* DOWNLOAD INFO */
+
+.download-info{
+    margin-top:12px;
+    text-align:center;
+    color:#666;
+    font-size:12px;
+    font-weight:700;
+}
+
+/* DOWNLOAD BUTTONS */
+
+.modal-actions{
+    display:flex;
+    gap:9px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:17px;
+}
+
+.btn-primary-download{
+    background:#2563eb;
+    color:#fff;
+}
+
+.btn-pdf{
+    background:#7c3aed;
+    color:#fff;
+}
+
+/* RED CROP BOX */
+
+#selector{
+    position:fixed;
+    display:none;
+    z-index:5000;
+
+    border:3px solid #ff0000;
+
+    background:rgba(255,0,0,.12);
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.8),
+        0 0 12px rgba(255,0,0,.45);
+
+    pointer-events:none;
+}
+
+/* CORNER EFFECT */
+
+#selector::before,
+#selector::after{
+    content:"";
+    position:absolute;
+    width:10px;
+    height:10px;
+    border-color:#ff0000;
+    border-style:solid;
+}
+
+#selector::before{
+    top:-3px;
+    left:-3px;
+    border-width:3px 0 0 3px;
+}
+
+#selector::after{
+    right:-3px;
+    bottom:-3px;
+    border-width:0 3px 3px 0;
+}
+
+@media(max-width:650px){
+
+    #automaticPaperHeading{
+        font-size:22px;
+    }
+
+    .modal-actions{
+        flex-direction:column;
+    }
+
+    .modal-actions .btn{
+        width:100%;
+    }
+}
+.canvas-wrapper canvas {
+    touch-action: none;
+    cursor: crosshair;
+}
+/* =========================================
+   R TECHNOLOGIES FOOTER
+   ========================================= */
+
+.rt-footer {
+    width: 100%;
+    background: #101214;
+    color: #b8bdc5;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.rt-footer-inner {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    min-height: 110px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    align-items: center;
+
+    padding: 25px 40px;
+
+    box-sizing: border-box;
+}
+
+
+/* LEFT */
+
+.rt-footer-left {
+    text-align: left;
+}
+
+.rt-brand {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.rt-subtitle {
+    margin-top: 5px;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+
+/* CENTER */
+
+.rt-footer-center {
+    text-align: center;
+
+    border-left: 1px solid #30343b;
+    border-right: 1px solid #30343b;
+
+    padding: 5px 20px;
+}
+
+.rt-developed {
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.rt-company {
+    margin-top: 4px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+.rt-tagline {
+    margin-top: 5px;
+
+    color: #7f8792;
+
+    font-size: 11px;
+}
+
+
+/* RIGHT */
+
+.rt-footer-right {
+    text-align: right;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* BOTTOM */
+
+.rt-footer-bottom {
+    width: 100%;
+
+    border-top: 1px solid #292d33;
+
+    padding: 12px 20px;
+
+    text-align: center;
+
+    box-sizing: border-box;
+
+    color: #858d98;
+
+    font-size: 12px;
+}
+
+.rt-footer-bottom span {
+    color: #b3131b;
+
+    margin: 0 8px;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+    .rt-footer-inner {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+
+        padding: 25px 20px;
+
+        text-align: center;
+    }
+
+    .rt-footer-left {
+        text-align: center;
+    }
+
+    .rt-footer-center {
+        border-left: 0;
+        border-right: 0;
+
+        border-top: 1px solid #30343b;
+        border-bottom: 1px solid #30343b;
+
+        padding: 15px 10px;
+    }
+
+    .rt-footer-right {
+        text-align: center;
+    }
+
+    .rt-footer-bottom {
+        line-height: 1.8;
+    }
+}
+.footer-inner{
+    width:100%;
+    max-width:1400px;
+    margin:0 auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:30px;
+
+    box-sizing:border-box;
+}
+
+
+/* LEFT */
+
+.footer-left{
+    flex:1;
+    text-align:left;
+}
+
+.footer-left strong{
+    display:block;
+    color:#ffffff;
+    font-size:15px;
+}
+
+.footer-left span{
+    display:block;
+    margin-top:4px;
+    color:#9ca3af;
+    font-size:12px;
+}
+
+
+/* CENTER */
+
+.footer-center{
+    flex:1;
+    text-align:center;
+
+    border-left:1px solid #30343b;
+    border-right:1px solid #30343b;
+
+    padding:5px 20px;
+}
+
+.footer-center span{
+    display:block;
+    color:#9ca3af;
+    font-size:11px;
+}
+
+.footer-center strong{
+    display:block;
+    margin-top:4px;
+
+    color:#ffffff;
+
+    font-size:18px;
+    font-weight:900;
+
+    letter-spacing:2px;
+}
+
+.footer-center small{
+    display:block;
+    margin-top:4px;
+
+    color:#7f8792;
+    font-size:10px;
+}
+
+
+/* RIGHT */
+
+.footer-right{
+    flex:1;
+    text-align:right;
+}
+
+.footer-right span{
+    display:block;
+
+    color:#9ca3af;
+
+    font-size:12px;
+
+    line-height:1.8;
+}
