@@ -2,6 +2,19 @@
   "password": "admin123",
   "daily": [
     {
+      "pdfPath": "/uploads/1787048921124-909349193.pdf",
+      "editor": "रविंद्र विठ्ठलराव देशमुख",
+      "mobile": "९९२११५५००२",
+      "year": "1",
+      "issue": "10001",
+      "date_mr": "मंगळवार, दि. १८ ऑगस्ट २०२६",
+      "date_en": "Tuesday, 18 August 2026",
+      "rni": "Ram",
+      "price": "५ रूपये",
+      "pages": "४",
+      "uploadTime": 1787048921131
+    },
+    {
       "pdfPath": "/uploads/1786975407857-839445547.pdf",
       "editor": "रविंद्र विठ्ठलराव देशमुख",
       "mobile": "९९२११५५००२",
@@ -18,8 +31,8 @@
       "pdfPath": "/uploads/1786969347208-756365024.pdf",
       "editor": "रविंद्र विठ्ठलराव देशमुख",
       "mobile": "९९२११५५००२",
-      "year": "1",
-      "issue": "123",
+      "year": "145",
+      "issue": "12345",
       "date_mr": "budhwar",
       "date_en": "Wednsday",
       "rni": "MHMAR/26/A1903",
@@ -30,17 +43,43 @@
   ],
   "weekly": [
     {
-      "pdfPath": "/uploads/1786970424069-979741249.pdf",
+      "pdfPath": "/uploads/1787056998873-638206199.pdf",
       "editor": "रविंद्र विठ्ठलराव देशमुख",
       "mobile": "९९२११५५००२",
-      "year": "2",
-      "issue": "124",
-      "date_mr": "ravivar",
-      "date_en": "sunday",
-      "rni": "http://localhost:3000/",
+      "year": "1",
+      "issue": "125",
+      "date_mr": "गुरुवार, दि. ३० जुलै २०२६",
+      "date_en": "Thursday, 30 July 2026",
+      "rni": "RAM",
       "price": "५ रूपये",
       "pages": "४",
-      "uploadTime": 1786970424078
+      "uploadTime": 1787056998877
+    },
+    {
+      "pdfPath": "/uploads/1787048795524-917400682.pdf",
+      "editor": "रविंद्र विठ्ठलराव देशमुख",
+      "mobile": "९९२११५५००२",
+      "year": "1",
+      "issue": "122",
+      "date_mr": "सोमवार, दि. २७ जुलै २०२६",
+      "date_en": "Monday, 27 July 2026",
+      "rni": "mahamar",
+      "price": "५ रूपये",
+      "pages": "४",
+      "uploadTime": 1787048795528
+    },
+    {
+      "pdfPath": "/uploads/1787047575965-908599434.pdf",
+      "editor": "रविंद्र विठ्ठलराव देशमुख",
+      "mobile": "९९२११५५००२",
+      "year": "1",
+      "issue": "122",
+      "date_mr": "mangalwar 280july 2026",
+      "date_en": "tuesday 28 july 2026",
+      "rni": "PRGI/MHMAR/26/A1903",
+      "price": "५ रूपये",
+      "pages": "४",
+      "uploadTime": 1787047575972
     }
   ],
   "username": "admin",

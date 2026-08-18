@@ -50,60 +50,51 @@ if (!fs.existsSync(DATA_FILE)) {
         JSON.stringify(defaultData, null, 2),
         'utf8'
     );
-
 }
 
 
 // ======================================================
-// FIX OLD paper_info.json
+// CHECK / FIX paper_info.json
 // ======================================================
 
 try {
 
-    const existingData =
-        JSON.parse(
-            fs.readFileSync(DATA_FILE, 'utf8')
-        );
+    const data = JSON.parse(
+        fs.readFileSync(DATA_FILE, 'utf8')
+    );
 
     let changed = false;
 
-
-    // जुना file असेल आणि username नसेल
-    if (!existingData.username) {
-        existingData.username = 'admin';
+    if (!data.username) {
+        data.username = 'admin';
         changed = true;
     }
 
-
-    // password नसेल
-    if (!existingData.password) {
-        existingData.password = '1234';
+    if (!data.password) {
+        data.password = '1234';
         changed = true;
     }
 
-
-    // categories नसतील तर तयार करा
-    if (!Array.isArray(existingData.daily)) {
-        existingData.daily = [];
+    if (!Array.isArray(data.daily)) {
+        data.daily = [];
         changed = true;
     }
 
-    if (!Array.isArray(existingData.weekly)) {
-        existingData.weekly = [];
+    if (!Array.isArray(data.weekly)) {
+        data.weekly = [];
         changed = true;
     }
 
-    if (!Array.isArray(existingData.monthly)) {
-        existingData.monthly = [];
+    if (!Array.isArray(data.monthly)) {
+        data.monthly = [];
         changed = true;
     }
-
 
     if (changed) {
 
         fs.writeFileSync(
             DATA_FILE,
-            JSON.stringify(existingData, null, 2),
+            JSON.stringify(data, null, 2),
             'utf8'
         );
 
@@ -138,20 +129,15 @@ app.use(
 app.use(
     session({
 
-        secret:
-            'lokbharti-epaper-secret-2026',
+        secret: 'lokbharti-epaper-secret-2026',
 
         resave: false,
 
         saveUninitialized: false,
 
         cookie: {
-
             httpOnly: true,
-
-            maxAge:
-                60 * 60 * 1000
-
+            maxAge: 60 * 60 * 1000
         }
 
     })
@@ -159,26 +145,45 @@ app.use(
 
 
 // ======================================================
-// PROTECT ADMIN.HTML
+// ADMIN CHECK MIDDLEWARE
 // ======================================================
 
-app.use((req, res, next) => {
+function checkAdmin(req, res, next) {
 
     if (
-        req.path === '/admin.html' &&
-        (!req.session ||
-         req.session.isAdmin !== true)
+        req.session &&
+        req.session.isAdmin === true
     ) {
-
-        return res.redirect(
-            '/admin-login.html'
-        );
-
+        return next();
     }
 
-    next();
+    return res.redirect('/admin-login.html');
+}
 
-});
+
+// ======================================================
+// PROTECT admin.html
+// ======================================================
+
+app.use(
+    (req, res, next) => {
+
+        if (
+            req.path === '/admin.html' &&
+            (!req.session ||
+             req.session.isAdmin !== true)
+        ) {
+
+            return res.redirect(
+                '/admin-login.html'
+            );
+
+        }
+
+        next();
+
+    }
+);
 
 
 // ======================================================
@@ -191,7 +196,7 @@ app.use(
 
 
 // ======================================================
-// PDF UPLOAD FILES
+// PDF FILES
 // ======================================================
 
 app.use(
@@ -204,97 +209,65 @@ app.use(
 // MULTER STORAGE
 // ======================================================
 
-const storage =
-    multer.diskStorage({
+const storage = multer.diskStorage({
 
-        destination: (req, file, cb) => {
+    destination: (req, file, cb) => {
 
-            cb(
-                null,
-                UPLOAD_FOLDER
+        cb(
+            null,
+            UPLOAD_FOLDER
+        );
+
+    },
+
+    filename: (req, file, cb) => {
+
+        const uniqueName =
+            Date.now() +
+            '-' +
+            Math.round(
+                Math.random() * 1E9
+            ) +
+            path.extname(
+                file.originalname
             );
 
-        },
+        cb(
+            null,
+            uniqueName
+        );
 
-        filename: (req, file, cb) => {
+    }
 
-            const uniqueSuffix =
-                Date.now() +
-                '-' +
-                Math.round(
-                    Math.random() * 1E9
-                );
+});
 
-            cb(
-                null,
-                uniqueSuffix +
-                path.extname(
-                    file.originalname
+
+const upload = multer({
+
+    storage: storage,
+
+    fileFilter: (req, file, cb) => {
+
+        const extension =
+            path.extname(
+                file.originalname
+            ).toLowerCase();
+
+        if (extension !== '.pdf') {
+
+            return cb(
+                new Error(
+                    'फक्त PDF फाईल अपलोड करा.'
                 )
             );
 
         }
 
-    });
-
-
-const upload =
-    multer({
-
-        storage: storage,
-
-        fileFilter:
-            (req, file, cb) => {
-
-                const ext =
-                    path
-                    .extname(
-                        file.originalname
-                    )
-                    .toLowerCase();
-
-                if (ext !== '.pdf') {
-
-                    return cb(
-                        new Error(
-                            'फक्त PDF फाईल अपलोड करा.'
-                        )
-                    );
-
-                }
-
-                cb(null, true);
-
-            }
-
-    });
-
-
-// ======================================================
-// ADMIN CHECK MIDDLEWARE
-// ======================================================
-
-function checkAdmin(
-    req,
-    res,
-    next
-) {
-
-    if (
-        req.session &&
-        req.session.isAdmin === true
-    ) {
-
-        return next();
+        cb(null, true);
 
     }
 
-    // Browser request असल्यास login page
-    return res.redirect(
-        '/admin-login.html'
-    );
-
-}
+});
 
 
 // ======================================================
@@ -314,27 +287,30 @@ app.get(
 
                     return res
                         .status(500)
-                        .send(
-                            'डेटाबेस वाचताना एरर आली.'
-                        );
+                        .json({
+                            success: false,
+                            message:
+                                'डेटाबेस वाचताना एरर आली.'
+                        });
 
                 }
-
 
                 try {
 
                     const json =
                         JSON.parse(data);
 
-                    res.json(json);
+                    return res.json(json);
 
                 } catch (error) {
 
-                    res
+                    return res
                         .status(500)
-                        .send(
-                            'paper_info.json मध्ये चुकीचा डेटा आहे.'
-                        );
+                        .json({
+                            success: false,
+                            message:
+                                'paper_info.json मध्ये चुकीचा डेटा आहे.'
+                        });
 
                 }
 
@@ -360,7 +336,10 @@ app.post(
             req.body.password;
 
 
-        if (!username || !password) {
+        if (
+            !username ||
+            !password
+        ) {
 
             return res.json({
 
@@ -402,11 +381,8 @@ app.post(
 
 
                     if (
-                        username ===
-                            json.username &&
-
-                        password ===
-                            json.password
+                        username === json.username &&
+                        password === json.password
                     ) {
 
                         req.session.isAdmin =
@@ -469,7 +445,7 @@ app.get(
     checkAdmin,
     (req, res) => {
 
-        res.sendFile(
+        return res.sendFile(
             path.join(
                 PUBLIC_FOLDER,
                 'admin.html'
@@ -497,28 +473,17 @@ app.post(
             req.body.category;
 
 
-        // PDF check
-
         if (!req.file) {
 
             return res.send(`
-
                 <script>
-
-                    alert(
-                        'कृपया PDF फाईल निवडा.'
-                    );
-
+                    alert('कृपया PDF फाईल निवडा.');
                     window.history.back();
-
                 </script>
-
             `);
 
         }
 
-
-        // Category check
 
         if (
             !category ||
@@ -530,9 +495,7 @@ app.post(
         ) {
 
             if (
-                fs.existsSync(
-                    req.file.path
-                )
+                fs.existsSync(req.file.path)
             ) {
 
                 fs.unlinkSync(
@@ -541,19 +504,11 @@ app.post(
 
             }
 
-
             return res.send(`
-
                 <script>
-
-                    alert(
-                        'कृपया योग्य Category निवडा.'
-                    );
-
+                    alert('कृपया योग्य Category निवडा.');
                     window.history.back();
-
                 </script>
-
             `);
 
         }
@@ -567,17 +522,12 @@ app.post(
                 if (err) {
 
                     if (
-                        fs.existsSync(
-                            req.file.path
-                        )
+                        fs.existsSync(req.file.path)
                     ) {
-
                         fs.unlinkSync(
                             req.file.path
                         );
-
                     }
-
 
                     return res
                         .status(500)
@@ -590,7 +540,6 @@ app.post(
 
                 let json;
 
-
                 try {
 
                     json =
@@ -599,17 +548,12 @@ app.post(
                 } catch (error) {
 
                     if (
-                        fs.existsSync(
-                            req.file.path
-                        )
+                        fs.existsSync(req.file.path)
                     ) {
-
                         fs.unlinkSync(
                             req.file.path
                         );
-
                     }
-
 
                     return res
                         .status(500)
@@ -620,7 +564,6 @@ app.post(
                 }
 
 
-                // Category array
                 if (
                     !Array.isArray(
                         json[category]
@@ -631,8 +574,6 @@ app.post(
 
                 }
 
-
-                // New paper
 
                 const newPaper = {
 
@@ -673,14 +614,11 @@ app.post(
                 };
 
 
-                // नवीन पेपर सर्वात वर
-
+                // नवीन अंक सर्वात वर
                 json[category].unshift(
                     newPaper
                 );
 
-
-                // Save JSON
 
                 fs.writeFile(
                     DATA_FILE,
@@ -709,7 +647,6 @@ app.post(
 
                             }
 
-
                             return res
                                 .status(500)
                                 .send(
@@ -719,19 +656,11 @@ app.post(
                         }
 
 
-                        res.send(`
-
+                        return res.send(`
                             <script>
-
-                                alert(
-                                    'पेपर यशस्वीरित्या अपलोड झाला!'
-                                );
-
-                                window.location.href =
-                                    '/';
-
+                                alert('पेपर यशस्वीरित्या अपलोड झाला!');
+                                window.location.href = '/admin.html';
                             </script>
-
                         `);
 
                     }
@@ -745,7 +674,353 @@ app.post(
 
 
 // ======================================================
-// 5. CHANGE USERNAME + PASSWORD
+// 5. DELETE PAPER
+// ======================================================
+
+app.post(
+    '/delete-paper',
+
+    checkAdmin,
+
+    (req, res) => {
+
+        const category =
+            req.body.category;
+
+        const index =
+            parseInt(
+                req.body.index,
+                10
+            );
+
+
+        if (
+            !category ||
+            ![
+                'daily',
+                'weekly',
+                'monthly'
+            ].includes(category) ||
+            isNaN(index)
+        ) {
+
+            return res.send(`
+                <script>
+                    alert('चुकीची माहिती.');
+                    window.history.back();
+                </script>
+            `);
+
+        }
+
+
+        fs.readFile(
+            DATA_FILE,
+            'utf8',
+            (err, data) => {
+
+                if (err) {
+
+                    return res
+                        .status(500)
+                        .send(
+                            'पेपर डेटा वाचताना एरर आली.'
+                        );
+
+                }
+
+
+                let json;
+
+                try {
+
+                    json =
+                        JSON.parse(data);
+
+                } catch (error) {
+
+                    return res
+                        .status(500)
+                        .send(
+                            'paper_info.json चुकीचा आहे.'
+                        );
+
+                }
+
+
+                if (
+                    !Array.isArray(
+                        json[category]
+                    ) ||
+                    !json[category][index]
+                ) {
+
+                    return res.send(`
+                        <script>
+                            alert('पेपर सापडला नाही.');
+                            window.history.back();
+                        </script>
+                    `);
+
+                }
+
+
+                const paper =
+                    json[category][index];
+
+
+                // PDF DELETE
+                if (paper.pdfPath) {
+
+                    const fileName =
+                        path.basename(
+                            paper.pdfPath
+                        );
+
+                    const pdfFile =
+                        path.join(
+                            UPLOAD_FOLDER,
+                            fileName
+                        );
+
+
+                    if (
+                        fs.existsSync(pdfFile)
+                    ) {
+
+                        fs.unlinkSync(
+                            pdfFile
+                        );
+
+                    }
+
+                }
+
+
+                // JSON मधून delete
+                json[category].splice(
+                    index,
+                    1
+                );
+
+
+                fs.writeFile(
+                    DATA_FILE,
+
+                    JSON.stringify(
+                        json,
+                        null,
+                        2
+                    ),
+
+                    'utf8',
+
+                    (writeErr) => {
+
+                        if (writeErr) {
+
+                            return res
+                                .status(500)
+                                .send(
+                                    'पेपर delete करताना डेटा सेव्ह होऊ शकला नाही.'
+                                );
+
+                        }
+
+
+                        return res.send(`
+                            <script>
+                                alert('पेपर यशस्वीरित्या Delete झाला.');
+                                window.location.href = '/admin.html';
+                            </script>
+                        `);
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+
+// ======================================================
+// 6. EDIT PAPER
+// ======================================================
+
+app.post(
+    '/edit-paper',
+
+    checkAdmin,
+
+    (req, res) => {
+
+        const category =
+            req.body.category;
+
+        const index =
+            parseInt(
+                req.body.index,
+                10
+            );
+
+
+        if (
+            !category ||
+            ![
+                'daily',
+                'weekly',
+                'monthly'
+            ].includes(category) ||
+            isNaN(index)
+        ) {
+
+            return res.send(`
+                <script>
+                    alert('चुकीची माहिती.');
+                    window.history.back();
+                </script>
+            `);
+
+        }
+
+
+        fs.readFile(
+            DATA_FILE,
+            'utf8',
+            (err, data) => {
+
+                if (err) {
+
+                    return res
+                        .status(500)
+                        .send(
+                            'पेपर डेटा वाचताना एरर आली.'
+                        );
+
+                }
+
+
+                let json;
+
+                try {
+
+                    json =
+                        JSON.parse(data);
+
+                } catch (error) {
+
+                    return res
+                        .status(500)
+                        .send(
+                            'paper_info.json चुकीचा आहे.'
+                        );
+
+                }
+
+
+                if (
+                    !Array.isArray(
+                        json[category]
+                    ) ||
+                    !json[category][index]
+                ) {
+
+                    return res.send(`
+                        <script>
+                            alert('पेपर सापडला नाही.');
+                            window.history.back();
+                        </script>
+                    `);
+
+                }
+
+
+                const paper =
+                    json[category][index];
+
+
+                // माहिती UPDATE
+                paper.editor =
+                    req.body.editor || '';
+
+                paper.mobile =
+                    req.body.mobile || '';
+
+                paper.year =
+                    req.body.year || '';
+
+                paper.issue =
+                    req.body.issue || '';
+
+                paper.date_mr =
+                    req.body.date_mr || '';
+
+                paper.date_en =
+                    req.body.date_en || '';
+
+                paper.rni =
+                    req.body.rni || '';
+
+                paper.price =
+                    req.body.price || '';
+
+                paper.pages =
+                    req.body.pages || '';
+
+
+                // PDF path ला हात लावायचा नाही.
+
+
+                fs.writeFile(
+                    DATA_FILE,
+
+                    JSON.stringify(
+                        json,
+                        null,
+                        2
+                    ),
+
+                    'utf8',
+
+                    (writeErr) => {
+
+                        if (writeErr) {
+
+                            console.error(
+                                'EDIT PAPER SAVE ERROR:',
+                                writeErr
+                            );
+
+                            return res
+                                .status(500)
+                                .send(
+                                    'पेपरची माहिती सेव्ह करता आली नाही.'
+                                );
+
+                        }
+
+
+                        return res.send(`
+                            <script>
+                                alert('पेपरची माहिती यशस्वीरित्या Update झाली.');
+                                window.location.href = '/admin.html';
+                            </script>
+                        `);
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+
+// ======================================================
+// 7. CHANGE USERNAME + PASSWORD
 // ======================================================
 
 app.post(
@@ -767,14 +1042,16 @@ app.post(
             !newPassword
         ) {
 
-            return res.status(400).json({
+            return res
+                .status(400)
+                .json({
 
-                success: false,
+                    success: false,
 
-                message:
-                    'Username आणि Password दोन्ही भरा.'
+                    message:
+                        'Username आणि Password दोन्ही भरा.'
 
-            });
+                });
 
         }
 
@@ -783,14 +1060,16 @@ app.post(
             newUsername.length < 3
         ) {
 
-            return res.status(400).json({
+            return res
+                .status(400)
+                .json({
 
-                success: false,
+                    success: false,
 
-                message:
-                    'Username कमीत कमी 3 characters असावा.'
+                    message:
+                        'Username कमीत कमी 3 characters असावा.'
 
-            });
+                });
 
         }
 
@@ -799,14 +1078,16 @@ app.post(
             newPassword.length < 4
         ) {
 
-            return res.status(400).json({
+            return res
+                .status(400)
+                .json({
 
-                success: false,
+                    success: false,
 
-                message:
-                    'Password कमीत कमी 4 characters असावा.'
+                    message:
+                        'Password कमीत कमी 4 characters असावा.'
 
-            });
+                });
 
         }
 
@@ -874,13 +1155,11 @@ app.post(
                             }
 
 
-                            // Session मध्ये नवीन username
-
                             req.session.username =
                                 newUsername;
 
 
-                            res.json({
+                            return res.json({
 
                                 success: true,
 
@@ -895,7 +1174,7 @@ app.post(
 
                 } catch (error) {
 
-                    res
+                    return res
                         .status(500)
                         .json({
 
@@ -916,9 +1195,8 @@ app.post(
 
 
 // ======================================================
-// 6. OLD CHANGE PASSWORD API
+// 8. OLD CHANGE PASSWORD API
 // ======================================================
-// हा route तुमच्या जुन्या admin.html साठी ठेवला आहे.
 
 app.post(
     '/change-password',
@@ -940,17 +1218,10 @@ app.post(
         ) {
 
             return res.send(`
-
                 <script>
-
-                    alert(
-                        'जुना आणि नवीन पासवर्ड दोन्ही भरा.'
-                    );
-
+                    alert('जुना आणि नवीन पासवर्ड दोन्ही भरा.');
                     window.history.back();
-
                 </script>
-
             `);
 
         }
@@ -984,17 +1255,10 @@ app.post(
                     ) {
 
                         return res.send(`
-
                             <script>
-
-                                alert(
-                                    'जुना पासवर्ड चुकीचा आहे!'
-                                );
-
+                                alert('जुना पासवर्ड चुकीचा आहे!');
                                 window.history.back();
-
                             </script>
-
                         `);
 
                     }
@@ -1028,19 +1292,11 @@ app.post(
                             }
 
 
-                            res.send(`
-
+                            return res.send(`
                                 <script>
-
-                                    alert(
-                                        'पासवर्ड यशस्वीरित्या बदलला आहे!'
-                                    );
-
-                                    window.location.href =
-                                        '/admin-panel';
-
+                                    alert('पासवर्ड यशस्वीरित्या बदलला आहे!');
+                                    window.location.href = '/admin-panel';
                                 </script>
-
                             `);
 
                         }
@@ -1065,7 +1321,7 @@ app.post(
 
 
 // ======================================================
-// 7. LOGOUT
+// 9. LOGOUT
 // ======================================================
 
 app.get(
@@ -1075,7 +1331,7 @@ app.get(
         req.session.destroy(
             (err) => {
 
-                res.redirect('/');
+                return res.redirect('/');
 
             }
         );
@@ -1098,25 +1354,22 @@ app.use(
         ) {
 
             return res.send(`
-
                 <script>
-
-                    alert(
-                        'फक्त PDF फाईल अपलोड करा.'
-                    );
-
+                    alert('फक्त PDF फाईल अपलोड करा.');
                     window.history.back();
-
                 </script>
-
             `);
 
         }
 
 
-        console.error(err);
+        console.error(
+            'SERVER ERROR:',
+            err
+        );
 
-        res
+
+        return res
             .status(500)
             .send(
                 'Server मध्ये error आली.'
