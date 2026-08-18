@@ -1975,329 +1975,215 @@ function renderPage(
 
     /* ================================
        RED CROP SQUARE
-       ================================ */
-    function initCropper(wrapper, canvas) {
+       ================================ */function initCropper(wrapper, canvas) {
 
     let startX = 0;
     let startY = 0;
-
     let currentX = 0;
     let currentY = 0;
-
     let isSelecting = false;
+    let activePointerId = null;
 
-    const selector =
-        document.getElementById("selector");
+    const selector = document.getElementById("selector");
 
     if (!selector) {
-
-        console.error(
-            "selector element सापडला नाही."
-        );
-
+        console.error("selector element सापडला नाही.");
         return;
     }
 
-
-    /* =========================================
-       POINTER POSITION
-       Mouse + Touch दोन्हीसाठी
-    ========================================= */
+    canvas.style.touchAction = "none";
+    wrapper.style.touchAction = "none";
 
     function getPointerPosition(e) {
 
-        const rect =
-            canvas.getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
 
-        /*
-         * IMPORTANT:
-         * Pointer position DISPLAY pixels मध्ये
-         * ठेवायची.
-         *
-         * Crop साठी नंतर createCropPreview()
-         * स्वतः canvas scale calculate करेल.
-         */
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
 
-        return {
+        x = Math.max(0, Math.min(x, rect.width));
+        y = Math.max(0, Math.min(y, rect.height));
 
-            x:
-                e.clientX -
-                rect.left,
+        return { x, y };
+    }
 
-            y:
-                e.clientY -
-                rect.top
+    function updateSelector() {
 
-        };
+        const rect = canvas.getBoundingClientRect();
+
+        const x = Math.min(startX, currentX);
+        const y = Math.min(startY, currentY);
+
+        const width = Math.abs(currentX - startX);
+        const height = Math.abs(currentY - startY);
+
+        selector.style.left =
+            (rect.left + x) + "px";
+
+        selector.style.top =
+            (rect.top + y) + "px";
+
+        selector.style.width =
+            width + "px";
+
+        selector.style.height =
+            height + "px";
+    }
+
+    canvas.addEventListener("pointerdown", function(e) {
+
+        /* फक्त single finger / mouse */
+        if (e.pointerType === "touch" && e.isPrimary === false) {
+            return;
+        }
+
+        if (isSelecting) {
+            return;
+        }
+
+        e.preventDefault();
+
+        activePointerId = e.pointerId;
+
+        try {
+            canvas.setPointerCapture(e.pointerId);
+        } catch (err) {}
+
+        const pos = getPointerPosition(e);
+
+        startX = pos.x;
+        startY = pos.y;
+
+        currentX = pos.x;
+        currentY = pos.y;
+
+        isSelecting = true;
+
+        selector.style.display = "block";
+
+        updateSelector();
+
+    }, { passive: false });
+
+
+    canvas.addEventListener("pointermove", function(e) {
+
+        if (!isSelecting) {
+            return;
+        }
+
+        if (e.pointerId !== activePointerId) {
+            return;
+        }
+
+        e.preventDefault();
+
+        const pos = getPointerPosition(e);
+
+        currentX = pos.x;
+        currentY = pos.y;
+
+        updateSelector();
+
+    }, { passive: false });
+
+
+    function finishSelection(e) {
+
+        if (!isSelecting) {
+            return;
+        }
+
+        if (e.pointerId !== activePointerId) {
+            return;
+        }
+
+        e.preventDefault();
+
+        const pos = getPointerPosition(e);
+
+        currentX = pos.x;
+        currentY = pos.y;
+
+        updateSelector();
+
+        isSelecting = false;
+
+        try {
+            canvas.releasePointerCapture(e.pointerId);
+        } catch (err) {}
+
+        activePointerId = null;
+
+        const width =
+            Math.abs(currentX - startX);
+
+        const height =
+            Math.abs(currentY - startY);
+
+        if (width < 10 || height < 10) {
+
+            selector.style.display = "none";
+
+            return;
+        }
+
+        createCropPreview(
+            canvas,
+            startX,
+            startY,
+            currentX,
+            currentY
+        );
+
+        selector.style.display = "none";
     }
 
 
-    /* =========================================
-       POINTER DOWN
-    ========================================= */
-
-    canvas.addEventListener(
-        "pointerdown",
-        function(e) {
-
-            e.preventDefault();
-
-            try {
-
-                canvas.setPointerCapture(
-                    e.pointerId
-                );
-
-            } catch (error) {}
-
-
-            const pos =
-                getPointerPosition(e);
-
-
-            startX = pos.x;
-            startY = pos.y;
-
-            currentX = pos.x;
-            currentY = pos.y;
-
-            isSelecting = true;
-
-
-            selector.style.display =
-                "block";
-
-
-            updateSelector();
-
-        },
-        { passive: false }
-    );
-
-
-    /* =========================================
-       POINTER MOVE
-    ========================================= */
-
-    canvas.addEventListener(
-        "pointermove",
-        function(e) {
-
-            if (!isSelecting) {
-                return;
-            }
-
-            e.preventDefault();
-
-
-            const pos =
-                getPointerPosition(e);
-
-
-            currentX = pos.x;
-            currentY = pos.y;
-
-
-            updateSelector();
-
-        },
-        { passive: false }
-    );
-
-
-    /* =========================================
-       POINTER UP
-    ========================================= */
-
     canvas.addEventListener(
         "pointerup",
-        function(e) {
-
-            if (!isSelecting) {
-                return;
-            }
-
-            e.preventDefault();
-
-            isSelecting = false;
-
-
-            try {
-
-                canvas.releasePointerCapture(
-                    e.pointerId
-                );
-
-            } catch (error) {}
-
-
-            const pos =
-                getPointerPosition(e);
-
-
-            currentX = pos.x;
-            currentY = pos.y;
-
-
-            updateSelector();
-
-
-            const width =
-                Math.abs(
-                    currentX -
-                    startX
-                );
-
-            const height =
-                Math.abs(
-                    currentY -
-                    startY
-                );
-
-
-            /* =====================================
-               छोटा selection cancel
-            ===================================== */
-
-            if (
-                width < 10 ||
-                height < 10
-            ) {
-
-                selector.style.display =
-                    "none";
-
-                return;
-            }
-
-
-            /* =====================================
-               CROP
-               
-               createCropPreview()
-               DISPLAY coordinates घेऊन
-               canvas coordinates मध्ये
-               स्वतः conversion करेल.
-            ===================================== */
-
-            createCropPreview(
-
-                canvas,
-
-                startX,
-                startY,
-
-                currentX,
-                currentY
-
-            );
-
-
-            selector.style.display =
-                "none";
-
-        },
+        finishSelection,
         { passive: false }
     );
 
-
-    /* =========================================
-       POINTER CANCEL
-    ========================================= */
 
     canvas.addEventListener(
         "pointercancel",
         function(e) {
 
+            if (
+                activePointerId !== null &&
+                e.pointerId !== activePointerId
+            ) {
+                return;
+            }
+
             isSelecting = false;
+            activePointerId = null;
 
-            selector.style.display =
-                "none";
-
+            selector.style.display = "none";
 
             try {
-
-                canvas.releasePointerCapture(
-                    e.pointerId
-                );
-
-            } catch (error) {}
+                canvas.releasePointerCapture(e.pointerId);
+            } catch (err) {}
 
         }
     );
 
 
-    /* =========================================
-       UPDATE RED SELECTOR
-    ========================================= */
+    canvas.addEventListener(
+        "lostpointercapture",
+        function() {
 
-    function updateSelector() {
+            if (isSelecting) {
 
-        const rect =
-            canvas.getBoundingClientRect();
+                isSelecting = false;
+                activePointerId = null;
 
-
-        /*
-         * आता startX/currentX हे
-         * DISPLAY coordinates आहेत.
-         */
-
-        const x =
-            Math.min(
-                startX,
-                currentX
-            );
-
-        const y =
-            Math.min(
-                startY,
-                currentY
-            );
-
-
-        const width =
-            Math.abs(
-                currentX -
-                startX
-            );
-
-        const height =
-            Math.abs(
-                currentY -
-                startY
-            );
-
-
-        /*
-         * Selector fixed आहे.
-         *
-         * म्हणून viewport coordinates
-         * directly वापरतो.
-         */
-
-        selector.style.left =
-            (
-                rect.left +
-                x
-            ) + "px";
-
-
-        selector.style.top =
-            (
-                rect.top +
-                y
-            ) + "px";
-
-
-        selector.style.width =
-            width + "px";
-
-
-        selector.style.height =
-            height + "px";
-
-    }
-
+                selector.style.display = "none";
+            }
+        }
+    );
 }
    /* ================================
    CREATE HD CROP
