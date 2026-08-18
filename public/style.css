@@ -766,3 +766,25 @@ canvas {
 
     line-height:1.8;
 }
+
+/* =========================================
+   MOBILE NEWSPAPER CROP
+   ========================================= */
+
+.canvas-wrapper {
+    position: relative;
+    overflow: visible;
+}
+
+.canvas-wrapper canvas {
+    touch-action: none !important;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Mobile selection box */
+#selector {
+    touch-action: none !important;
+    pointer-events: none !important;
+}
