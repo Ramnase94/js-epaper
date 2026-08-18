@@ -1975,7 +1975,8 @@ function renderPage(
 
     /* ================================
        RED CROP SQUARE
-       ================================ */function initCropper(wrapper, canvas) {
+       ================================ */
+    function initCropper(wrapper, canvas) {
 
     let startX = 0;
     let startY = 0;
@@ -2298,171 +2299,322 @@ function renderPage(
     }
 
 }
-   
-    /* ================================
-       CREATE HD CROP
-       ================================ */
+   /* ================================
+   CREATE HD CROP
+   Desktop + Mobile Compatible
+   ================================ */
 
-    function createCropPreview(
-        canvas,
-        startX,
-        startY,
-        endX,
-        endY
-    ) {
+function createCropPreview(
+    canvas,
+    startX,
+    startY,
+    endX,
+    endY
+) {
 
-        const rect =
-            canvas.getBoundingClientRect();
+    const rect =
+        canvas.getBoundingClientRect();
 
-        const scaleX =
-            canvas.width /
-            rect.width;
 
-        const scaleY =
-            canvas.height /
-            rect.height;
+    /* =================================
+       DISPLAY COORDINATES
+    ================================= */
 
-        const x =
-            Math.min(
-                startX,
-                endX
-            ) * scaleX;
+    let sx =
+        Math.min(startX, endX);
 
-        const y =
-            Math.min(
-                startY,
-                endY
-            ) * scaleY;
+    let sy =
+        Math.min(startY, endY);
 
-        const width =
-            Math.abs(
-                endX - startX
-            ) * scaleX;
+    let ex =
+        Math.max(startX, endX);
 
-        const height =
-            Math.abs(
-                endY - startY
-            ) * scaleY;
+    let ey =
+        Math.max(startY, endY);
 
-        if (
-            width < 20 ||
-            height < 20
-        ) {
-            return;
-        }
 
-        const cropCanvas =
-            document.createElement('canvas');
+    /* =================================
+       PAGE BOUNDARY
+       Selection canvas च्या बाहेर जाऊ देऊ नका
+    ================================= */
 
-        cropCanvas.width =
-            Math.round(width);
-
-        cropCanvas.height =
-            Math.round(height);
-
-        const ctx =
-            cropCanvas.getContext('2d');
-
-        ctx.imageSmoothingEnabled =
-            true;
-
-        ctx.imageSmoothingQuality =
-            'high';
-
-        ctx.drawImage(
-            canvas,
-            x,
-            y,
-            width,
-            height,
+    sx =
+        Math.max(
             0,
-            0,
-            cropCanvas.width,
-            cropCanvas.height
+            Math.min(sx, rect.width)
         );
 
-        currentCropCanvas =
-            cropCanvas;
+    sy =
+        Math.max(
+            0,
+            Math.min(sy, rect.height)
+        );
 
-        /* ================================
-           AUTOMATIC NEWSPAPER NAME
-           ================================ */
+    ex =
+        Math.max(
+            0,
+            Math.min(ex, rect.width)
+        );
 
-        let newspaperHeading = '';
+    ey =
+        Math.max(
+            0,
+            Math.min(ey, rect.height)
+        );
 
-        if (
-            currentCategory === 'daily'
-        ) {
 
-            newspaperHeading =
-                'दैनिक लोकभारती';
+    const displayWidth =
+        ex - sx;
 
-        } else if (
-            currentCategory === 'weekly'
-        ) {
+    const displayHeight =
+        ey - sy;
 
-            newspaperHeading =
-                'साप्ताहिक लोकभारती';
 
-        } else {
+    /* =================================
+       SMALL SELECTION CHECK
+    ================================= */
 
-            newspaperHeading =
-                'लोकभारती';
-        }
+    if (
+        displayWidth < 10 ||
+        displayHeight < 10
+    ) {
 
-        /*
-           User heading change करू शकणार नाही.
-           म्हणून input hide केला आहे.
-        */
+        return;
+    }
 
-        if ($('newsHeadingInput')) {
 
-            $('newsHeadingInput').value =
-                newspaperHeading;
+    /* =================================
+       DISPLAY → HD CANVAS SCALE
+    ================================= */
 
-            $('newsHeadingInput').style.display =
-                'none';
-        }
+    const scaleX =
+        canvas.width /
+        rect.width;
 
-        /*
-           Live heading red मध्ये
-        */
+    const scaleY =
+        canvas.height /
+        rect.height;
 
-        if ($('liveHeading')) {
 
-            $('liveHeading').innerText =
-                newspaperHeading;
+    const x =
+        Math.round(
+            sx * scaleX
+        );
 
-            $('liveHeading').style.color =
-                '#b3131b';
+    const y =
+        Math.round(
+            sy * scaleY
+        );
 
-            $('liveHeading').style.fontWeight =
-                '900';
+    const width =
+        Math.round(
+            displayWidth * scaleX
+        );
 
-            $('liveHeading').style.fontSize =
-                '24px';
-        }
+    const height =
+        Math.round(
+            displayHeight * scaleY
+        );
 
-        /*
-           Preview
-        */
 
-        $('croppedPreview').src =
+    /* =================================
+       FINAL SIZE CHECK
+    ================================= */
+
+    if (
+        width < 20 ||
+        height < 20
+    ) {
+
+        return;
+    }
+
+
+    /* =================================
+       CREATE HD CROP CANVAS
+    ================================= */
+
+    const cropCanvas =
+        document.createElement(
+            'canvas'
+        );
+
+
+    cropCanvas.width =
+        width;
+
+    cropCanvas.height =
+        height;
+
+
+    const ctx =
+        cropCanvas.getContext(
+            '2d'
+        );
+
+
+    if (!ctx) {
+
+        console.error(
+            'Crop canvas context मिळाला नाही.'
+        );
+
+        return;
+    }
+
+
+    /* =================================
+       HIGH QUALITY CROP
+    ================================= */
+
+    ctx.imageSmoothingEnabled =
+        true;
+
+    ctx.imageSmoothingQuality =
+        'high';
+
+
+    ctx.drawImage(
+
+        canvas,
+
+        x,
+        y,
+        width,
+        height,
+
+        0,
+        0,
+        width,
+        height
+
+    );
+
+
+    /* =================================
+       SAVE CURRENT CROP
+    ================================= */
+
+    currentCropCanvas =
+        cropCanvas;
+
+
+    /* =================================
+       AUTOMATIC NEWSPAPER NAME
+    ================================= */
+
+    let newspaperHeading =
+        'लोकभारती';
+
+
+    if (
+        currentCategory === 'daily'
+    ) {
+
+        newspaperHeading =
+            'दैनिक लोकभारती';
+
+    }
+
+    else if (
+        currentCategory === 'weekly'
+    ) {
+
+        newspaperHeading =
+            'साप्ताहिक लोकभारती';
+
+    }
+
+
+    /* =================================
+       HIDE USER HEADING INPUT
+    ================================= */
+
+    const headingInput =
+        $('newsHeadingInput');
+
+
+    if (headingInput) {
+
+        headingInput.value =
+            newspaperHeading;
+
+        headingInput.style.display =
+            'none';
+
+    }
+
+
+    /* =================================
+       LIVE HEADING
+    ================================= */
+
+    const liveHeading =
+        $('liveHeading');
+
+
+    if (liveHeading) {
+
+        liveHeading.innerText =
+            newspaperHeading;
+
+        liveHeading.style.color =
+            '#b3131b';
+
+        liveHeading.style.fontWeight =
+            '900';
+
+        liveHeading.style.fontSize =
+            '24px';
+
+    }
+
+
+    /* =================================
+       HD PREVIEW
+    ================================= */
+
+    const preview =
+        $('croppedPreview');
+
+
+    if (preview) {
+
+        preview.src =
             cropCanvas.toDataURL(
                 'image/png'
             );
 
-        /*
-           Modal
-        */
-
-        $('modalBackground').style.display =
-            'block';
-
-        $('downloadModal').style.display =
-            'block';
     }
 
+
+    /* =================================
+       OPEN DOWNLOAD MODAL
+    ================================= */
+
+    const modalBackground =
+        $('modalBackground');
+
+    const downloadModal =
+        $('downloadModal');
+
+
+    if (modalBackground) {
+
+        modalBackground.style.display =
+            'block';
+
+    }
+
+
+    if (downloadModal) {
+
+        downloadModal.style.display =
+            'block';
+
+    }
+
+}
     /* ================================
        DOWNLOAD HD PNG
        ================================ */
