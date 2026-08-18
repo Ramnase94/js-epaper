@@ -1465,7 +1465,6 @@
 
     </div>
 </footer>
-
 <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -1476,31 +1475,56 @@
 
     const $ = id => document.getElementById(id);
 
+
+    /* =====================================================
+       COMMON FUNCTIONS
+       ===================================================== */
+
     function scrollToSection(id) {
         const el = $(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (el) {
+            el.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     }
+
 
     function setNavActive(button) {
-        document.querySelectorAll('.premium-nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
 
-        if (button) button.classList.add('active');
+        document
+            .querySelectorAll('.premium-nav-item')
+            .forEach(item => {
+                item.classList.remove('active');
+            });
+
+        if (button) {
+            button.classList.add('active');
+        }
     }
 
+
     function updateHeaderDate() {
+
         const now = new Date();
 
-        const dateText = now.toLocaleDateString('mr-IN', {
-            weekday: 'long',
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
+        const dateText =
+            now.toLocaleDateString('mr-IN', {
+                weekday: 'long',
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
 
         $('todayDateMr').innerText = dateText;
     }
+
+
+    /* =====================================================
+       LOAD PAPER DATA
+       ===================================================== */
 
     function loadAllData() {
 
@@ -1529,11 +1553,19 @@
                 $('epaper-container').innerHTML = `
                     <div class="empty-state">
                         <h3>पेपर डेटा लोड करता आला नाही</h3>
-                        <p>Server चालू आहे का ते तपासा आणि पेज refresh करा.</p>
+                        <p>
+                            Server चालू आहे का ते तपासा
+                            आणि पेज refresh करा.
+                        </p>
                     </div>
                 `;
             });
     }
+
+
+    /* =====================================================
+       CATEGORY SWITCH
+       ===================================================== */
 
     function switchCategory(cat) {
 
@@ -1577,14 +1609,22 @@
         renderCategory();
     }
 
+
+    /* =====================================================
+       RENDER CATEGORY
+       ===================================================== */
+
     function renderCategory() {
 
         const list =
-            Array.isArray(allPaperData[currentCategory])
+            Array.isArray(
+                allPaperData[currentCategory]
+            )
                 ? allPaperData[currentCategory]
                 : [];
 
-        const select = $('paper-select');
+        const select =
+            $('paper-select');
 
         select.innerHTML = '';
 
@@ -1595,8 +1635,14 @@
 
             $('epaper-container').innerHTML = `
                 <div class="empty-state">
-                    <h3>या कॅटेगरीमध्ये सध्या कोणताही पेपर उपलब्ध नाही.</h3>
-                    <p>Admin Panel मधून नवीन PDF अंक अपलोड केल्यावर तो येथे दिसेल.</p>
+                    <h3>
+                        या कॅटेगरीमध्ये सध्या कोणताही पेपर उपलब्ध नाही.
+                    </h3>
+
+                    <p>
+                        Admin Panel मधून नवीन PDF अंक
+                        अपलोड केल्यावर तो येथे दिसेल.
+                    </p>
                 </div>
             `;
 
@@ -1604,6 +1650,7 @@
 
             return;
         }
+
 
         list.forEach((paper, index) => {
 
@@ -1618,24 +1665,34 @@
             select.appendChild(opt);
         });
 
+
         select.value = '0';
 
         displayPaperDetails(list[0]);
     }
+
 
     function changePaper(index) {
 
         const list =
             allPaperData[currentCategory] || [];
 
-        const paper = list[index];
+        const paper =
+            list[index];
 
-        if (!paper) return;
+        if (!paper) {
+            return;
+        }
 
         displayPaperDetails(paper);
 
         scrollToSection('epaper');
     }
+
+
+    /* =====================================================
+       DISPLAY PAPER DETAILS
+       ===================================================== */
 
     function displayPaperDetails(paper) {
 
@@ -1649,7 +1706,8 @@
             paper.year || '-';
 
         $('disp-year2').innerText =
-            (paper.year || '').replace(/[^0-9]/g, '') || '-';
+            (paper.year || '')
+                .replace(/[^0-9]/g, '') || '-';
 
         $('disp-issue1').innerText =
             paper.issue || '-';
@@ -1663,7 +1721,9 @@
         $('disp-date-en').innerText =
             paper.date_en || '-';
 
-        const rni = paper.rni || '-';
+
+        const rni =
+            paper.rni || '-';
 
         const rniPart =
             rni.split('/').pop() || '-';
@@ -1678,7 +1738,8 @@
             paper.price || '-';
 
         $('disp-price2').innerText =
-            (paper.price || '').replace(/[^0-9.]/g, '') || '-';
+            (paper.price || '')
+                .replace(/[^0-9.]/g, '') || '-';
 
         $('disp-pages1').innerText =
             paper.pages || '-';
@@ -1686,268 +1747,297 @@
         $('disp-pages2').innerText =
             paper.pages || '-';
 
+
         $('headerIssue').innerText =
             paper.issue
                 ? 'अंक क्र. ' + paper.issue
                 : 'अंक उपलब्ध';
+
 
         $('featuredIssueTitle').innerText =
             currentCategory === 'daily'
                 ? 'दैनिक लोकभारती — आजचा ई-पेपर'
                 : 'लोकभारती — साप्ताहिक ई-पेपर';
 
+
         $('featuredDate').innerText =
-            'तारीख: ' + (paper.date_mr || '—');
+            'तारीख: ' +
+            (paper.date_mr || '—');
+
 
         $('featuredIssue').innerText =
-            'अंक: ' + (paper.issue || '—');
+            'अंक: ' +
+            (paper.issue || '—');
+
 
         $('featuredIssueText').innerText =
-            'वर्ष ' + (paper.year || '—') +
-            ' • अंक क्र. ' + (paper.issue || '—') +
-            ' • पृष्ठे ' + (paper.pages || '—') +
-            ' • किंमत ' + (paper.price || '—');
+            'वर्ष ' +
+            (paper.year || '—') +
+            ' • अंक क्र. ' +
+            (paper.issue || '—') +
+            ' • पृष्ठे ' +
+            (paper.pages || '—') +
+            ' • किंमत ' +
+            (paper.price || '—');
+
 
         if (paper.pdfPath) {
 
-            loadPDF(paper.pdfPath);
+            loadPDF(
+                paper.pdfPath
+            );
 
         } else {
 
             $('epaper-container').innerHTML = `
                 <div class="empty-state">
-                    <h3>PDF उपलब्ध नाही.</h3>
-                    <p>या अंकासाठी PDF file तपासा.</p>
-                </div>
-            `;
-        }
-    }
-function loadPDF(pdfUrl) {
-
-    const container =
-        $('epaper-container');
-
-    container.innerHTML = `
-        <div class="viewer-loading">
-            📖 ई-पेपर Loading...
-        </div>
-    `;
-
-    pdfjsLib.getDocument(pdfUrl).promise
-
-        .then(async pdf => {
-
-            container.innerHTML = '';
-
-            /*
-             * Pages एकाच वेळी render न करता
-             * एक-एक करून render करणार.
-             *
-             * यामुळे Mobile RAM / GPU वरचा load कमी होतो.
-             */
-
-            for (
-                let pageNum = 1;
-                pageNum <= pdf.numPages;
-                pageNum++
-            ) {
-
-                try {
-
-                    await renderPage(
-                        pdf,
-                        pageNum,
-                        container
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        'Page Render Error:',
-                        pageNum,
-                        error
-                    );
-
-                }
-
-                /*
-                 * Mobile browser ला थोडा वेळ देतो.
-                 */
-
-                await new Promise(
-                    resolve =>
-                        setTimeout(
-                            resolve,
-                            50
-                        )
-                );
-            }
-
-        })
-
-        .catch(error => {
-
-            console.error(
-                'PDF Loading Error:',
-                error
-            );
-
-            container.innerHTML = `
-                <div class="empty-state">
 
                     <h3>
-                        PDF उघडताना एरर आली.
+                        PDF उपलब्ध नाही.
                     </h3>
 
                     <p>
-                        PDF file उपलब्ध आहे का
-                        आणि uploads folder मध्ये आहे का
-                        ते तपासा.
+                        या अंकासाठी PDF file तपासा.
                     </p>
 
                 </div>
             `;
-        });
-}
-    /* ================================
-       HD PDF RENDERING
-       ================================ */
-function renderPage(
-    pdf,
-    pageNum,
-    container
-) {
+        }
+    }
 
-    return pdf.getPage(pageNum)
 
-        .then(page => {
+    /* =====================================================
+       LOAD PDF
+       ===================================================== */
 
-            const displayWidth =
-                Math.min(
-                    window.innerWidth - 30,
-                    950
-                );
+    function loadPDF(pdfUrl) {
 
-            const baseViewport =
-                page.getViewport({
-                    scale: 1
-                });
+        const container =
+            $('epaper-container');
 
-            const displayScale =
-                displayWidth /
-                baseViewport.width;
+        container.innerHTML = `
+            <div class="viewer-loading">
+                📖 ई-पेपर Loading...
+            </div>
+        `;
 
-            const HD_SCALE = 2.5;
 
-            const renderScale =
-                Math.max(
-                    1.5,
-                    displayScale * HD_SCALE
-                );
+        pdfjsLib.getDocument(pdfUrl).promise
 
-            const viewport =
-                page.getViewport({
-                    scale: renderScale
-                });
+            .then(async pdf => {
 
-            const wrapper =
-                document.createElement('div');
+                container.innerHTML = '';
 
-            wrapper.className =
-                'canvas-wrapper';
 
-            const canvas =
-                document.createElement('canvas');
+                for (
+                    let pageNum = 1;
+                    pageNum <= pdf.numPages;
+                    pageNum++
+                ) {
 
-            const context =
-                canvas.getContext(
-                    '2d',
-                    {
-                        alpha: false
+                    try {
+
+                        await renderPage(
+                            pdf,
+                            pageNum,
+                            container
+                        );
+
+                    } catch (error) {
+
+                        console.error(
+                            'Page Render Error:',
+                            pageNum,
+                            error
+                        );
                     }
-                );
-
-            /* =========================
-               CANVAS HD SIZE
-            ========================= */
-
-            canvas.width =
-                Math.round(viewport.width);
-
-            canvas.height =
-                Math.round(viewport.height);
 
 
-            /* =========================
-               DISPLAY SIZE
-            ========================= */
-
-            canvas.style.width =
-                displayWidth + 'px';
-
-            canvas.style.height =
-                'auto';
-
-            canvas.style.display =
-                'block';
-
-
-            /* =========================
-               APPEND
-            ========================= */
-
-            wrapper.appendChild(canvas);
-
-            container.appendChild(wrapper);
-
-
-            /* =========================
-               RENDER PDF PAGE
-            ========================= */
-
-            return page.render({
-
-                canvasContext: context,
-
-                viewport: viewport
-
-            }).promise
-
-            .then(() => {
-
-                /* =========================
-                   CROP ENABLE
-                ========================= */
-
-                initCropper(
-                    wrapper,
-                    canvas
-                );
+                    await new Promise(
+                        resolve =>
+                            setTimeout(
+                                resolve,
+                                50
+                            )
+                    );
+                }
 
             })
 
             .catch(error => {
 
                 console.error(
-                    'PDF Page Render Error:',
-                    pageNum,
+                    'PDF Loading Error:',
                     error
                 );
 
+                container.innerHTML = `
+                    <div class="empty-state">
+
+                        <h3>
+                            PDF उघडताना एरर आली.
+                        </h3>
+
+                        <p>
+                            PDF file उपलब्ध आहे का
+                            आणि uploads folder मध्ये आहे का
+                            ते तपासा.
+                        </p>
+
+                    </div>
+                `;
             });
+    }
 
-        })
 
-        .catch(error => {
+    /* =====================================================
+       RENDER PDF PAGE
+       ===================================================== */
 
-            console.error(
-                'PDF getPage Error:',
-                pageNum,
-                error
-            );
+    function renderPage(
+        pdf,
+        pageNum,
+        container
+    ) {
 
-        });
-}    function clearHeader() {
+        return pdf.getPage(pageNum)
+
+            .then(page => {
+
+                const displayWidth =
+                    Math.min(
+                        window.innerWidth - 30,
+                        950
+                    );
+
+
+                const baseViewport =
+                    page.getViewport({
+                        scale: 1
+                    });
+
+
+                const displayScale =
+                    displayWidth /
+                    baseViewport.width;
+
+
+                const HD_SCALE = 2.5;
+
+
+                const renderScale =
+                    Math.max(
+                        1.5,
+                        displayScale * HD_SCALE
+                    );
+
+
+                const viewport =
+                    page.getViewport({
+                        scale: renderScale
+                    });
+
+
+                const wrapper =
+                    document.createElement(
+                        'div'
+                    );
+
+                wrapper.className =
+                    'canvas-wrapper';
+
+
+                const canvas =
+                    document.createElement(
+                        'canvas'
+                    );
+
+
+                const context =
+                    canvas.getContext(
+                        '2d',
+                        {
+                            alpha: false
+                        }
+                    );
+
+
+                canvas.width =
+                    Math.round(
+                        viewport.width
+                    );
+
+                canvas.height =
+                    Math.round(
+                        viewport.height
+                    );
+
+
+                canvas.style.width =
+                    displayWidth + 'px';
+
+                canvas.style.height =
+                    'auto';
+
+                canvas.style.display =
+                    'block';
+
+
+                wrapper.appendChild(
+                    canvas
+                );
+
+                container.appendChild(
+                    wrapper
+                );
+
+
+                return page.render({
+
+                    canvasContext:
+                        context,
+
+                    viewport:
+                        viewport
+
+                }).promise
+
+                    .then(() => {
+
+                        initCropper(
+                            wrapper,
+                            canvas
+                        );
+
+                    })
+
+                    .catch(error => {
+
+                        console.error(
+                            'PDF Page Render Error:',
+                            pageNum,
+                            error
+                        );
+                    });
+
+            })
+
+            .catch(error => {
+
+                console.error(
+                    'PDF getPage Error:',
+                    pageNum,
+                    error
+                );
+            });
+    }
+
+
+    /* =====================================================
+       CLEAR HEADER
+       ===================================================== */
+
+    function clearHeader() {
 
         [
             'disp-editor',
@@ -1973,801 +2063,966 @@ function renderPage(
         });
     }
 
-    /* ================================
-       RED CROP SQUARE
-       ================================ */function initCropper(wrapper, canvas) {
 
-    let startX = 0;
-    let startY = 0;
-    let currentX = 0;
-    let currentY = 0;
-    let isSelecting = false;
-    let activePointerId = null;
-
-    const selector = document.getElementById("selector");
-
-    if (!selector) {
-        console.error("selector element सापडला नाही.");
-        return;
-    }
-
-    canvas.style.touchAction = "none";
-    wrapper.style.touchAction = "none";
-
-    function getPointerPosition(e) {
-
-        const rect = canvas.getBoundingClientRect();
-
-        let x = e.clientX - rect.left;
-        let y = e.clientY - rect.top;
-
-        x = Math.max(0, Math.min(x, rect.width));
-        y = Math.max(0, Math.min(y, rect.height));
-
-        return { x, y };
-    }
-
-    function updateSelector() {
-
-        const rect = canvas.getBoundingClientRect();
-
-        const x = Math.min(startX, currentX);
-        const y = Math.min(startY, currentY);
-
-        const width = Math.abs(currentX - startX);
-        const height = Math.abs(currentY - startY);
-
-        selector.style.left =
-            (rect.left + x) + "px";
-
-        selector.style.top =
-            (rect.top + y) + "px";
-
-        selector.style.width =
-            width + "px";
-
-        selector.style.height =
-            height + "px";
-    }
-
-    canvas.addEventListener("pointerdown", function(e) {
-
-        /* फक्त single finger / mouse */
-        if (e.pointerType === "touch" && e.isPrimary === false) {
-            return;
-        }
-
-        if (isSelecting) {
-            return;
-        }
-
-        e.preventDefault();
-
-        activePointerId = e.pointerId;
-
-        try {
-            canvas.setPointerCapture(e.pointerId);
-        } catch (err) {}
-
-        const pos = getPointerPosition(e);
-
-        startX = pos.x;
-        startY = pos.y;
-
-        currentX = pos.x;
-        currentY = pos.y;
-
-        isSelecting = true;
-
-        selector.style.display = "block";
-
-        updateSelector();
-
-    }, { passive: false });
-
-
-    canvas.addEventListener("pointermove", function(e) {
-
-        if (!isSelecting) {
-            return;
-        }
-
-        if (e.pointerId !== activePointerId) {
-            return;
-        }
-
-        e.preventDefault();
-
-        const pos = getPointerPosition(e);
-
-        currentX = pos.x;
-        currentY = pos.y;
-
-        updateSelector();
-
-    }, { passive: false });
-
-
-    function finishSelection(e) {
-
-        if (!isSelecting) {
-            return;
-        }
-
-        if (e.pointerId !== activePointerId) {
-            return;
-        }
-
-        e.preventDefault();
-
-        const pos = getPointerPosition(e);
-
-        currentX = pos.x;
-        currentY = pos.y;
-
-        updateSelector();
-
-        isSelecting = false;
-
-        try {
-            canvas.releasePointerCapture(e.pointerId);
-        } catch (err) {}
-
-        activePointerId = null;
-
-        const width =
-            Math.abs(currentX - startX);
-
-        const height =
-            Math.abs(currentY - startY);
-
-        if (width < 10 || height < 10) {
-
-            selector.style.display = "none";
-
-            return;
-        }
-
-        createCropPreview(
-            canvas,
-            startX,
-            startY,
-            currentX,
-            currentY
-        );
-
-        selector.style.display = "none";
-    }
-
-
-    canvas.addEventListener(
-        "pointerup",
-        finishSelection,
-        { passive: false }
-    );
-
-
-    canvas.addEventListener(
-        "pointercancel",
-        function(e) {
-
-            if (
-                activePointerId !== null &&
-                e.pointerId !== activePointerId
-            ) {
-                return;
-            }
-
-            isSelecting = false;
-            activePointerId = null;
-
-            selector.style.display = "none";
-
-            try {
-                canvas.releasePointerCapture(e.pointerId);
-            } catch (err) {}
-
-        }
-    );
-
-
-    canvas.addEventListener(
-        "lostpointercapture",
-        function() {
-
-            if (isSelecting) {
-
-                isSelecting = false;
-                activePointerId = null;
-
-                selector.style.display = "none";
-            }
-        }
-    );
-}
-   /* ================================
-   CREATE HD CROP
-   Desktop + Mobile Compatible
-   ================================ */
-
-function createCropPreview(
-    canvas,
-    startX,
-    startY,
-    endX,
-    endY
-) {
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-
-    /* =================================
-       DISPLAY COORDINATES
-    ================================= */
-
-    let sx =
-        Math.min(startX, endX);
-
-    let sy =
-        Math.min(startY, endY);
-
-    let ex =
-        Math.max(startX, endX);
-
-    let ey =
-        Math.max(startY, endY);
-
-
-    /* =================================
-       PAGE BOUNDARY
-       Selection canvas च्या बाहेर जाऊ देऊ नका
-    ================================= */
-
-    sx =
-        Math.max(
-            0,
-            Math.min(sx, rect.width)
-        );
-
-    sy =
-        Math.max(
-            0,
-            Math.min(sy, rect.height)
-        );
-
-    ex =
-        Math.max(
-            0,
-            Math.min(ex, rect.width)
-        );
-
-    ey =
-        Math.max(
-            0,
-            Math.min(ey, rect.height)
-        );
-
-
-    const displayWidth =
-        ex - sx;
-
-    const displayHeight =
-        ey - sy;
-
-
-    /* =================================
-       SMALL SELECTION CHECK
-    ================================= */
-
-    if (
-        displayWidth < 10 ||
-        displayHeight < 10
+    /* =====================================================
+       CROP SELECTION
+       SCROLL SAFE
+       ===================================================== */
+
+    function initCropper(
+        wrapper,
+        canvas
     ) {
 
-        return;
+        let startX = 0;
+        let startY = 0;
+
+        let currentX = 0;
+        let currentY = 0;
+
+        let isSelecting = false;
+        let potentialSelection = false;
+
+        let activePointerId = null;
+
+        let movedDistance = 0;
+
+        const SELECTION_THRESHOLD = 12;
+
+
+        const selector =
+            document.getElementById(
+                'selector'
+            );
+
+
+        if (!selector) {
+
+            console.error(
+                'selector element सापडला नाही.'
+            );
+
+            return;
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Canvas वर direct touch selection
+         * सुरू होणार नाही.
+         */
+
+        canvas.style.touchAction =
+            'pan-y';
+
+        wrapper.style.touchAction =
+            'pan-y';
+
+
+        /* =================================================
+           GET POINTER POSITION
+           ================================================= */
+
+        function getPointerPosition(e) {
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            let x =
+                e.clientX -
+                rect.left;
+
+
+            let y =
+                e.clientY -
+                rect.top;
+
+
+            x =
+                Math.max(
+                    0,
+                    Math.min(
+                        x,
+                        rect.width
+                    )
+                );
+
+
+            y =
+                Math.max(
+                    0,
+                    Math.min(
+                        y,
+                        rect.height
+                    )
+                );
+
+
+            return {
+                x: x,
+                y: y
+            };
+        }
+
+
+        /* =================================================
+           UPDATE RED SELECTOR
+           ================================================= */
+
+        function updateSelector() {
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            const x =
+                Math.min(
+                    startX,
+                    currentX
+                );
+
+
+            const y =
+                Math.min(
+                    startY,
+                    currentY
+                );
+
+
+            const width =
+                Math.abs(
+                    currentX -
+                    startX
+                );
+
+
+            const height =
+                Math.abs(
+                    currentY -
+                    startY
+                );
+
+
+            selector.style.left =
+                (
+                    rect.left +
+                    x
+                ) + 'px';
+
+
+            selector.style.top =
+                (
+                    rect.top +
+                    y
+                ) + 'px';
+
+
+            selector.style.width =
+                width + 'px';
+
+
+            selector.style.height =
+                height + 'px';
+        }
+
+
+        /* =================================================
+           POINTER DOWN
+           ================================================= */
+
+        canvas.addEventListener(
+            'pointerdown',
+            function(e) {
+
+                /*
+                 * Multi-touch ignore
+                 */
+
+                if (
+                    e.pointerType === 'touch' &&
+                    e.isPrimary === false
+                ) {
+                    return;
+                }
+
+
+                if (activePointerId !== null) {
+                    return;
+                }
+
+activePointerId =
+    e.pointerId;
+
+const pos =
+    getPointerPosition(e);
+
+startX =
+    pos.x;
+
+startY =
+    pos.y;
+
+currentX =
+    pos.x;
+
+currentY =
+    pos.y;
+
+movedDistance = 0;
+
+isSelecting = false;
+
+/*
+ * Touch साठी selection लगेच सुरू करू नका.
+ * आधी user scroll करतोय की drag करतोय
+ * ते ठरू द्या.
+ */
+potentialSelection =
+    e.pointerType === 'touch';
+
+selector.style.display =
+    'none';
+
+                /*
+                 * Mouse साठी selection
+                 * लगेच सुरू करू शकतो.
+                 *
+                 * Touch साठी आधी movement
+                 * check होईल.
+                 */
+
+                if (
+                    e.pointerType !== 'touch'
+                ) {
+
+                    isSelecting =
+                        true;
+
+                    selector.style.display =
+                        'block';
+
+                    try {
+
+                        canvas.setPointerCapture(
+                            e.pointerId
+                        );
+
+                    } catch (err) {}
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        /* =================================================
+           POINTER MOVE
+           ================================================= */
+
+        canvas.addEventListener(
+            'pointermove',
+            function(e) {
+
+                if (
+                    activePointerId === null ||
+                    e.pointerId !== activePointerId
+                ) {
+                    return;
+                }
+
+
+                const pos =
+                    getPointerPosition(e);
+
+
+                const dx =
+                    pos.x -
+                    startX;
+
+
+                const dy =
+                    pos.y -
+                    startY;
+
+
+                movedDistance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+
+                /* =========================================
+                   TOUCH SCROLL PROTECTION
+                   ========================================= */
+
+                if (
+                    potentialSelection &&
+                    e.pointerType === 'touch'
+                ) {
+
+                    if (
+                        movedDistance <
+                        SELECTION_THRESHOLD
+                    ) {
+                        return;
+                    }
+
+
+                    /*
+                     * Vertical movement =
+                     * PAGE SCROLL
+                     */
+
+                    if (
+                        Math.abs(dy) >
+                        Math.abs(dx)
+                    ) {
+
+                        potentialSelection =
+                            false;
+
+                        isSelecting =
+                            false;
+
+                        activePointerId =
+                            null;
+
+                        selector.style.display =
+                            'none';
+
+                        return;
+                    }
+
+
+                    /*
+                     * Horizontal / diagonal
+                     * deliberate drag =
+                     * selection
+                     */
+
+                    potentialSelection =
+                        false;
+
+                    isSelecting =
+                        true;
+
+
+                    selector.style.display =
+                        'block';
+
+
+                    try {
+
+                        canvas.setPointerCapture(
+                            e.pointerId
+                        );
+
+                    } catch (err) {}
+                }
+
+
+                if (!isSelecting) {
+                    return;
+                }
+
+
+                /*
+                 * आता selection चालू आहे,
+                 * म्हणून browser scroll थांबवतो.
+                 */
+
+                e.preventDefault();
+
+
+                currentX =
+                    pos.x;
+
+                currentY =
+                    pos.y;
+
+
+                updateSelector();
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+        /* =================================================
+           POINTER UP
+           ================================================= */
+
+        canvas.addEventListener(
+            'pointerup',
+            function(e) {
+
+                if (
+                    activePointerId === null ||
+                    e.pointerId !== activePointerId
+                ) {
+                    return;
+                }
+
+
+                const pos =
+                    getPointerPosition(e);
+
+
+                currentX =
+                    pos.x;
+
+                currentY =
+                    pos.y;
+
+
+                /*
+                 * Selection सुरू झाली नसेल
+                 * तर काही करू नका.
+                 */
+
+                if (!isSelecting) {
+
+                    potentialSelection =
+                        false;
+
+                    activePointerId =
+                        null;
+
+                    selector.style.display =
+                        'none';
+
+                    return;
+                }
+
+
+                e.preventDefault();
+
+
+                updateSelector();
+
+
+                isSelecting =
+                    false;
+
+                potentialSelection =
+                    false;
+
+
+                try {
+
+                    canvas.releasePointerCapture(
+                        e.pointerId
+                    );
+
+                } catch (err) {}
+
+
+                activePointerId =
+                    null;
+
+
+                const width =
+                    Math.abs(
+                        currentX -
+                        startX
+                    );
+
+
+                const height =
+                    Math.abs(
+                        currentY -
+                        startY
+                    );
+
+
+                selector.style.display =
+                    'none';
+
+
+                /*
+                 * खूप छोटा selection
+                 */
+
+                if (
+                    width < 10 ||
+                    height < 10
+                ) {
+                    return;
+                }
+
+
+                /*
+                 * FINAL CROP
+                 */
+
+                createCropPreview(
+                    canvas,
+                    startX,
+                    startY,
+                    currentX,
+                    currentY
+                );
+
+            },
+            {
+                passive: false
+            }
+        );
+
+
+        /* =================================================
+           POINTER CANCEL
+           ================================================= */
+
+        canvas.addEventListener(
+            'pointercancel',
+            function(e) {
+
+                if (
+                    activePointerId !== null &&
+                    e.pointerId !== activePointerId
+                ) {
+                    return;
+                }
+
+
+                isSelecting =
+                    false;
+
+                potentialSelection =
+                    false;
+
+                activePointerId =
+                    null;
+
+
+                selector.style.display =
+                    'none';
+
+
+                try {
+
+                    canvas.releasePointerCapture(
+                        e.pointerId
+                    );
+
+                } catch (err) {}
+            }
+        );
+
+
+        /* =================================================
+           LOST POINTER CAPTURE
+           ================================================= */
+
+        canvas.addEventListener(
+            'lostpointercapture',
+            function() {
+
+                isSelecting =
+                    false;
+
+                potentialSelection =
+                    false;
+
+                activePointerId =
+                    null;
+
+
+                selector.style.display =
+                    'none';
+            }
+        );
     }
 
 
-    /* =================================
-       DISPLAY → HD CANVAS SCALE
-    ================================= */
+    /* =====================================================
+       CREATE HD CROP
+       ===================================================== */
 
-    const scaleX =
-        canvas.width /
-        rect.width;
-
-    const scaleY =
-        canvas.height /
-        rect.height;
-
-
-    const x =
-        Math.round(
-            sx * scaleX
-        );
-
-    const y =
-        Math.round(
-            sy * scaleY
-        );
-
-    const width =
-        Math.round(
-            displayWidth * scaleX
-        );
-
-    const height =
-        Math.round(
-            displayHeight * scaleY
-        );
-
-
-    /* =================================
-       FINAL SIZE CHECK
-    ================================= */
-
-    if (
-        width < 20 ||
-        height < 20
-    ) {
-
-        return;
-    }
-
-
-    /* =================================
-       CREATE HD CROP CANVAS
-    ================================= */
-
-    const cropCanvas =
-        document.createElement(
-            'canvas'
-        );
-
-
-    cropCanvas.width =
-        width;
-
-    cropCanvas.height =
-        height;
-
-
-    const ctx =
-        cropCanvas.getContext(
-            '2d'
-        );
-
-
-    if (!ctx) {
-
-        console.error(
-            'Crop canvas context मिळाला नाही.'
-        );
-
-        return;
-    }
-
-
-    /* =================================
-       HIGH QUALITY CROP
-    ================================= */
-
-    ctx.imageSmoothingEnabled =
-        true;
-
-    ctx.imageSmoothingQuality =
-        'high';
-
-
-    ctx.drawImage(
-
+    function createCropPreview(
         canvas,
-
-        x,
-        y,
-        width,
-        height,
-
-        0,
-        0,
-        width,
-        height
-
-    );
-
-
-    /* =================================
-       SAVE CURRENT CROP
-    ================================= */
-
-    currentCropCanvas =
-        cropCanvas;
-
-
-    /* =================================
-       AUTOMATIC NEWSPAPER NAME
-    ================================= */
-
-    let newspaperHeading =
-        'लोकभारती';
-
-
-    if (
-        currentCategory === 'daily'
+        startX,
+        startY,
+        endX,
+        endY
     ) {
 
-        newspaperHeading =
-            'दैनिक लोकभारती';
-
-    }
-
-    else if (
-        currentCategory === 'weekly'
-    ) {
-
-        newspaperHeading =
-            'साप्ताहिक लोकभारती';
-
-    }
+        const rect =
+            canvas.getBoundingClientRect();
 
 
-    /* =================================
-       HIDE USER HEADING INPUT
-    ================================= */
-
-    const headingInput =
-        $('newsHeadingInput');
-
-
-    if (headingInput) {
-
-        headingInput.value =
-            newspaperHeading;
-
-        headingInput.style.display =
-            'none';
-
-    }
-
-
-    /* =================================
-       LIVE HEADING
-    ================================= */
-
-    const liveHeading =
-        $('liveHeading');
-
-
-    if (liveHeading) {
-
-        liveHeading.innerText =
-            newspaperHeading;
-
-        liveHeading.style.color =
-            '#b3131b';
-
-        liveHeading.style.fontWeight =
-            '900';
-
-        liveHeading.style.fontSize =
-            '24px';
-
-    }
-
-
-    /* =================================
-       HD PREVIEW
-    ================================= */
-
-    const preview =
-        $('croppedPreview');
-
-
-    if (preview) {
-
-        preview.src =
-            cropCanvas.toDataURL(
-                'image/png'
+        let sx =
+            Math.min(
+                startX,
+                endX
             );
 
-    }
 
-
-    /* =================================
-       OPEN DOWNLOAD MODAL
-    ================================= */
-
-    const modalBackground =
-        $('modalBackground');
-
-    const downloadModal =
-        $('downloadModal');
-
-
-    if (modalBackground) {
-
-        modalBackground.style.display =
-            'block';
-
-    }
-
-
-    if (downloadModal) {
-
-        downloadModal.style.display =
-            'block';
-
-    }
-
-}
-    /* ================================
-       DOWNLOAD HD PNG
-       ================================ */
-
-  function downloadNews(format) {
-
-    if (!currentCropCanvas) {
-        alert('कृपया आधी बातमी select करा.');
-        return;
-    }
-
-    let newspaperHeading = '';
-
-    if (currentCategory === 'daily') {
-        newspaperHeading = 'दैनिक लोकभारती';
-    } 
-    else if (currentCategory === 'weekly') {
-        newspaperHeading = 'साप्ताहिक लोकभारती';
-    } 
-    else {
-        newspaperHeading = 'लोकभारती';
-    }
-
-
-    /* ================================
-       HD FINAL CANVAS
-       ================================ */
-
-    const padding = 40;
-    const headingHeight = 100;
-    const footerHeight = 70;
-
-    const finalCanvas =
-        document.createElement('canvas');
-
-    finalCanvas.width =
-        currentCropCanvas.width +
-        padding * 2;
-
-    finalCanvas.height =
-        currentCropCanvas.height +
-        headingHeight +
-        footerHeight +
-        padding * 2;
-
-
-    const ctx =
-        finalCanvas.getContext('2d');
-
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = 'high';
-
-
-    /* ================================
-       WHITE BACKGROUND
-       ================================ */
-
-    ctx.fillStyle = '#ffffff';
-
-    ctx.fillRect(
-        0,
-        0,
-        finalCanvas.width,
-        finalCanvas.height
-    );
-
-
-    /* ================================
-       NEWSPAPER HEADING
-       ================================ */
-
-    ctx.fillStyle = '#b3131b';
-
-    ctx.font =
-        '900 42px "Noto Sans Devanagari", Arial';
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    ctx.fillText(
-        newspaperHeading,
-        finalCanvas.width / 2,
-        headingHeight / 2
-    );
-
-
-    /* ================================
-       RED LINE
-       ================================ */
-
-    ctx.fillStyle = '#b3131b';
-
-    ctx.fillRect(
-        padding,
-        headingHeight - 8,
-        finalCanvas.width - padding * 2,
-        3
-    );
-
-
-    /* ================================
-       CROPPED NEWS
-       ================================ */
-
-    ctx.drawImage(
-        currentCropCanvas,
-        padding,
-        headingHeight + padding
-    );
-
-
-    /* ================================
-       FOOTER LINE
-       ================================ */
-
-    const footerY =
-        finalCanvas.height - footerHeight;
-
-
-    ctx.fillStyle = '#b3131b';
-
-    ctx.fillRect(
-        padding,
-        footerY,
-        finalCanvas.width - padding * 2,
-        3
-    );
-
-
-    /* ================================
-       FOOTER TEXT
-       ================================ */
-
-    ctx.fillStyle = '#555555';
-
-    ctx.font =
-        '600 20px Arial, "Noto Sans Devanagari"';
-
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    const footerText =
-        '© ' +
-        new Date().getFullYear() +
-        ' लोकभारती  |  Developed by R Technologies  |  Digital Newspaper Portal';
-
-    ctx.fillText(
-        footerText,
-        finalCanvas.width / 2,
-        footerY + footerHeight / 2
-    );
-
-
-    /* ================================
-       FILE NAME
-       ================================ */
-
-    const fileName =
-        (
-            currentCategory === 'daily'
-                ? 'Dainik-Lokbharti-News-'
-                : 'Saptahik-Lokbharti-News-'
-        ) +
-        Date.now();
-
-
-    /* ================================
-       PNG HD
-       ================================ */
-
-    if (format === 'png') {
-
-        const link =
-            document.createElement('a');
-
-        link.download =
-            fileName + '.png';
-
-        link.href =
-            finalCanvas.toDataURL(
-                'image/png'
+        let sy =
+            Math.min(
+                startY,
+                endY
             );
 
-        link.click();
 
-        closeModal();
-
-        return;
-    }
-
-
-    /* ================================
-       JPG HD
-       ================================ */
-
-    if (format === 'jpg') {
-
-        const link =
-            document.createElement('a');
-
-        link.download =
-            fileName + '.jpg';
-
-        link.href =
-            finalCanvas.toDataURL(
-                'image/jpeg',
-                0.95
+        let ex =
+            Math.max(
+                startX,
+                endX
             );
 
-        link.click();
 
-        closeModal();
+        let ey =
+            Math.max(
+                startY,
+                endY
+            );
 
-        return;
-    }
+
+        sx =
+            Math.max(
+                0,
+                Math.min(
+                    sx,
+                    rect.width
+                )
+            );
 
 
-    /* ================================
-       PDF HD
-       ================================ */
+        sy =
+            Math.max(
+                0,
+                Math.min(
+                    sy,
+                    rect.height
+                )
+            );
 
-    if (format === 'pdf') {
+
+        ex =
+            Math.max(
+                0,
+                Math.min(
+                    ex,
+                    rect.width
+                )
+            );
+
+
+        ey =
+            Math.max(
+                0,
+                Math.min(
+                    ey,
+                    rect.height
+                )
+            );
+
+
+        const displayWidth =
+            ex - sx;
+
+
+        const displayHeight =
+            ey - sy;
+
 
         if (
-            typeof window.jspdf === 'undefined' ||
-            !window.jspdf.jsPDF
+            displayWidth < 10 ||
+            displayHeight < 10
         ) {
+            return;
+        }
 
-            alert(
-                'PDF सुविधा उपलब्ध नाही. jsPDF library तपासा.'
+
+        const scaleX =
+            canvas.width /
+            rect.width;
+
+
+        const scaleY =
+            canvas.height /
+            rect.height;
+
+
+        const x =
+            Math.round(
+                sx * scaleX
+            );
+
+
+        const y =
+            Math.round(
+                sy * scaleY
+            );
+
+
+        const width =
+            Math.round(
+                displayWidth * scaleX
+            );
+
+
+        const height =
+            Math.round(
+                displayHeight * scaleY
+            );
+
+
+        if (
+            width < 20 ||
+            height < 20
+        ) {
+            return;
+        }
+
+
+        const cropCanvas =
+            document.createElement(
+                'canvas'
+            );
+
+
+        cropCanvas.width =
+            width;
+
+        cropCanvas.height =
+            height;
+
+
+        const ctx =
+            cropCanvas.getContext(
+                '2d'
+            );
+
+
+        if (!ctx) {
+
+            console.error(
+                'Crop canvas context मिळाला नाही.'
             );
 
             return;
         }
 
-        const { jsPDF } =
-            window.jspdf;
+
+        ctx.imageSmoothingEnabled =
+            true;
+
+        ctx.imageSmoothingQuality =
+            'high';
 
 
-        const imgData =
-            finalCanvas.toDataURL(
-                'image/jpeg',
-                0.95
+        ctx.drawImage(
+
+            canvas,
+
+            x,
+            y,
+            width,
+            height,
+
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        currentCropCanvas =
+            cropCanvas;
+
+
+        /* =================================================
+           NEWSPAPER NAME
+           ================================================= */
+
+        let newspaperHeading =
+            'लोकभारती';
+
+
+        if (
+            currentCategory === 'daily'
+        ) {
+
+            newspaperHeading =
+                'दैनिक लोकभारती';
+
+        } else if (
+            currentCategory === 'weekly'
+        ) {
+
+            newspaperHeading =
+                'साप्ताहिक लोकभारती';
+        }
+
+
+        const headingInput =
+            $('newsHeadingInput');
+
+
+        if (headingInput) {
+
+            headingInput.value =
+                newspaperHeading;
+
+            headingInput.style.display =
+                'none';
+        }
+
+
+        const liveHeading =
+            $('liveHeading');
+
+
+        if (liveHeading) {
+
+            liveHeading.innerText =
+                newspaperHeading;
+
+            liveHeading.style.color =
+                '#b3131b';
+
+            liveHeading.style.fontWeight =
+                '900';
+
+            liveHeading.style.fontSize =
+                '24px';
+        }
+
+
+        const preview =
+            $('croppedPreview');
+
+
+        if (preview) {
+
+            preview.src =
+                cropCanvas.toDataURL(
+                    'image/png'
+                );
+        }
+
+
+        const modalBackground =
+            $('modalBackground');
+
+
+        const downloadModal =
+            $('downloadModal');
+
+
+        if (modalBackground) {
+
+            modalBackground.style.display =
+                'block';
+        }
+
+
+        if (downloadModal) {
+
+            downloadModal.style.display =
+                'block';
+        }
+    }
+
+
+    /* =====================================================
+       DOWNLOAD NEWS
+       ===================================================== */
+
+    function downloadNews(format) {
+
+        if (!currentCropCanvas) {
+
+            alert(
+                'कृपया आधी बातमी select करा.'
+            );
+
+            return;
+        }
+
+
+        let newspaperHeading =
+            'लोकभारती';
+
+
+        if (
+            currentCategory === 'daily'
+        ) {
+
+            newspaperHeading =
+                'दैनिक लोकभारती';
+
+        } else if (
+            currentCategory === 'weekly'
+        ) {
+
+            newspaperHeading =
+                'साप्ताहिक लोकभारती';
+        }
+
+
+        const padding =
+            40;
+
+
+        const headingHeight =
+            100;
+
+
+        const footerHeight =
+            70;
+
+
+        const finalCanvas =
+            document.createElement(
+                'canvas'
             );
 
 
-        const pdf =
-            new jsPDF({
-
-                orientation:
-                    finalCanvas.width >=
-                    finalCanvas.height
-                        ? 'landscape'
-                        : 'portrait',
-
-                unit: 'px',
-
-                format: [
-                    finalCanvas.width,
-                    finalCanvas.height
-                ]
-            });
+        finalCanvas.width =
+            currentCropCanvas.width +
+            padding * 2;
 
 
-        pdf.addImage(
-            imgData,
-            'JPEG',
+        finalCanvas.height =
+            currentCropCanvas.height +
+            headingHeight +
+            footerHeight +
+            padding * 2;
+
+
+        const ctx =
+            finalCanvas.getContext(
+                '2d'
+            );
+
+
+        ctx.imageSmoothingEnabled =
+            true;
+
+
+        ctx.imageSmoothingQuality =
+            'high';
+
+
+        /* =================================================
+           WHITE BACKGROUND
+           ================================================= */
+
+        ctx.fillStyle =
+            '#ffffff';
+
+
+        ctx.fillRect(
             0,
             0,
             finalCanvas.width,
@@ -2775,34 +3030,322 @@ function createCropPreview(
         );
 
 
-        pdf.save(
-            fileName + '.pdf'
+        /* =================================================
+           NEWSPAPER HEADING
+           ================================================= */
+
+        ctx.fillStyle =
+            '#b3131b';
+
+
+        ctx.font =
+            '900 42px "Noto Sans Devanagari", Arial';
+
+
+        ctx.textAlign =
+            'center';
+
+
+        ctx.textBaseline =
+            'middle';
+
+
+        ctx.fillText(
+
+            newspaperHeading,
+
+            finalCanvas.width / 2,
+
+            headingHeight / 2
         );
 
 
-        closeModal();
+        /* =================================================
+           RED LINE
+           ================================================= */
 
-        return;
+        ctx.fillStyle =
+            '#b3131b';
+
+
+        ctx.fillRect(
+
+            padding,
+
+            headingHeight - 8,
+
+            finalCanvas.width -
+                padding * 2,
+
+            3
+        );
+
+
+        /* =================================================
+           CROPPED NEWS
+           ================================================= */
+
+        ctx.drawImage(
+
+            currentCropCanvas,
+
+            padding,
+
+            headingHeight + padding
+        );
+
+
+        /* =================================================
+           FOOTER
+           ================================================= */
+
+        const footerY =
+            finalCanvas.height -
+            footerHeight;
+
+
+        ctx.fillStyle =
+            '#b3131b';
+
+
+        ctx.fillRect(
+
+            padding,
+
+            footerY,
+
+            finalCanvas.width -
+                padding * 2,
+
+            3
+        );
+
+
+        ctx.fillStyle =
+            '#555555';
+
+
+        ctx.font =
+            '600 20px Arial, "Noto Sans Devanagari"';
+
+
+        ctx.textAlign =
+            'center';
+
+
+        ctx.textBaseline =
+            'middle';
+
+
+        const footerText =
+            '© ' +
+            new Date().getFullYear() +
+            ' लोकभारती  |  Developed by R Technologies  |  Digital Newspaper Portal';
+
+
+        ctx.fillText(
+
+            footerText,
+
+            finalCanvas.width / 2,
+
+            footerY +
+                footerHeight / 2
+        );
+
+
+        /* =================================================
+           FILE NAME
+           ================================================= */
+
+        const fileName =
+
+            (
+                currentCategory === 'daily'
+                    ? 'Dainik-Lokbharti-News-'
+                    : 'Saptahik-Lokbharti-News-'
+            ) +
+
+            Date.now();
+
+
+        /* =================================================
+           PNG
+           ================================================= */
+
+        if (
+            format === 'png'
+        ) {
+
+            const link =
+                document.createElement(
+                    'a'
+                );
+
+
+            link.download =
+                fileName + '.png';
+
+
+            link.href =
+                finalCanvas.toDataURL(
+                    'image/png'
+                );
+
+
+            link.click();
+
+
+            closeModal();
+
+            return;
+        }
+
+
+        /* =================================================
+           JPG
+           ================================================= */
+
+        if (
+            format === 'jpg'
+        ) {
+
+            const link =
+                document.createElement(
+                    'a'
+                );
+
+
+            link.download =
+                fileName + '.jpg';
+
+
+            link.href =
+                finalCanvas.toDataURL(
+                    'image/jpeg',
+                    0.95
+                );
+
+
+            link.click();
+
+
+            closeModal();
+
+            return;
+        }
+
+
+        /* =================================================
+           PDF
+           ================================================= */
+
+        if (
+            format === 'pdf'
+        ) {
+
+            if (
+                typeof window.jspdf === 'undefined' ||
+                !window.jspdf.jsPDF
+            ) {
+
+                alert(
+                    'PDF सुविधा उपलब्ध नाही. jsPDF library तपासा.'
+                );
+
+                return;
+            }
+
+
+            const {
+                jsPDF
+            } =
+                window.jspdf;
+
+
+            const imgData =
+                finalCanvas.toDataURL(
+                    'image/jpeg',
+                    0.95
+                );
+
+
+            const pdf =
+                new jsPDF({
+
+                    orientation:
+                        finalCanvas.width >=
+                        finalCanvas.height
+                            ? 'landscape'
+                            : 'portrait',
+
+                    unit: 'px',
+
+                    format: [
+                        finalCanvas.width,
+                        finalCanvas.height
+                    ]
+                });
+
+
+            pdf.addImage(
+
+                imgData,
+
+                'JPEG',
+
+                0,
+
+                0,
+
+                finalCanvas.width,
+
+                finalCanvas.height
+            );
+
+
+            pdf.save(
+                fileName + '.pdf'
+            );
+
+
+            closeModal();
+
+            return;
+        }
     }
 
-}
+
+    /* =====================================================
+       CLOSE MODAL
+       ===================================================== */
+
     function closeModal() {
 
         $('downloadModal').style.display =
             'none';
 
+
         $('modalBackground').style.display =
             'none';
+
 
         $('croppedPreview').src =
             '';
 
+
         $('liveHeading').innerText =
             '';
+
 
         currentCropCanvas =
             null;
     }
+
+
+    /* =====================================================
+       INITIALIZE
+       ===================================================== */
 
     $('modalBackground')
         .addEventListener(
@@ -2810,12 +3353,16 @@ function createCropPreview(
             closeModal
         );
 
+
     $('footerYear').innerText =
         new Date().getFullYear();
 
+
     updateHeaderDate();
 
+
     loadAllData();
+
 </script>
 </body>
 </html>
