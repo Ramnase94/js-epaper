@@ -496,8 +496,20 @@ canvas {
         width:100%;
     }
 }
-.canvas-wrapper canvas {
+.canvas-wrapper {
     touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.canvas-wrapper canvas {
+    display: block;
+    max-width: 100%;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
     cursor: crosshair;
 }
 /* =========================================
