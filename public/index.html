@@ -2002,14 +2002,20 @@
 
                 }).promise
 
-                    .then(() => {
+                   .then(() => {
 
-                        initCropper(
-                            wrapper,
-                            canvas
-                        );
+    initMobileZoom(
+        wrapper,
+        canvas
+    );
 
-                    })
+
+    initCropper(
+        wrapper,
+        canvas
+    );
+
+})
 
                     .catch(error => {
 
@@ -2063,6 +2069,276 @@
         });
     }
 
+    /* =====================================================
+   MOBILE PINCH ZOOM + PAN
+   Existing Crop ला disturb न करता
+   ===================================================== */
+
+function initMobileZoom(wrapper, canvas) {
+
+    let scale = 1;
+    let lastDistance = 0;
+
+    let startPanX = 0;
+    let startPanY = 0;
+
+    let panX = 0;
+    let panY = 0;
+
+    let isPinching = false;
+
+    const MIN_SCALE = 1;
+    const MAX_SCALE = 4;
+
+
+    function getDistance(touch1, touch2) {
+
+        const dx =
+            touch2.clientX -
+            touch1.clientX;
+
+        const dy =
+            touch2.clientY -
+            touch1.clientY;
+
+        return Math.sqrt(
+            dx * dx +
+            dy * dy
+        );
+    }
+
+
+    function applyTransform() {
+
+        canvas.style.transform =
+            `translate(${panX}px, ${panY}px) scale(${scale})`;
+
+        canvas.style.transformOrigin =
+            'center center';
+    }
+
+
+    function resetZoom() {
+
+        scale = 1;
+
+        panX = 0;
+        panY = 0;
+
+        isPinching = false;
+
+        applyTransform();
+    }
+
+
+    /* =================================================
+       TOUCH START
+       ================================================= */
+
+    wrapper.addEventListener(
+        'touchstart',
+        function(e) {
+
+            if (e.touches.length === 2) {
+
+                e.preventDefault();
+
+                isPinching = true;
+
+                lastDistance =
+                    getDistance(
+                        e.touches[0],
+                        e.touches[1]
+                    );
+
+                startPanX =
+                    (
+                        e.touches[0].clientX +
+                        e.touches[1].clientX
+                    ) / 2;
+
+                startPanY =
+                    (
+                        e.touches[0].clientY +
+                        e.touches[1].clientY
+                    ) / 2;
+            }
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH MOVE
+       ================================================= */
+
+    wrapper.addEventListener(
+        'touchmove',
+        function(e) {
+
+            /*
+             * फक्त 2 fingers असतील
+             * तर Zoom + Pan
+             */
+
+            if (
+                e.touches.length !== 2 ||
+                !isPinching
+            ) {
+                return;
+            }
+
+
+            e.preventDefault();
+
+
+            /* =========================
+               PINCH DISTANCE
+               ========================= */
+
+            const newDistance =
+                getDistance(
+                    e.touches[0],
+                    e.touches[1]
+                );
+
+
+            if (lastDistance > 0) {
+
+                const zoomFactor =
+                    newDistance /
+                    lastDistance;
+
+
+                scale *= zoomFactor;
+
+
+                scale =
+                    Math.max(
+                        MIN_SCALE,
+                        Math.min(
+                            MAX_SCALE,
+                            scale
+                        )
+                    );
+            }
+
+
+            lastDistance =
+                newDistance;
+
+
+            /* =========================
+               TWO FINGER PAN
+               ========================= */
+
+            const centerX =
+                (
+                    e.touches[0].clientX +
+                    e.touches[1].clientX
+                ) / 2;
+
+
+            const centerY =
+                (
+                    e.touches[0].clientY +
+                    e.touches[1].clientY
+                ) / 2;
+
+
+            panX +=
+                centerX -
+                startPanX;
+
+
+            panY +=
+                centerY -
+                startPanY;
+
+
+            startPanX =
+                centerX;
+
+            startPanY =
+                centerY;
+
+
+            applyTransform();
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    /* =================================================
+       TOUCH END
+       ================================================= */
+
+    wrapper.addEventListener(
+        'touchend',
+        function(e) {
+
+            if (
+                e.touches.length < 2
+            ) {
+
+                isPinching = false;
+
+                lastDistance = 0;
+            }
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    /* =================================================
+       DOUBLE TAP = RESET ZOOM
+       ================================================= */
+
+    let lastTap = 0;
+
+    wrapper.addEventListener(
+        'touchend',
+        function(e) {
+
+            if (
+                e.changedTouches.length !== 1
+            ) {
+                return;
+            }
+
+
+            const now =
+                Date.now();
+
+
+            if (
+                now - lastTap <
+                300
+            ) {
+
+                resetZoom();
+
+            }
+
+
+            lastTap = now;
+
+        },
+        {
+            passive: true
+        }
+    );
+}
+
 
     /* =====================================================
        CROP SELECTION
@@ -2111,13 +2387,28 @@
          * Canvas वर direct touch selection
          * सुरू होणार नाही.
          */
+/* =================================================
+   MOBILE ZOOM + CROP TOUCH CONTROL
+   ================================================= */
 
-        canvas.style.touchAction =
-            'pan-y';
+if (
+    window.matchMedia('(max-width: 650px)').matches
+) {
 
-        wrapper.style.touchAction =
-            'pan-y';
+    canvas.style.touchAction =
+        'none';
 
+    wrapper.style.touchAction =
+        'pan-y';
+
+} else {
+
+    canvas.style.touchAction =
+        'none';
+
+    wrapper.style.touchAction =
+        'none';
+}
 
         /* =================================================
            GET POINTER POSITION

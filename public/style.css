@@ -487,6 +487,65 @@ body {
         entry 10% cover 40%;
 }
 
+/* =====================================================
+   MOBILE PINCH ZOOM VIEWPORT
+   ===================================================== */
+
+@media (max-width: 650px) {
+
+    #epaper-container {
+
+        width: 100%;
+
+        overflow-x: auto;
+
+        overflow-y: visible;
+
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+
+        touch-action: pan-y;
+
+    }
+
+
+    #epaper-container::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+
+    .canvas-wrapper {
+
+        width: max-content;
+
+        max-width: none;
+
+        touch-action: none;
+
+        margin-left: 0;
+
+        margin-right: 0;
+
+    }
+
+
+    .canvas-wrapper canvas {
+
+        width: auto;
+
+        max-width: none;
+
+        height: auto;
+
+        touch-action: none !important;
+
+    }
+
+}
+
 
 @keyframes revealPage {
 
@@ -518,7 +577,7 @@ canvas {
 
     display: block;
 
-    max-width: 100%;
+    max-width: none;
 
     height: auto;
 
@@ -533,16 +592,15 @@ canvas {
     cursor: crosshair;
 }
 
-
 .canvas-wrapper canvas {
 
     display: block;
 
-    width: 100%;
+    width: auto;
 
     height: auto;
 
-    max-width: 100%;
+    max-width: none;
 
     touch-action: none !important;
 
@@ -551,6 +609,8 @@ canvas {
     -webkit-user-select: none;
 
     -webkit-touch-callout: none;
+
+    cursor: crosshair;
 }
 
 

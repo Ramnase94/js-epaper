@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <title>दैनिक लोकभारती - सुरक्षित ॲडमिन पॅनल</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
+        .form-container { max-width: 600px; background: white; margin: 0 auto 30px auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #e61a22; font-size: 26px; margin-bottom: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; position: relative; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
+        input[type="text"], input[type="password"], input[type="file"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 15px; }
+        
+        /* 🌟 पासवर्ड शो/हाईड बटन स्टाईल */
+        .password-wrapper { position: relative; display: flex; align-items: center; }
+        .toggle-btn { position: absolute; right: 12px; cursor: pointer; font-size: 14px; font-weight: bold; color: #666; user-select: none; background: #eee; padding: 4px 8px; border-radius: 4px; }
+        
+        button { background: #e61a22; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #b8141a; }
+        .btn-blue { background: #007bff; }
+        .btn-blue:hover { background: #0056b3; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        hr { border: 0; height: 1px; background: #ddd; margin: 25px 0; }
+        /* ================================
+   📅 वृत्तपत्र तारीख - PREMIUM DESIGN
+================================ */
+
+#paperDate {
+    width: 100% !important;
+    height: 52px !important;
+    padding: 10px 15px !important;
+
+    border: 2px solid #e61a22 !important;
+    border-radius: 10px !important;
+
+    background: linear-gradient(135deg, #fff8f8, #ffffff) !important;
+
+    color: #222 !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+
+    outline: none !important;
+
+    transition: all 0.25s ease !important;
+}
+
+/* Mouse ने नेल्यावर */
+#paperDate:hover {
+    border-color: #b8141a !important;
+    box-shadow: 0 3px 10px rgba(230, 26, 34, 0.15) !important;
+}
+
+/* Click केल्यावर */
+#paperDate:focus {
+    border-color: #b8141a !important;
+    box-shadow: 0 0 0 4px rgba(230, 26, 34, 0.15) !important;
+    background: #ffffff !important;
+}
+
+/* 📅 Calendar icon */
+#paperDate::-webkit-calendar-picker-indicator {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 5px !important;
+    cursor: pointer !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    #paperDate {
+        height: 55px !important;
+        font-size: 16px !important;
+    }
+}
+    </style>
+</head>
+<body>
+
+<!-- विभाग १: पेपर अपलोड करण्याचा फॉर्म -->
+<div class="form-container">
+    <h2>🗞️ दैनिक लोकभारती - नवीन अंक अपलोड</h2>
+    <form action="/upload-paper" method="POST" enctype="multipart/form-data">
+        
+        <!-- 🌟 सुरक्षेसाठी ॲडमिन पासवर्ड रकाना -->
+        <div class="form-group">
+            <label>ॲडमिन सिक्युरिटी पासवर्ड टाका:</label>
+            <div class="password-wrapper">
+                <input type="password" id="pass_upload" name="admin_password" placeholder="पेपर अपलोड करण्यासाठी पासवर्ड आवश्यक" required>
+                <span class="toggle-btn" onclick="togglePassword('pass_upload')">पहा</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label>वृत्तपत्र प्रकार (कॅटेगरी) निवडा:</label>
+            <select name="category" required>
+                <option value="daily">दैनिक (Daily)</option>
+                <option value="weekly">साप्ताहिक (Weekly)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>वृत्तपत्र मुख्य फाईल (PDF):</label>
+            <input type="file" name="epaper_pdf" accept="application/pdf" required>
+        </div>
+        <div class="grid">
+            <div class="form-group"><label>संपादकांचे नाव:</label><input type="text" name="editor" value="रविंद्र विठ्ठलराव देशमुख" required></div>
+            <div class="form-group"><label>मोबाईल नंबर:</label><input type="text" name="mobile" value="९९२११५५००२" required></div>
+        </div>
+        <div class="grid">
+            <div class="form-group"><label>वर्ष (उदा. वर्ष १ ले):</label><input type="text" name="year" placeholder="१ ले" required></div>
+            <div class="form-group"><label>अंक क्रमांक:</label><input type="text" name="issue" placeholder="१२३" required></div>
+        </div>
+       <!-- <div class="grid">
+            <div class="form-group"><label>तारीख (मराठी):</label><input type="text" name="date_mr" placeholder="बुधवार, दि. २९ जुलै २०२६" required></div>
+            <div class="form-group"><label>तारीख (इंग्रजी):</label><input type="text" name="date_en" placeholder="Wednesday, 29 July 2026" required></div>
+        </div>-->
+
+       <div class="form-group date-picker-box">
+
+    <label for="paperDate">
+        📅 वृत्तपत्राची तारीख निवडा
+    </label>
+
+    <input
+        type="date"
+        id="paperDate"
+        name="paper_date"
+        required
+    >
+
+</div>
+
+<input
+    type="hidden"
+    name="date_mr"
+    id="date_mr"
+>
+
+<input
+    type="hidden"
+    name="date_en"
+    id="date_en"
+>
+
+        <div class="form-group">
+    <label for="rniNumber">RNI / PRGI नोंदणी क्रमांक:</label>
+
+    <input
+        type="text"
+        id="rniNumber"
+        name="rni"
+        value="PRGI/MHMAR/26/DAILY_NUMBER"
+        required
+    >
+</div>
+        <div class="grid">
+            <div class="form-group"><label>किंमत:</label><input type="text" name="price" value="५ रूपये" required></div>
+            <div class="form-group"><label>एकूण पृष्ठे:</label><input type="text" name="pages" value="४" required></div>
+        </div>
+        <button type="submit">अंक प्रकाशित करा</button>
+    </form>
+</div>
+
+<!-- 🌟 विभाग २: पासवर्ड बदलण्याचा स्वतंत्र फॉर्म -->
+<div class="form-container">
+    <h2>🔐 ॲडमिन पासवर्ड बदला</h2>
+    <form action="/change-password" method="POST">
+        <div class="form-group">
+            <label>चालू (जुना) पासवर्ड टाका:</label>
+            <div class="password-wrapper">
+                <input type="password" id="pass_old" name="old_password" required>
+                <span class="toggle-btn" onclick="togglePassword('pass_old')">पहा</span>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label>नवीन सुरक्षित पासवर्ड सेट करा:</label>
+            <div class="password-wrapper">
+                <input type="password" id="pass_new" name="new_password" required>
+                <span class="toggle-btn" onclick="togglePassword('pass_new')">पहा</span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-blue">नवीन पासवर्ड सेव्ह करा</button>
+    </form>
+</div><!-- =====================================================
+     DELETE PAPER SECTION
+===================================================== -->
+
+<div class="form-container">
+
+    <h2>🗑️ प्रकाशित अंक Delete करा</h2>
+
+    <div class="form-group">
+
+        <label>
+            कोणता विभाग निवडायचा?
+        </label>
+
+        <select id="deleteCategory">
+            <option value="daily">दैनिक (Daily)</option>
+            <option value="weekly">साप्ताहिक (Weekly)</option>
+            <option value="monthly">मासिक (Monthly)</option>
+        </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Delete करायचा अंक निवडा:
+        </label>
+
+        <select id="deletePaperSelect">
+
+            <option value="">
+                अंक शोधत आहे...
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <form
+        id="deletePaperForm"
+        action="/delete-paper"
+        method="POST"
+        onsubmit="return confirmDeletePaper()"
+    >
+
+        <input
+            type="hidden"
+            name="category"
+            id="deleteCategoryHidden"
+        >
+
+        <input
+            type="hidden"
+            name="index"
+            id="deleteIndexHidden"
+        >
+
+        <button
+            type="submit"
+            style="
+                background:#dc2626;
+                margin-top:10px;
+            "
+        >
+            🗑️ हा अंक कायमचा Delete करा
+        </button>
+
+    </form>
+
+</div>
+<script>
+
+function togglePassword(inputId) {
+
+    const input = document.getElementById(inputId);
+
+    if (!input) return;
+
+    if (input.type === 'password') {
+        input.type = 'text';
+    } else {
+        input.type = 'password';
+    }
+}
+
+
+/* =====================================================
+   PAPER DATE
+===================================================== */
+
+function generatePaperDates() {
+
+    const dateInput = document.getElementById('paperDate');
+    const dateMr = document.getElementById('date_mr');
+    const dateEn = document.getElementById('date_en');
+
+    if (!dateInput || !dateMr || !dateEn || !dateInput.value) {
+        return;
+    }
+
+    const date = new Date(dateInput.value + 'T00:00:00');
+
+    const marathiDays = [
+        'रविवार',
+        'सोमवार',
+        'मंगळवार',
+        'बुधवार',
+        'गुरुवार',
+        'शुक्रवार',
+        'शनिवार'
+    ];
+
+    const englishDays = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ];
+
+    const marathiMonths = [
+        'जानेवारी',
+        'फेब्रुवारी',
+        'मार्च',
+        'एप्रिल',
+        'मे',
+        'जून',
+        'जुलै',
+        'ऑगस्ट',
+        'सप्टेंबर',
+        'ऑक्टोबर',
+        'नोव्हेंबर',
+        'डिसेंबर'
+    ];
+
+    const englishMonths = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ];
+
+    const marathiNumbers = [
+        '०','१','२','३','४',
+        '५','६','७','८','९'
+    ];
+
+    function toMarathiNumber(number) {
+
+        return String(number)
+            .split('')
+            .map(char => marathiNumbers[Number(char)])
+            .join('');
+
+    }
+
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const dayIndex = date.getDay();
+
+    dateMr.value =
+        marathiDays[dayIndex] +
+        ', दि. ' +
+        toMarathiNumber(day) +
+        ' ' +
+        marathiMonths[month] +
+        ' ' +
+        toMarathiNumber(year);
+
+    dateEn.value =
+        englishDays[dayIndex] +
+        ', ' +
+        day +
+        ' ' +
+        englishMonths[month] +
+        ' ' +
+        year;
+}
+
+
+const paperDate = document.getElementById('paperDate');
+
+if (paperDate) {
+
+    paperDate.addEventListener(
+        'change',
+        generatePaperDates
+    );
+
+}
+
+
+/* =====================================================
+   RNI / PRGI
+===================================================== */
+
+const uploadCategory =
+    document.querySelector(
+        'form[action="/upload-paper"] select[name="category"]'
+    );
+
+const rniInput =
+    document.getElementById('rniNumber');
+
+const rniNumbers = {
+
+    daily: 'PRGI/MHMAR/26/A1903',
+
+    weekly: 'PRGI/MHMAR/26/WEEKLY_NUMBER',
+
+    monthly: ''
+
+};
+
+
+function updateRniNumber() {
+
+    if (!uploadCategory || !rniInput) {
+        return;
+    }
+
+    rniInput.value =
+        rniNumbers[uploadCategory.value] || '';
+
+}
+
+
+if (uploadCategory) {
+
+    uploadCategory.addEventListener(
+        'change',
+        updateRniNumber
+    );
+
+    updateRniNumber();
+
+}
+
+
+
+/* =====================================================
+   DELETE PAPER
+===================================================== */
+
+const deleteCategory =
+    document.getElementById('deleteCategory');
+
+const deletePaperSelect =
+    document.getElementById('deletePaperSelect');
+
+const deleteCategoryHidden =
+    document.getElementById('deleteCategoryHidden');
+
+const deleteIndexHidden =
+    document.getElementById('deleteIndexHidden');
+
+
+/* =====================================================
+   LOAD DELETE PAPERS
+===================================================== */
+
+async function loadDeletePapers() {
+
+    if (
+        !deleteCategory ||
+        !deletePaperSelect
+    ) {
+
+        console.error(
+            'Delete section सापडला नाही.'
+        );
+
+        return;
+
+    }
+
+
+    const category =
+        deleteCategory.value;
+
+
+    /* Hidden category set करा */
+
+    if (deleteCategoryHidden) {
+
+        deleteCategoryHidden.value =
+            category;
+
+    }
+
+
+    /* Loading */
+
+    deletePaperSelect.innerHTML =
+        '<option value="">अंक शोधत आहे...</option>';
+
+
+    if (deleteIndexHidden) {
+
+        deleteIndexHidden.value = '';
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                '/get-paper-info?time=' +
+                Date.now()
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                'get-paper-info failed'
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            'Delete data:',
+            data
+        );
+
+
+        const papers =
+            Array.isArray(
+                data[category]
+            )
+                ? data[category]
+                : [];
+
+
+        /* आधीचे options काढा */
+
+        deletePaperSelect.innerHTML =
+            '<option value="">-- Delete करायचा अंक निवडा --</option>';
+
+
+        if (papers.length === 0) {
+
+            deletePaperSelect.innerHTML =
+                '<option value="">या विभागात कोणताही अंक नाही</option>';
+
+            return;
+
+        }
+
+
+        /* सर्व papers dropdown मध्ये दाखवा */
+
+        papers.forEach(
+            (paper, index) => {
+
+                const option =
+                    document.createElement(
+                        'option'
+                    );
+
+
+                option.value =
+                    index;
+
+
+                option.textContent =
+                    (
+                        paper.date_mr ||
+                        paper.date_en ||
+                        'तारीख नाही'
+                    ) +
+                    ' | अंक क्र. ' +
+                    (
+                        paper.issue ||
+                        '-'
+                    );
+
+
+                deletePaperSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            'DELETE LIST ERROR:',
+            error
+        );
+
+
+        deletePaperSelect.innerHTML =
+            '<option value="">अंकांची यादी मिळाली नाही</option>';
+
+    }
+
+}
+
+
+/* =====================================================
+   CATEGORY CHANGE
+===================================================== */
+
+if (deleteCategory) {
+
+    deleteCategory.addEventListener(
+        'change',
+        loadDeletePapers
+    );
+
+}
+
+
+/* =====================================================
+   PAPER SELECT CHANGE
+===================================================== */
+
+if (deletePaperSelect) {
+
+    deletePaperSelect.addEventListener(
+        'change',
+        function () {
+
+            if (deleteIndexHidden) {
+
+                deleteIndexHidden.value =
+                    this.value;
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CONFIRM DELETE
+===================================================== */
+
+function confirmDeletePaper() {
+
+    const category =
+        deleteCategory.value;
+
+    const index =
+        deletePaperSelect.value;
+
+
+    /* Hidden values पुन्हा set */
+
+    if (deleteCategoryHidden) {
+
+        deleteCategoryHidden.value =
+            category;
+
+    }
+
+
+    if (deleteIndexHidden) {
+
+        deleteIndexHidden.value =
+            index;
+
+    }
+
+
+    if (!category) {
+
+        alert(
+            'कृपया विभाग निवडा.'
+        );
+
+        return false;
+
+    }
+
+
+    if (
+        index === '' ||
+        index === null ||
+        index === undefined
+    ) {
+
+        alert(
+            'कृपया Delete करायचा अंक निवडा.'
+        );
+
+        return false;
+
+    }
+
+
+    const selectedText =
+        deletePaperSelect
+            .options[
+                deletePaperSelect.selectedIndex
+            ]
+            .text;
+
+
+    return confirm(
+
+        '⚠️ हा अंक कायमचा Delete करायचा आहे का?\n\n' +
+
+        selectedText +
+
+        '\n\nPDF फाईल आणि त्याची माहिती दोन्ही Delete होतील.' +
+
+        '\n\nही कृती परत करता येणार नाही.'
+
+    );
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+loadDeletePapers();
+
+</script>
+</body>
+</html>
