@@ -1,3 +1,7 @@
 node_modules/
 .env
+.env.txt
 *.db
+lokbharti_epaper_backup.sql
+server-backup-*.js
+server-backup-*.js

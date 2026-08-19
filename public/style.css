@@ -1,587 +1,1402 @@
-/* ==========================================================================
-   📰 DAILY LOKBHARATI - PROFESSIONAL STYLE.CSS
-   ========================================================================== */
+/* =========================================================
+   LOKBHARATI DIGITAL E-PAPER
+   PREMIUM NEWSPAPER UI
+   FULL RESPONSIVE DESIGN
+   Desktop + Tablet + Mobile
+   ========================================================= */
+
+/* Google Marathi Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700;800;900&family=Tiro+Devanagari+Marathi:ital@0;1&display=swap');
 
 
-/* ==========================================================================
-   1. ROOT VARIABLES
-   ========================================================================== */
+/* =========================================================
+   1. ROOT
+   ========================================================= */
 
 :root {
+    --red: #c91520;
+    --red-dark: #970d15;
+    --red-light: #fff1f2;
 
-    --primary-color: #e61a22;
-    --primary-dark: #b8141a;
+    --black: #101214;
+    --black-2: #181b1f;
+    --black-3: #24282d;
 
-    --secondary-color: #111111;
+    --white: #ffffff;
+    --paper: #ffffff;
+    --paper-soft: #f7f7f5;
 
-    --gradient-bg:
-        linear-gradient(
-            135deg,
-            #1f2124 0%,
-            #111315 50%,
-            #08090a 100%
-        );
+    --text: #171717;
+    --muted: #707070;
+    --border: #dedede;
 
-    --gradient-header:
-        linear-gradient(
-            180deg,
-            #1a1c1e 0%,
-            #0f1011 100%
-        );
+    --gold: #b88727;
 
-    --text-main: #222222;
+    --shadow-sm:
+        0 4px 15px rgba(0,0,0,.10);
 
-    --border-color: #dddddd;
+    --shadow:
+        0 10px 30px rgba(0,0,0,.16);
 
-    --shadow-soft:
-        0 4px 25px rgba(0, 0, 0, 0.08);
+    --shadow-heavy:
+        0 18px 50px rgba(0,0,0,.30);
 
-    --shadow-dark:
-        0 15px 50px rgba(0, 0, 0, 0.5);
+    --radius: 12px;
 
-    --radius-sm: 6px;
-    --radius-md: 14px;
-}
+    --marathi:
+        "Tiro Devanagari Marathi",
+        "Noto Serif Devanagari",
+        serif;
 
+    --serif:
+        Georgia,
+        "Times New Roman",
+        serif;
 
-/* ==========================================================================
-   2. RESET
-   ========================================================================== */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-
-    font-family:
-        'Segoe UI',
+    --sans:
+        "Segoe UI",
         Arial,
         sans-serif;
 }
 
 
+/* =========================================================
+   2. RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 html {
     scroll-behavior: smooth;
 }
 
-
 body {
+    min-height: 100vh;
 
     background:
-        var(--gradient-bg);
+        radial-gradient(
+            circle at top left,
+            #30343a 0,
+            #181b1f 35%,
+            #0b0d0f 100%
+        );
 
     background-attachment: fixed;
 
-    color: #ffffff;
+    color: var(--white);
+
+    font-family: var(--sans);
 
     line-height: 1.6;
 
     overflow-x: hidden;
 }
 
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
 
-/* ==========================================================================
-   3. CATEGORY BAR
-   ========================================================================== */
+button {
+    cursor: pointer;
+}
 
-.category-bar {
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+::selection {
+    background: var(--red);
+    color: #fff;
+}
+
+
+/* =========================================================
+   3. DATE WEATHER BAR
+   ========================================================= */
+
+.date-weather-strip {
+    width: 100%;
 
     background:
-        var(--gradient-header);
+        linear-gradient(
+            90deg,
+            #08090a,
+            #15181b,
+            #08090a
+        );
+
+    border-bottom:
+        1px solid rgba(255,255,255,.08);
+
+    color: #d8dce1;
+
+    font-size: 12px;
+}
+
+.date-weather-inner {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    width: min(1450px, 100%);
+
+    margin: auto;
+
+    padding: 7px 28px;
+
+    gap: 15px;
+}
+
+.date-weather-left,
+.date-weather-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.date-pill,
+.edition-pill,
+.weather-pill {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 27px;
+
+    padding: 4px 11px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.07);
+
+    color: #e9ebee;
+
+    font-weight: 700;
+}
+
+.edition-pill {
+    border:
+        1px solid rgba(201,21,32,.45);
+
+    color: #ffb9bd;
+}
+
+.weather-pill {
+    border:
+        1px solid rgba(255,255,255,.10);
+}
+
+
+/* =========================================================
+   4. PREMIUM HEADER
+   ========================================================= */
+
+.premium-header {
+    width: 100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #fafafa 100%
+        );
+
+    color: var(--text);
+
+    border-bottom:
+        1px solid #d8d8d8;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,.18);
+}
+
+.premium-header-main {
+    display: grid;
+
+    grid-template-columns:
+        minmax(200px,1fr)
+        minmax(400px,auto)
+        minmax(200px,1fr);
+
+    align-items: center;
+
+    width: min(1450px, 100%);
+
+    min-height: 175px;
+
+    margin: auto;
+
+    padding: 25px 35px;
+
+    gap: 30px;
+}
+
+.header-side {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.header-side.left {
+    justify-content: flex-start;
+}
+
+.header-side.right {
+    justify-content: flex-end;
+}
+
+.mini-stat {
+    padding: 8px 12px;
+
+    border-left:
+        3px solid var(--red);
+
+    color: #666;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+.mini-stat strong {
+    display: block;
+
+    margin-bottom: 1px;
+
+    color: #111;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   5. MAIN BRAND
+   ========================================================= */
+
+.premium-brand {
+    position: relative;
+
+    min-width: 0;
 
     text-align: center;
 
-    padding: 18px 0;
+    padding: 4px 10px 8px;
+}
 
-    border-bottom:
-        4px solid var(--primary-color);
+.brand-kicker {
+    margin-bottom: 7px;
 
+    color: #666;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 4px;
+
+    line-height: 1.3;
+
+    text-transform: uppercase;
+}
+
+
+/*
+   IMPORTANT:
+   Logo आणि Dainik text overlap होऊ नये म्हणून
+   logo ला independent line-height + margin दिला आहे.
+*/
+
+.premium-logo {
+    position: relative;
+
+    display: block;
+
+    margin: 0;
+
+    padding: 0;
+
+    color: var(--red);
+
+    font-family: var(--marathi);
+
+    font-size: clamp(52px, 6vw, 88px);
+
+    font-weight: 900;
+
+    line-height: 1.08;
+
+    letter-spacing: 0;
+
+    white-space: nowrap;
+
+    word-break: keep-all;
+
+    z-index: 2;
+}
+
+.premium-logo-en {
+    display: block;
+
+    margin-top: 13px;
+
+    padding-top: 8px;
+
+    border-top:
+        2px solid #222;
+
+    color: #111;
+
+    font-family: var(--serif);
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    line-height: 1.25;
+
+    letter-spacing: 6px;
+
+    white-space: nowrap;
+}
+
+.premium-tagline {
+    margin-top: 7px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   6. HEADER ACTIONS
+   ========================================================= */
+
+.premium-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.premium-action {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 38px;
+
+    padding: 8px 14px;
+
+    border:
+        1px solid #d6d6d6;
+
+    border-radius: 7px;
+
+    background: #f7f7f7;
+
+    color: #222;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    transition:
+        .2s ease;
+}
+
+.premium-action:hover {
+    background: var(--red);
+
+    border-color: var(--red);
+
+    color: #fff;
+
+    transform: translateY(-2px);
+}
+
+.premium-action.admin {
+    background: var(--red);
+
+    border-color: var(--red);
+
+    color: #fff;
+}
+
+.premium-action.admin:hover {
+    background: var(--red-dark);
+}
+
+
+/* =========================================================
+   7. NAVIGATION
+   ========================================================= */
+
+.premium-nav {
     position: sticky;
 
     top: 0;
 
     z-index: 1000;
 
-    box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-
-.tab-btn {
+    width: 100%;
 
     background:
-        rgba(255, 255, 255, 0.05);
+        linear-gradient(
+            180deg,
+            #25292e,
+            #0d0f11
+        );
 
-    color: #ffffff;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.1);
-
-    padding:
-        12px 38px;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    margin: 0 8px;
-
-    border-radius:
-        var(--radius-sm);
-
-    transition:
-        all 0.3s ease;
-
-    letter-spacing: 0.5px;
-}
-
-
-.tab-btn:hover {
-
-    background:
-        rgba(255, 255, 255, 0.15);
-
-    border-color:
-        var(--primary-color);
-
-    transform:
-        translateY(-2px);
-}
-
-
-.tab-btn.active {
-
-    background:
-        var(--primary-color);
-
-    color: #ffffff;
-
-    border-color:
-        var(--primary-color);
+    border-bottom:
+        3px solid var(--red);
 
     box-shadow:
-        0 0 15px rgba(230, 26, 34, 0.5);
+        0 4px 18px rgba(0,0,0,.35);
 }
 
-
-/* ==========================================================================
-   4. ARCHIVE SECTION
-   ========================================================================== */
-
-.archive-section {
-
-    text-align: center;
-
-    margin:
-        30px 0 20px;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    color: #ffffff;
-
+.premium-nav-inner {
     display: flex;
-
-    justify-content: center;
 
     align-items: center;
 
-    gap: 12px;
+    justify-content: center;
+
+    width: min(1450px,100%);
+
+    margin: auto;
+
+    padding: 6px 12px;
+
+    gap: 3px;
+
+    flex-wrap: wrap;
 }
 
+.premium-nav-item {
+    display: inline-flex;
 
-#paper-select {
+    align-items: center;
+    justify-content: center;
 
-    padding:
-        12px 24px;
+    min-height: 41px;
 
-    font-size: 15px;
+    padding: 8px 21px;
 
-    font-weight: 600;
+    border-radius: 6px;
 
-    border-radius:
-        var(--radius-sm);
+    color: #eeeeee;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.15);
-
-    background:
-        rgba(255, 255, 255, 0.08);
-
-    color: #ffffff;
-
-    width: 320px;
-
-    cursor: pointer;
-
-    outline: none;
-
-    backdrop-filter:
-        blur(10px);
-
-    transition:
-        all 0.3s ease;
-}
-
-
-#paper-select option {
-
-    background: #1f2124;
-
-    color: #ffffff;
-}
-
-
-#paper-select:focus {
-
-    border-color:
-        var(--primary-color);
-
-    box-shadow:
-        0 0 10px rgba(230, 26, 34, 0.3);
-}
-
-
-/* ==========================================================================
-   5. NEWSPAPER HEADER
-   ========================================================================== */
-
-.brand-header {
-
-    background: #ffffff;
-
-    color:
-        var(--text-main);
-
-    padding:
-        35px 30px 25px;
-
-    text-align: center;
-
-    border:
-        4px solid var(--secondary-color);
-
-    border-width:
-        5px 1px 5px 1px;
-
-    max-width: 1140px;
-
-    margin:
-        20px auto;
-
-    box-shadow:
-        var(--shadow-dark);
-
-    border-radius:
-        var(--radius-sm);
-}
-
-
-.sub-logo {
-
-    font-size: 24px;
-
-    font-weight: 800;
-
-    color:
-        var(--text-main);
-
-    text-transform:
-        uppercase;
-
-    letter-spacing: 8px;
-
-    margin-bottom: 5px;
-}
-
-
-.main-logo {
-
-    font-size: 102px;
-
-    font-weight: 900;
-
-    color:
-        var(--primary-color);
-
-    margin: 0;
-
-    line-height: 0.9;
-
-    font-family:
-        Georgia,
-        'Times New Roman',
-        serif;
-
-    letter-spacing: -1px;
-}
-
-
-.english-title {
-
-    font-size: 38px;
-
-    font-weight: 700;
-
-    font-family:
-        'Times New Roman',
-        serif;
-
-    color:
-        var(--secondary-color);
-
-    margin:
-        14px 0;
-
-    letter-spacing: 5px;
-
-    border-bottom:
-        2px solid var(--secondary-color);
-
-    padding-bottom: 8px;
-}
-
-
-.meta-top {
-
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    font-size: 15px;
-
-    font-weight: 700;
-
-    padding:
-        8px 4px;
-
-    color:
-        var(--text-main);
-
-    border-bottom:
-        1px dashed var(--border-color);
-
-    margin-bottom: 10px;
-}
-
-
-.info-table {
-
-    width: 100%;
-
-    border-collapse:
-        collapse;
+    font-family: var(--marathi);
 
     font-size: 14px;
 
     font-weight: 700;
 
-    color:
-        var(--text-main);
+    transition:
+        .2s ease;
 }
 
-
-.info-table td {
-
-    border:
-        1px solid var(--secondary-color);
-
-    padding:
-        10px 8px;
-
-    text-align: center;
-
+.premium-nav-item:hover {
     background:
-        #fafafa;
+        rgba(255,255,255,.10);
+
+    color: #fff;
+
+    transform: translateY(-1px);
+}
+
+.premium-nav-item.active {
+    background: var(--red);
+
+    color: #fff;
+
+    box-shadow:
+        0 4px 14px rgba(201,21,32,.35);
 }
 
 
-.info-table tr:nth-child(2) td {
+/* =========================================================
+   8. BREAKING NEWS
+   ========================================================= */
 
-    font-family:
-        'Times New Roman',
-        serif;
+.breaking-wrap {
+    width: 100%;
 
-    font-size: 15px;
+    background: #fff;
 
-    background:
-        #ffffff;
+    border-bottom:
+        1px solid #ddd;
 }
 
-
-/* ==========================================================================
-   6. E-PAPER CONTAINER
-   ========================================================================== */
-
-#epaper-container {
-
+.breaking {
     display: flex;
-
-    flex-direction:
-        column;
 
     align-items: center;
 
-    padding:
-        40px 20px;
+    width: min(1450px,100%);
 
-    min-height:
-        600px;
+    min-height: 44px;
+
+    margin: auto;
+
+    overflow: hidden;
 }
 
+.breaking-label {
+    display: flex;
 
-/* ==========================================================================
-   7. PDF CANVAS WRAPPER
-   ========================================================================== */
+    align-items: center;
 
-.canvas-wrapper {
+    align-self: stretch;
 
-    position: relative;
-
-    margin-bottom: 40px;
-
-    box-shadow:
-        var(--shadow-dark);
-
-    border:
-        4px solid #111111;
-
-    border-radius:
-        var(--radius-sm);
+    padding: 0 17px;
 
     background:
-        #ffffff;
+        linear-gradient(
+            135deg,
+            var(--red),
+            #9e0d15
+        );
+
+    color: #fff;
+
+    font-family: var(--marathi);
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+.breaking-text {
+    display: block;
+
+    padding: 0 16px;
+
+    color: #202020;
+
+    font-family: var(--marathi);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   9. FEATURED
+   ========================================================= */
+
+.featured-section {
+    width: min(1400px, calc(100% - 32px));
+
+    margin: 24px auto;
+
+    padding: 24px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff,
+            #f8f8f8
+        );
+
+    color: #222;
+
+    box-shadow: var(--shadow);
+}
+
+.section-kicker {
+    margin-bottom: 15px;
+
+    color: var(--red);
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+.featured-grid {
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr;
+
+    gap: 15px;
+}
+
+.featured-card {
+    position: relative;
+
+    min-height: 175px;
+
+    padding: 23px;
+
+    overflow: hidden;
+
+    border-radius: 11px;
+
+    background: #f2f2f2;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,.05);
+}
+
+.featured-card.main {
+    background:
+        linear-gradient(
+            135deg,
+            #fff,
+            #fff0f1
+        );
+}
+
+.featured-card.dark {
+    background:
+        linear-gradient(
+            135deg,
+            #202327,
+            #101214
+        );
+
+    color: #fff;
+}
+
+.featured-card.gold {
+    background:
+        linear-gradient(
+            135deg,
+            #f8efd8,
+            #fff
+        );
+}
+
+.featured-label {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: var(--red);
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.featured-card.dark .featured-label {
+    color: #ff7d82;
+}
+
+.featured-card h2,
+.featured-card h3 {
+    margin-bottom: 8px;
+
+    font-family: var(--marathi);
+
+    line-height: 1.35;
+}
+
+.featured-card h2 {
+    font-size: 26px;
+}
+
+.featured-card h3 {
+    font-size: 19px;
+}
+
+.featured-card p {
+    color: #666;
+
+    font-family: var(--marathi);
+
+    font-size: 14px;
+}
+
+.featured-card.dark p {
+    color: #c6c9ce;
+}
+
+.featured-link {
+    display: inline-block;
+
+    margin-top: 12px;
+
+    color: var(--red);
+
+    font-family: var(--marathi);
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.featured-meta {
+    display: flex;
+
+    gap: 15px;
+
+    margin-top: 17px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   10. HERO
+   ========================================================= */
+
+.hero {
+    position: relative;
+
+    width: min(1400px, calc(100% - 32px));
+
+    margin: 22px auto;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7e0b12,
+            #d71924 55%,
+            #a50f17
+        );
+
+    box-shadow: var(--shadow-heavy);
+}
+
+.hero::after {
+    content: "";
+
+    position: absolute;
+
+    right: -100px;
+    top: -100px;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.06);
+}
+
+.hero-inner {
+    position: relative;
+
+    z-index: 2;
+
+    padding: 38px;
+}
+
+.eyebrow {
+    margin-bottom: 8px;
+
+    color: #ffd8da;
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+#heroTitle {
+    margin-bottom: 24px;
+
+    font-family: var(--marathi);
+
+    font-size: clamp(32px, 5vw, 58px);
+
+    font-weight: 900;
+
+    line-height: 1.25;
+}
+
+.category-tabs {
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding: 9px 21px;
+
+    border:
+        1px solid rgba(255,255,255,.25);
+
+    border-radius: 7px;
+
+    background:
+        rgba(0,0,0,.18);
+
+    color: #fff;
+
+    font-family: var(--marathi);
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    transition: .2s ease;
+}
+
+.tab-btn:hover {
+    background:
+        rgba(255,255,255,.15);
+
+    transform: translateY(-1px);
+}
+
+.tab-btn.active {
+    background: #fff;
+
+    border-color: #fff;
+
+    color: var(--red);
+}
+
+
+/* =========================================================
+   11. ARCHIVE
+   ========================================================= */
+
+.archive-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    width: min(1400px, calc(100% - 32px));
+
+    margin: 22px auto;
+
+    padding: 21px 25px;
+
+    border-radius: 11px;
+
+    background: #fff;
+
+    color: #222;
+
+    box-shadow: var(--shadow);
+}
+
+.archive-copy h2,
+.archive-copy h3 {
+    font-family: var(--marathi);
+
+    margin-bottom: 4px;
+}
+
+.archive-copy p {
+    color: #777;
+
+    font-family: var(--marathi);
+
+    font-size: 13px;
+}
+
+.select-wrap {
+    min-width: 290px;
+}
+
+.select-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #555;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+#paper-select {
+    width: 100%;
+
+    min-height: 45px;
+
+    padding: 9px 14px;
+
+    border:
+        2px solid #ddd;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #fff;
+
+    color: #222;
+
+    font-family: var(--marathi);
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+#paper-select:focus {
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(201,21,32,.10);
+}
+
+
+/* =========================================================
+   12. NEWSPAPER PAPER CARD
+   ========================================================= */
+
+.paper-card {
+    width: min(1400px, calc(100% - 32px));
+
+    margin: 22px auto;
+
+    padding: 28px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #fafafa
+        );
+
+    color: #222;
+
+    box-shadow: var(--shadow-heavy);
+}
+
+.paper-heading {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding-bottom: 18px;
+
+    border-bottom:
+        3px solid #111;
+}
+
+.paper-heading-left {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.paper-type {
+    display: inline-block;
+
+    margin-bottom: 8px;
+
+    color: var(--red);
+
+    font-family: var(--marathi);
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+
+/*
+   IMPORTANT OVERLAP FIX
+
+   लोकभारती आणि दैनिक वेगळ्या line मध्ये
+   राहतील. No negative positioning.
+*/
+
+.paper-name {
+    display: block;
+
+    margin: 0;
+
+    padding: 0;
+
+    color: #111;
+
+    font-family: var(--marathi);
+
+    font-size: clamp(40px, 5vw, 72px);
+
+    font-weight: 900;
+
+    line-height: 1.15;
+
+    letter-spacing: 0;
+
+    white-space: nowrap;
+
+    word-break: keep-all;
+}
+
+.paper-name-en {
+    display: block;
+
+    margin-top: 10px;
+
+    padding-top: 8px;
+
+    border-top:
+        1px solid #aaa;
+
+    color: #666;
+
+    font-family: var(--serif);
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    letter-spacing: 2px;
+}
+
+.editor-block {
+    min-width: 200px;
+
+    padding: 10px 12px;
+
+    border-left:
+        3px solid var(--red);
+
+    color: #555;
+
+    font-family: var(--marathi);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    text-align: right;
+}
+
+.editor-block span {
+    display: block;
+}
+
+
+/* =========================================================
+   13. PAPER INFO
+   ========================================================= */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, minmax(0,1fr));
+
+    margin-top: 20px;
+
+    border:
+        1px solid #222;
+}
+
+.info-item {
+    min-height: 73px;
+
+    padding: 11px;
+
+    border-right:
+        1px solid #222;
+
+    text-align: center;
+}
+
+.info-item:last-child {
+    border-right: 0;
+}
+
+.info-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #777;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.info-value {
+    display: block;
+
+    color: #111;
+
+    font-family: var(--marathi);
+
+    font-size: 15px;
+
+    font-weight: 900;
+}
+
+.paper-contact {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin-top: 12px;
+
+    padding-top: 10px;
+
+    border-top:
+        1px dashed #bbb;
+
+    color: #555;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   14. E-PAPER VIEWER
+   ========================================================= */
+
+.viewer-section {
+    width: 100%;
+
+    scroll-margin-top: 80px;
+}
+
+.viewer-toolbar {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    width: min(1400px, calc(100% - 32px));
+
+    margin: 28px auto 0;
+
+    padding: 15px 21px;
+
+    border-radius: 10px 10px 0 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #111315,
+            #1c2024
+        );
+
+    color: #fff;
+
+    border-bottom:
+        3px solid var(--red);
+}
+
+.viewer-title {
+    font-family: var(--marathi);
+
+    font-size: 18px;
+
+    font-weight: 900;
+}
+
+.viewer-hint {
+    color: #aeb3ba;
+
+    font-size: 11px;
+}
+
+#epaper-container {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 500px;
+
+    padding: 38px 15px 60px;
 
     overflow: visible;
-
-    cursor: crosshair;
-
-    touch-action: none;
-
-    user-select: none;
-
-    -webkit-user-select: none;
-
-    -webkit-touch-callout: none;
-
-    view-timeline-name:
-        --pageReveal;
-
-    view-timeline-axis:
-        block;
-
-    animation-name:
-        revealPage;
-
-    animation-fill-mode:
-        both;
-
-    animation-timeline:
-        --pageReveal;
-
-    animation-range:
-        entry 10% cover 40%;
 }
 
-/* =====================================================
-   MOBILE PINCH ZOOM VIEWPORT
-   ===================================================== */
+.viewer-loading {
+    margin: 30px auto;
 
-@media (max-width: 650px) {
+    padding: 25px 35px;
 
-    #epaper-container {
+    border-radius: 10px;
 
-        width: 100%;
+    background: #fff;
 
-        overflow-x: auto;
+    color: #222;
 
-        overflow-y: visible;
+    box-shadow: var(--shadow);
 
-        -webkit-overflow-scrolling: touch;
+    font-family: var(--marathi);
 
-        scrollbar-width: none;
+    font-size: 17px;
 
-        touch-action: pan-y;
+    font-weight: 800;
 
-    }
+    text-align: center;
+}
 
+.empty-state {
+    width: min(700px, 92%);
 
-    #epaper-container::-webkit-scrollbar {
+    margin: 30px auto;
 
-        display: none;
+    padding: 40px 25px;
 
-    }
+    border-radius: 12px;
 
+    background: #fff;
 
-    .canvas-wrapper {
+    color: #222;
 
-        width: max-content;
+    text-align: center;
 
-        max-width: none;
+    box-shadow: var(--shadow);
+}
 
-        touch-action: none;
+.empty-state h3 {
+    margin-bottom: 10px;
 
-        margin-left: 0;
+    color: var(--red);
 
-        margin-right: 0;
+    font-family: var(--marathi);
 
-    }
+    font-size: 22px;
+}
 
+.empty-state p {
+    color: #666;
 
-    .canvas-wrapper canvas {
+    font-family: var(--marathi);
 
-        width: auto;
-
-        max-width: none;
-
-        height: auto;
-
-        touch-action: none !important;
-
-    }
-
+    font-size: 14px;
 }
 
 
-@keyframes revealPage {
+/* =========================================================
+   15. PDF CANVAS
+   ========================================================= */
 
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(60px)
-            scale(0.95);
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-/* ==========================================================================
-   8. CANVAS
-   ========================================================================== */
-
-canvas {
+.canvas-wrapper {
+    position: relative;
 
     display: block;
 
+    width: fit-content;
+
     max-width: none;
 
-    height: auto;
+    margin: 0 auto 40px;
 
-    touch-action: none;
+    padding: 0;
+
+    border:
+        3px solid #111;
+
+    border-radius: 4px;
+
+    background: #fff;
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,.45);
+
+    overflow: visible;
 
     user-select: none;
 
@@ -589,405 +1404,293 @@ canvas {
 
     -webkit-touch-callout: none;
 
-    cursor: crosshair;
+    touch-action: none;
 }
 
 .canvas-wrapper canvas {
-
     display: block;
 
     width: auto;
 
-    height: auto;
-
     max-width: none;
 
-    touch-action: none !important;
+    height: auto;
+
+    margin: 0;
+
+    background: #fff;
 
     user-select: none;
 
     -webkit-user-select: none;
 
     -webkit-touch-callout: none;
+
+    touch-action: none !important;
 
     cursor: crosshair;
 }
 
 
-/* ==========================================================================
-   9. CROP BOX
-   ========================================================================== */
-
-.crop-box {
-
-    position: absolute;
-
-    border:
-        2.5px dashed
-        var(--primary-color);
-
-    background:
-        rgba(230, 26, 34, 0.2);
-
-    pointer-events: none;
-
-    display: none;
-
-    box-shadow:
-        0 0 10px
-        rgba(230, 26, 34, 0.6);
-}
-
-
-/* ==========================================================================
-   10. MOBILE / TOUCH SELECTION
-   ========================================================================== */
-
-.canvas-wrapper {
-
-    touch-action: none;
-
-    -webkit-user-select: none;
-
-    user-select: none;
-
-    -webkit-touch-callout: none;
-}
-
-
-.canvas-wrapper canvas {
-
-    touch-action: none !important;
-
-    -webkit-user-select: none;
-
-    user-select: none;
-
-    -webkit-touch-callout: none;
-}
-
-
-/* ==========================================================================
-   11. RED SELECTION BOX
-   ========================================================================== */
+/* =========================================================
+   16. CROP SELECTOR
+   ========================================================= */
 
 #selector {
-
     position: fixed;
 
     display: none;
 
     z-index: 5000;
 
-    border:
-        3px solid #ef233c;
-
-    background:
-        rgba(239, 35, 60, 0.18);
-
-    pointer-events: none;
-
-    box-sizing: border-box;
-
     min-width: 2px;
 
     min-height: 2px;
 
-    will-change:
-        left,
-        top,
-        width,
-        height;
+    border:
+        3px solid #ef233c;
+
+    background:
+        rgba(239,35,60,.18);
+
+    box-shadow:
+        0 0 12px rgba(239,35,60,.65);
+
+    pointer-events: none;
 
     touch-action: none !important;
 }
 
-
-/* ==========================================================================
-   12. SELECTION CORNER EFFECT
-   ========================================================================== */
-
 #selector::before,
 #selector::after {
-
     content: "";
 
     position: absolute;
 
-    width: 10px;
+    width: 11px;
 
-    height: 10px;
+    height: 11px;
 
-    border-color:
-        #ff0000;
-
-    border-style:
-        solid;
+    border:
+        3px solid #ff0000;
 }
-
 
 #selector::before {
-
     top: -3px;
-
     left: -3px;
 
-    border-width:
-        3px 0 0 3px;
+    border-right: 0;
+    border-bottom: 0;
 }
-
 
 #selector::after {
-
     right: -3px;
-
     bottom: -3px;
 
-    border-width:
-        0 3px 3px 0;
+    border-left: 0;
+    border-top: 0;
 }
 
 
-/* ==========================================================================
-   13. AUTOMATIC NEWSPAPER HEADING
-   ========================================================================== */
-
-#automaticPaperHeading {
-
-    text-align: center;
-
-    color: #b3131b;
-
-    font-family:
-        Georgia,
-        "Noto Sans Devanagari",
-        serif;
-
-    font-size: 30px;
-
-    line-height: 1.25;
-
-    font-weight: 900;
-
-    padding:
-        8px 10px 14px;
-
-    border-bottom:
-        3px solid #b3131b;
-
-    margin-bottom: 15px;
-}
-
-
-/* ==========================================================================
-   14. DOWNLOAD MODAL BACKGROUND
-   ========================================================================== */
+/* =========================================================
+   17. DOWNLOAD MODAL
+   ========================================================= */
 
 #modalBackground {
+    position: fixed;
+
+    inset: 0;
 
     display: none;
 
-    position: fixed;
-
-    top: 0;
-
-    left: 0;
-
-    width: 100%;
-
-    height: 100%;
+    z-index: 1999;
 
     background:
-        rgba(0, 0, 0, 0.85);
+        rgba(0,0,0,.88);
 
     backdrop-filter:
         blur(8px);
 
-    z-index: 1999;
+    -webkit-backdrop-filter:
+        blur(8px);
 }
 
-
-/* ==========================================================================
-   15. DOWNLOAD MODAL
-   ========================================================================== */
-
 #downloadModal {
-
-    display: none;
-
     position: fixed;
 
     top: 50%;
-
     left: 50%;
 
-    transform:
-        translate(-50%, -50%);
-
-    background:
-        #ffffff;
-
-    color:
-        var(--text-main);
-
-    padding: 35px;
-
-    border-radius:
-        var(--radius-md);
-
-    box-shadow:
-        var(--shadow-dark);
+    display: none;
 
     z-index: 2000;
 
-    text-align: center;
-
     width: 560px;
 
-    max-width: 92%;
+    max-width: 94%;
+
+    max-height: 92vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius: 15px;
+
+    background: #fff;
+
+    color: #222;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.60);
+
+    text-align: center;
 
     animation:
-        modalPopup 0.35s
-        cubic-bezier(
-            0.34,
-            1.56,
-            0.64,
-            1
-        );
+        modalPopup .3s ease;
 }
-
 
 @keyframes modalPopup {
 
     from {
-
         opacity: 0;
 
         transform:
-            translate(-50%, -40%)
-            scale(0.9);
+            translate(-50%,-46%)
+            scale(.94);
     }
 
     to {
-
         opacity: 1;
 
         transform:
-            translate(-50%, -50%)
+            translate(-50%,-50%)
             scale(1);
     }
 }
 
+.modal-header {
+    position: relative;
+
+    margin-bottom: 15px;
+}
 
 #downloadModal h3 {
+    color: #111;
 
-    font-size: 24px;
+    font-family: var(--marathi);
 
-    margin-bottom: 18px;
+    font-size: 23px;
 
-    font-weight: 800;
+    font-weight: 900;
+}
 
-    color:
-        var(--secondary-color);
+.modal-close {
+    position: absolute;
+
+    top: -8px;
+    right: -8px;
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: #eee;
+
+    color: #333;
+
+    font-size: 20px;
+
+    line-height: 34px;
+
+    text-align: center;
+}
+
+.modal-close:hover {
+    background: var(--red);
+
+    color: #fff;
 }
 
 
-/* ==========================================================================
-   16. NEWS HEADING INPUT
-   ========================================================================== */
+/* =========================================================
+   18. CROP PREVIEW
+   ========================================================= */
+
+#automaticPaperHeading {
+    width: 100%;
+
+    margin-bottom: 15px;
+
+    padding: 8px 10px 12px;
+
+    border-bottom:
+        3px solid var(--red);
+
+    color: var(--red);
+
+    font-family: var(--marathi);
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    line-height: 1.4;
+
+    text-align: center;
+}
 
 #newsHeadingInput {
+    display: none;
 
     width: 100%;
 
-    padding:
-        14px 18px;
+    margin-bottom: 15px;
 
-    font-size: 16px;
-
-    font-weight: 600;
-
-    margin-bottom: 22px;
+    padding: 12px 15px;
 
     border:
-        2px solid var(--border-color);
+        2px solid #ddd;
 
-    border-radius:
-        var(--radius-sm);
+    border-radius: 7px;
 
     outline: none;
 
-    transition:
-        all 0.3s;
-}
+    color: #222;
 
+    font-size: 16px;
+}
 
 #newsHeadingInput:focus {
-
-    border-color:
-        var(--primary-color);
-
-    box-shadow:
-        0 0 10px
-        rgba(230, 26, 34, 0.2);
+    border-color: var(--red);
 }
-
-
-/* ==========================================================================
-   17. DOWNLOAD AREA
-   ========================================================================== */
-
-#downloadArea {
-
-    margin-top: 0;
-
-    padding: 16px;
-
-    background:
-        #f7f7f7;
-
-    border:
-        1px solid #dddddd;
-
-    border-radius: 10px;
-
-    text-align: center;
-}
-
-
-/* ==========================================================================
-   18. LIVE HEADING
-   ========================================================================== */
 
 #liveHeading {
+    margin-bottom: 15px;
 
-    font-size: 28px;
-
-    font-weight: 800;
-
-    margin-bottom: 20px;
-
-    text-align: center;
-
-    color:
-        var(--secondary-color);
+    padding-bottom: 10px;
 
     border-bottom:
-        3px double
-        var(--primary-color);
+        3px double var(--red);
 
-    padding-bottom: 12px;
+    color: var(--red);
 
-    line-height: 1.35;
+    font-family: var(--marathi);
+
+    font-size: 27px;
+
+    font-weight: 900;
+
+    line-height: 1.4;
+
+    text-align: center;
 }
 
-
-/* ==========================================================================
-   19. CROPPED PREVIEW
-   ========================================================================== */
-
 #croppedPreview {
-
     display: block;
 
     width: auto;
@@ -996,764 +1699,364 @@ canvas {
 
     max-height: 55vh;
 
-    margin: 0 auto;
+    margin: auto;
 
     border:
-        1px solid #cccccc;
+        1px solid #ccc;
 
-    background:
-        #ffffff;
+    background: #fff;
+
+    object-fit: contain;
 }
 
+#downloadArea {
+    margin-top: 10px;
 
-/* ==========================================================================
-   20. DOWNLOAD INFO
-   ========================================================================== */
+    padding: 15px;
+
+    border:
+        1px solid #ddd;
+
+    border-radius: 10px;
+
+    background: #f7f7f7;
+}
 
 .download-info {
+    margin-top: 10px;
 
-    margin-top: 12px;
-
-    text-align: center;
-
-    color: #666666;
+    color: #666;
 
     font-size: 12px;
 
-    font-weight: 700;
+    font-weight: 600;
 }
 
 
-/* ==========================================================================
-   21. MODAL ACTION BUTTONS
-   ========================================================================== */
+/* =========================================================
+   19. BUTTONS
+   ========================================================= */
 
 .modal-actions {
-
     display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 
     gap: 9px;
 
-    justify-content:
-        center;
-
     flex-wrap: wrap;
 
-    margin-top: 17px;
+    margin-top: 15px;
 }
 
-
-/* ==========================================================================
-   22. BUTTONS
-   ========================================================================== */
-
 .btn {
-
-    padding:
-        14px 32px;
-
-    border: none;
-
-    cursor: pointer;
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    border-radius:
-        var(--radius-sm);
-
-    transition:
-        all 0.2s ease;
-
     display: inline-flex;
 
     align-items: center;
 
     justify-content: center;
+
+    min-height: 45px;
+
+    padding: 11px 24px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    color: #fff;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    transition: .2s ease;
 }
 
+.btn:hover {
+    transform: translateY(-2px);
+
+    filter: brightness(.94);
+}
 
 .btn:active {
-
-    transform:
-        scale(0.97);
+    transform: scale(.97);
 }
-
 
 .btn-success {
-
-    background:
-        var(--primary-color);
-
-    color:
-        #ffffff;
-
-    box-shadow:
-        0 4px 12px
-        rgba(230, 26, 34, 0.3);
+    background: var(--red);
 }
-
 
 .btn-success:hover {
-
-    background:
-        var(--primary-dark);
-
-    box-shadow:
-        0 6px 16px
-        rgba(230, 26, 34, 0.4);
+    background: var(--red-dark);
 }
-
 
 .btn-danger {
-
-    background:
-        #555555;
-
-    color:
-        #ffffff;
+    background: #555;
 }
-
 
 .btn-danger:hover {
-
-    background:
-        #333333;
+    background: #333;
 }
-
 
 .btn-primary-download {
-
-    background:
-        #2563eb;
-
-    color:
-        #ffffff;
+    background: #2563eb;
 }
-
 
 .btn-pdf {
+    background: #7c3aed;
+}
 
-    background:
-        #7c3aed;
-
-    color:
-        #ffffff;
+.btn-blue {
+    background: #007bff;
 }
 
 
-/* ==========================================================================
-   23. 📅 PREMIUM DATE PICKER
-   ========================================================================== */
+/* =========================================================
+   20. DATE PICKER
+   ========================================================= */
 
 .date-picker-box {
-
-    position: relative;
-
     width: 100%;
 
     margin-bottom: 18px;
 }
 
-
 .date-picker-box label {
-
     display: block;
 
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 
-    color: #333333;
+    color: #333;
 
-    font-size: 15px;
+    font-family: var(--marathi);
+
+    font-size: 14px;
 
     font-weight: 800;
 }
 
-
 #paperDate {
-
     width: 100%;
 
-    height: 56px;
+    height: 54px;
 
     padding:
-        10px 50px 10px 16px;
-
-    box-sizing: border-box;
+        10px 45px 10px 15px;
 
     border:
-        2px solid #e61a22;
+        2px solid var(--red);
 
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff 0%,
-            #fff5f5 100%
-        );
-
-    color: #222222;
-
-    font-family:
-        'Segoe UI',
-        Arial,
-        sans-serif;
-
-    font-size: 17px;
-
-    font-weight: 700;
-
-    cursor: pointer;
+    border-radius: 10px;
 
     outline: none;
 
-    box-shadow:
-        0 4px 12px
-        rgba(230, 26, 34, 0.12);
+    background: #fff;
 
-    transition:
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        transform 0.2s ease,
-        background 0.25s ease;
-}
-
-
-/* DATE HOVER */
-
-#paperDate:hover {
-
-    border-color:
-        #b8141a;
-
-    background:
-        #ffffff;
-
-    box-shadow:
-        0 5px 15px
-        rgba(230, 26, 34, 0.18);
-}
-
-
-/* DATE FOCUS */
-
-#paperDate:focus {
-
-    border-color:
-        #b8141a;
-
-    background:
-        #ffffff;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(230, 26, 34, 0.12),
-        0 5px 15px
-        rgba(230, 26, 34, 0.15);
-
-    transform:
-        translateY(-1px);
-}
-
-
-/* CALENDAR ICON */
-
-#paperDate::-webkit-calendar-picker-indicator {
-
-    cursor: pointer;
-
-    width: 24px;
-
-    height: 24px;
-
-    padding: 5px;
-
-    border-radius: 7px;
-
-    background-color:
-        #e61a22;
-
-    filter:
-        invert(1);
-
-    transition:
-        0.2s ease;
-}
-
-
-#paperDate::-webkit-calendar-picker-indicator:hover {
-
-    background-color:
-        #b8141a;
-
-    transform:
-        scale(1.08);
-}
-
-
-#paperDate {
+    color: #222;
 
     color-scheme: light;
+
+    font-size: 16px;
+
+    font-weight: 700;
 }
 
 
-/* ==========================================================================
-   24. ADMIN FORM COMPATIBILITY
-   ========================================================================== */
+/* =========================================================
+   21. ADMIN FORM
+   ========================================================= */
 
 .form-container {
-
-    max-width: 600px;
-
-    background:
-        #ffffff;
+    width:
+        min(600px, calc(100% - 30px));
 
     margin:
         0 auto 30px;
 
     padding: 30px;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
-    box-shadow:
-        0 4px 15px
-        rgba(0, 0, 0, 0.1);
+    background: #fff;
 
-    color:
-        #222222;
+    color: #222;
+
+    box-shadow: var(--shadow);
 }
-
 
 .form-container h2 {
-
-    text-align: center;
-
-    color:
-        #e61a22;
-
-    font-size: 26px;
-
     margin-bottom: 20px;
 
-    border-bottom:
-        2px solid #f0f2f5;
-
     padding-bottom: 10px;
-}
 
+    border-bottom:
+        2px solid #eee;
+
+    color: var(--red);
+
+    font-family: var(--marathi);
+
+    text-align: center;
+}
 
 .form-group {
+    position: relative;
 
     margin-bottom: 15px;
-
-    position: relative;
 }
 
-
 .form-group label {
-
     display: block;
-
-    font-weight: bold;
 
     margin-bottom: 5px;
 
-    color: #333333;
+    color: #333;
+
+    font-family: var(--marathi);
+
+    font-weight: 700;
 }
 
-
-input[type="text"],
-input[type="password"],
-input[type="file"],
-select {
-
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
 
-    padding: 10px;
+    padding: 11px;
 
     border:
-        1px solid #cccccc;
+        1px solid #ccc;
 
-    border-radius: 5px;
-
-    box-sizing: border-box;
-
-    font-size: 15px;
-
-    color: #222222;
-
-    background:
-        #ffffff;
-}
-
-
-input[type="text"]:focus,
-input[type="password"]:focus,
-select:focus {
-
-    border-color:
-        var(--primary-color);
+    border-radius: 6px;
 
     outline: none;
 
+    background: #fff;
+
+    color: #222;
+
+    font-size: 15px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--red);
+
     box-shadow:
-        0 0 0 3px
-        rgba(230, 26, 34, 0.1);
+        0 0 0 3px rgba(201,21,32,.10);
 }
-
-
-/* ==========================================================================
-   25. PASSWORD SHOW / HIDE
-   ========================================================================== */
-
-.password-wrapper {
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-}
-
-
-.password-wrapper input {
-
-    padding-right: 75px;
-}
-
-
-.toggle-btn {
-
-    position: absolute;
-
-    right: 12px;
-
-    cursor: pointer;
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    color: #666666;
-
-    user-select: none;
-
-    background:
-        #eeeeee;
-
-    padding:
-        4px 8px;
-
-    border-radius: 4px;
-}
-
-
-button {
-
-    background:
-        #e61a22;
-
-    color:
-        #ffffff;
-
-    border: none;
-
-    padding: 12px;
-
-    width: 100%;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    border-radius: 5px;
-
-    cursor: pointer;
-
-    margin-top: 10px;
-
-    transition:
-        0.2s ease;
-}
-
-
-button:hover {
-
-    background:
-        #b8141a;
-}
-
-
-.btn-blue {
-
-    background:
-        #007bff;
-}
-
-
-.btn-blue:hover {
-
-    background:
-        #0056b3;
-}
-
 
 .grid {
-
     display: grid;
 
     grid-template-columns:
-        1fr 1fr;
+        repeat(2,minmax(0,1fr));
 
     gap: 15px;
 }
 
-
-hr {
-
-    border: 0;
-
-    height: 1px;
-
-    background:
-        #dddddd;
-
-    margin:
-        25px 0;
-}
-
-
-/* ==========================================================================
-   26. R TECHNOLOGIES FOOTER
-   ========================================================================== */
-
-.rt-footer {
-
-    width: 100%;
-
-    background:
-        #101214;
-
-    color:
-        #b8bdc5;
-
-    margin: 0;
-
-    padding: 0;
-}
-
-
-.rt-footer-inner {
-
-    width: 100%;
-
-    max-width: 1400px;
-
-    margin: 0 auto;
-
-    min-height: 110px;
-
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr 1fr;
-
-    align-items: center;
-
-    padding:
-        25px 40px;
-}
-
-
-/* FOOTER LEFT */
-
-.rt-footer-left {
-
-    text-align: left;
-}
-
-
-.rt-brand {
-
-    color: #ffffff;
-
-    font-size: 16px;
-
-    font-weight: 800;
-}
-
-
-.rt-subtitle {
-
-    margin-top: 5px;
-
-    color: #9ca3af;
-
-    font-size: 13px;
-}
-
-
-/* FOOTER CENTER */
-
-.rt-footer-center {
-
-    text-align: center;
-
-    border-left:
-        1px solid #30343b;
-
-    border-right:
-        1px solid #30343b;
-
-    padding:
-        5px 20px;
-}
-
-
-.rt-developed {
-
-    color: #9ca3af;
-
-    font-size: 12px;
-}
-
-
-.rt-company {
-
-    margin-top: 4px;
-
-    color: #ffffff;
-
-    font-size: 20px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-}
-
-
-.rt-tagline {
-
-    margin-top: 5px;
-
-    color: #7f8792;
-
-    font-size: 11px;
-}
-
-
-/* FOOTER RIGHT */
-
-.rt-footer-right {
-
-    text-align: right;
-
-    color: #9ca3af;
-
-    font-size: 13px;
-
-    line-height: 1.8;
-}
-
-
-/* FOOTER BOTTOM */
-
-.rt-footer-bottom {
-
-    width: 100%;
-
-    border-top:
-        1px solid #292d33;
-
-    padding:
-        12px 20px;
-
-    text-align: center;
-
-    color: #858d98;
-
-    font-size: 12px;
-}
-
-
-.rt-footer-bottom span {
-
-    color:
-        #b3131b;
-
-    margin:
-        0 8px;
-}
-
-
-/* ==========================================================================
-   27. OLD FOOTER COMPATIBILITY
-   ========================================================================== */
-
-.footer-inner {
-
-    width: 100%;
-
-    max-width: 1400px;
-
-    margin: 0 auto;
+.password-wrapper {
+    position: relative;
 
     display: flex;
 
     align-items: center;
+}
 
-    justify-content:
-        space-between;
+.password-wrapper input {
+    padding-right: 75px;
+}
+
+.toggle-btn {
+    position: absolute;
+
+    right: 10px;
+
+    padding: 5px 9px;
+
+    border-radius: 4px;
+
+    background: #eee;
+
+    color: #555;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+hr {
+    height: 1px;
+
+    margin: 25px 0;
+
+    border: 0;
+
+    background: #ddd;
+}
+
+
+/* =========================================================
+   22. FOOTER
+   ========================================================= */
+
+.footer-inner {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
 
     gap: 30px;
 
-    padding:
-        20px 30px;
+    width: min(1400px,100%);
 
-    box-sizing:
-        border-box;
+    margin: auto;
+
+    padding: 28px 30px;
+
+    background: #101214;
+
+    color: #b8bdc5;
 }
 
+.footer-left,
+.footer-center,
+.footer-right {
+    flex: 1;
+}
 
 .footer-left {
-
-    flex: 1;
-
     text-align: left;
 }
 
-
 .footer-left strong {
-
     display: block;
 
-    color:
-        #ffffff;
+    color: #fff;
+
+    font-family: var(--marathi);
 
     font-size: 15px;
 }
 
-
 .footer-left span {
-
     display: block;
 
     margin-top: 4px;
 
-    color:
-        #9ca3af;
+    color: #9ca3af;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
-
 .footer-center {
-
-    flex: 1;
-
-    text-align: center;
+    padding:
+        5px 20px;
 
     border-left:
         1px solid #30343b;
@@ -1761,30 +2064,25 @@ hr {
     border-right:
         1px solid #30343b;
 
-    padding:
-        5px 20px;
+    text-align: center;
 }
 
+.footer-center span,
+.footer-center strong,
+.footer-center small {
+    display: block;
+}
 
 .footer-center span {
+    color: #9ca3af;
 
-    display: block;
-
-    color:
-        #9ca3af;
-
-    font-size: 11px;
+    font-size: 10px;
 }
 
-
 .footer-center strong {
-
-    display: block;
-
     margin-top: 4px;
 
-    color:
-        #ffffff;
+    color: #fff;
 
     font-size: 18px;
 
@@ -1793,353 +2091,953 @@ hr {
     letter-spacing: 2px;
 }
 
-
 .footer-center small {
-
-    display: block;
-
     margin-top: 4px;
 
-    color:
-        #7f8792;
+    color: #7f8792;
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
-
 .footer-right {
-
-    flex: 1;
-
     text-align: right;
 }
 
-
 .footer-right span {
-
     display: block;
 
-    color:
-        #9ca3af;
+    color: #9ca3af;
 
-    font-size: 12px;
+    font-size: 11px;
 
     line-height: 1.8;
 }
 
 
-/* ==========================================================================
-   28. MOBILE RESPONSIVE
-   ========================================================================== */
+/* =========================================================
+   23. TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+    .premium-header-main {
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+
+        text-align: center;
+
+        padding: 25px 20px;
+    }
+
+    .premium-brand {
+        order: -1;
+    }
+
+    .header-side.left,
+    .header-side.right {
+        justify-content: center;
+    }
+
+    .premium-actions {
+        justify-content: center;
+    }
+
+    .featured-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .featured-card.main {
+        grid-column: 1 / -1;
+    }
+
+    .info-grid {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .info-item:nth-child(3) {
+        border-right: 0;
+    }
+
+    .info-item:nth-child(n+4) {
+        border-top:
+            1px solid #222;
+    }
+
+    .archive-row {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .select-wrap {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   24. MOBILE
+   ========================================================= */
 
 @media (max-width: 700px) {
 
-    .category-bar {
+    .date-weather-inner {
+        flex-direction: column;
 
-        padding:
-            12px 8px;
+        align-items: center;
+
+        padding: 7px 10px;
+
+        text-align: center;
+    }
+
+    .date-weather-left,
+    .date-weather-right {
+        justify-content: center;
     }
 
 
-    .tab-btn {
+    /* HEADER */
 
-        padding:
-            10px 18px;
+    .premium-header-main {
+        padding: 18px 12px 20px;
 
-        margin:
-            4px 2px;
-
-        font-size: 14px;
+        gap: 18px;
     }
 
-
-    .archive-section {
-
-        flex-direction:
-            column;
-
-        padding:
-            0 15px;
-    }
-
-
-    #paper-select {
-
+    .premium-brand {
         width: 100%;
 
-        max-width: 350px;
-    }
-
-
-    .brand-header {
-
-        margin:
-            15px 10px;
-
         padding:
-            25px 15px;
+            4px 5px 7px;
     }
 
+    /*
+       Mobile overlap fix
+    */
 
-    .main-logo {
+    .premium-logo {
+        display: block;
 
-        font-size: 60px;
+        margin: 0 auto;
+
+        font-size: 48px;
+
+        line-height: 1.18;
+
+        white-space: normal;
+
+        word-break: keep-all;
     }
 
+    .premium-logo-en {
+        margin-top: 11px;
 
-    .english-title {
+        padding-top: 7px;
 
-        font-size: 25px;
+        font-size: 16px;
+
+        letter-spacing: 3px;
+    }
+
+    .brand-kicker {
+        margin-bottom: 6px;
+
+        font-size: 9px;
 
         letter-spacing: 2px;
     }
 
+    .premium-tagline {
+        margin-top: 6px;
 
-    .sub-logo {
-
-        font-size: 18px;
-
-        letter-spacing: 4px;
+        font-size: 9px;
     }
 
-
-    #epaper-container {
-
-        padding:
-            25px 10px;
-    }
-
-
-    .canvas-wrapper {
-
+    .header-side {
         width: 100%;
 
-        margin-bottom: 25px;
+        justify-content: center !important;
+    }
+
+    .mini-stat {
+        font-size: 10px;
+    }
+
+
+    /* NAV */
+
+    .premium-nav-inner {
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        flex-wrap: nowrap;
+
+        padding: 5px 7px;
+
+        scrollbar-width: none;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .premium-nav-inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    .premium-nav-item {
+        flex:
+            0 0 auto;
+
+        min-height: 38px;
+
+        padding: 7px 13px;
+
+        font-size: 12px;
+    }
+
+
+    /* BREAKING */
+
+    .breaking {
+        min-height: 40px;
+    }
+
+    .breaking-label {
+        padding: 0 11px;
+
+        font-size: 11px;
+    }
+
+    .breaking-text {
+        font-size: 12px;
+    }
+
+
+    /* COMMON WIDTH */
+
+    .featured-section,
+    .hero,
+    .archive-row,
+    .paper-card {
+        width:
+            calc(100% - 18px);
+    }
+
+
+    /* FEATURED */
+
+    .featured-section {
+        padding: 15px;
+
+        margin:
+            15px auto;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-card.main {
+        grid-column: auto;
+    }
+
+    .featured-card {
+        min-height: auto;
+
+        padding: 18px;
+    }
+
+    .featured-card h2 {
+        font-size: 22px;
+    }
+
+
+    /* HERO */
+
+    .hero-inner {
+        padding:
+            26px 18px;
+    }
+
+    #heroTitle {
+        font-size: 31px;
+
+        line-height: 1.35;
+    }
+
+    .category-tabs {
+        width: 100%;
+    }
+
+    .tab-btn {
+        flex:
+            1 1 calc(50% - 8px);
+
+        min-width: 0;
+
+        padding:
+            9px 10px;
+
+        font-size: 12px;
+    }
+
+
+    /* ARCHIVE */
+
+    .archive-row {
+        padding: 17px;
+
+        margin:
+            15px auto;
+    }
+
+
+    /* PAPER */
+
+    .paper-card {
+        padding: 16px;
+
+        margin:
+            15px auto;
+    }
+
+    .paper-heading {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 15px;
+    }
+
+    /*
+       Main newspaper logo mobile fix
+    */
+
+    .paper-name {
+        display: block;
+
+        margin: 0;
+
+        font-size: 43px;
+
+        line-height: 1.18;
+
+        white-space: normal;
+
+        word-break: keep-all;
+    }
+
+    .paper-name-en {
+        margin-top: 10px;
+
+        padding-top: 7px;
+
+        font-size: 12px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .editor-block {
+        min-width: 0;
+
+        padding:
+            8px 10px;
+
+        text-align: left;
+    }
+
+    .info-grid {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .info-item {
+        border-right:
+            1px solid #222;
+    }
+
+    .info-item:nth-child(2n) {
+        border-right: 0;
+    }
+
+    .info-item:nth-child(n+3) {
+        border-top:
+            1px solid #222;
+    }
+
+
+    /* VIEWER */
+
+    .viewer-toolbar {
+        width:
+            calc(100% - 18px);
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+
+        padding:
+            12px 14px;
+    }
+
+    #epaper-container {
+        align-items: flex-start;
+
+        padding:
+            25px 6px 40px;
+
+        overflow-x: auto;
+
+        overflow-y: visible;
+
+        scrollbar-width: none;
+
+        -webkit-overflow-scrolling: touch;
+
+        touch-action: pan-y;
+    }
+
+    #epaper-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .canvas-wrapper {
+        margin-left: auto;
+
+        margin-right: auto;
 
         border-width: 2px;
     }
 
 
-    #downloadModal {
+    /* MODAL */
 
+    #downloadModal {
         width: 95%;
 
-        padding: 20px;
-    }
+        max-height: 90vh;
 
+        padding: 19px;
+    }
 
     #automaticPaperHeading {
-
         font-size: 22px;
     }
-
 
     #liveHeading {
-
-        font-size: 22px;
+        font-size: 21px;
     }
 
+    #croppedPreview {
+        max-height: 45vh;
+    }
 
     .modal-actions {
-
-        flex-direction:
-            column;
+        flex-direction: column;
     }
 
-
     .modal-actions .btn {
-
         width: 100%;
     }
 
 
+    /* FORM */
+
     .grid {
-
-        grid-template-columns:
-            1fr;
-
-        gap: 0;
+        grid-template-columns: 1fr;
     }
 
-
     .form-container {
-
-        width: calc(100% - 20px);
+        width:
+            calc(100% - 18px);
 
         padding:
             20px 15px;
     }
 
 
-    #paperDate {
-
-        height: 55px;
-
-        font-size: 16px;
-
-        padding-left: 14px;
-
-        padding-right: 45px;
-
-        border-radius: 10px;
-    }
-
-
-    #paperDate::-webkit-calendar-picker-indicator {
-
-        width: 22px;
-
-        height: 22px;
-    }
-
-
-    .rt-footer-inner {
-
-        grid-template-columns:
-            1fr;
-
-        gap: 18px;
-
-        padding:
-            25px 20px;
-
-        text-align: center;
-    }
-
-
-    .rt-footer-left {
-
-        text-align: center;
-    }
-
-
-    .rt-footer-center {
-
-        border-left: 0;
-
-        border-right: 0;
-
-        border-top:
-            1px solid #30343b;
-
-        border-bottom:
-            1px solid #30343b;
-
-        padding:
-            15px 10px;
-    }
-
-
-    .rt-footer-right {
-
-        text-align: center;
-    }
-
-
-    .rt-footer-bottom {
-
-        line-height: 1.8;
-    }
-
+    /* FOOTER */
 
     .footer-inner {
-
-        flex-direction:
-            column;
+        flex-direction: column;
 
         gap: 18px;
 
         padding:
             25px 20px;
     }
-
 
     .footer-left,
     .footer-center,
     .footer-right {
-
         width: 100%;
 
         text-align: center;
     }
 
-
     .footer-center {
-
-        border-left: 0;
-
-        border-right: 0;
+        padding:
+            15px 10px;
 
         border-top:
             1px solid #30343b;
 
+        border-right: 0;
+
         border-bottom:
             1px solid #30343b;
 
-        padding:
-            15px 10px;
+        border-left: 0;
     }
 }
 
 
-/* ==========================================================================
-   29. SMALL MOBILE
-   ========================================================================== */
+/* =========================================================
+   25. SMALL MOBILE
+   ========================================================= */
 
 @media (max-width: 450px) {
 
-    .main-logo {
+    .premium-logo {
+        font-size: 40px;
 
-        font-size: 48px;
+        line-height: 1.2;
     }
 
+    .premium-logo-en {
+        font-size: 14px;
 
-    .english-title {
-
-        font-size: 21px;
+        letter-spacing: 2px;
     }
 
+    .premium-nav-item {
+        padding:
+            7px 10px;
 
-    .sub-logo {
-
-        font-size: 15px;
-
-        letter-spacing: 3px;
+        font-size: 11px;
     }
 
+    .mini-stat {
+        font-size: 10px;
+    }
+
+    .featured-card {
+        padding: 16px;
+    }
+
+    #heroTitle {
+        font-size: 26px;
+    }
+
+    .paper-name {
+        font-size: 35px;
+
+        line-height: 1.2;
+    }
+
+    .paper-name-en {
+        font-size: 10px;
+
+        letter-spacing: 1px;
+    }
+
+    .info-item {
+        min-height: 62px;
+
+        padding: 7px 4px;
+    }
+
+    .info-label {
+        font-size: 8px;
+    }
+
+    .info-value {
+        font-size: 12px;
+    }
 
     #downloadModal {
-
         padding: 15px;
     }
 
-
-    #downloadArea {
-
-        padding: 10px;
-    }
-
-
-    #liveHeading {
-
-        font-size: 19px;
-
-        padding-bottom: 8px;
-    }
-
-
     .btn {
+        width: 100%;
 
         font-size: 14px;
-
-        padding:
-            12px 20px;
     }
 }
 
 
-/* ==========================================================================
-   END OF STYLE.CSS
-   ========================================================================== */
+/* =========================================================
+   26. VERY SMALL PHONES
+   ========================================================= */
 
-   
+@media (max-width: 360px) {
+
+    .premium-logo {
+        font-size: 34px;
+    }
+
+    .premium-logo-en {
+        font-size: 12px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .paper-name {
+        font-size: 30px;
+    }
+
+    .tab-btn {
+        font-size: 11px;
+
+        padding:
+            8px 6px;
+    }
+}
+/* =========================================================
+   FINAL PROFESSIONAL POLISH
+   LOKBHARATI E-PAPER
+   ========================================================= */
+
+/* Marathi stylish fonts */
+.premium-logo,
+.paper-name,
+#heroTitle,
+#automaticPaperHeading,
+#liveHeading,
+.featured-card h2,
+.featured-card h3 {
+    font-family:
+        "Noto Serif Devanagari",
+        "Nirmala UI",
+        "Mangal",
+        Georgia,
+        serif;
+}
+
+/* =========================
+   NAVBAR - ALWAYS VISIBLE
+   ========================= */
+
+.premium-nav {
+    background: linear-gradient(180deg, #202326 0%, #0b0d0f 100%);
+}
+
+.premium-nav-item {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,.45);
+}
+
+.premium-nav-item:hover {
+    background: var(--red);
+    color: #ffffff !important;
+}
+
+.premium-nav-item.active {
+    background: var(--red);
+    color: #ffffff !important;
+}
+
+/* Navbar links / spans inside */
+.premium-nav-item,
+.premium-nav-item span,
+.premium-nav-item a {
+    color: #ffffff !important;
+}
+
+/* =========================
+   LOKBHARATI HEADER FIX
+   ========================= */
+
+.premium-brand {
+    min-width: 0;
+    overflow: visible;
+}
+
+.premium-logo {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0 10px;
+
+    color: var(--red);
+
+    font-size: clamp(48px, 6.2vw, 92px);
+    line-height: 1.15;
+
+    white-space: nowrap;
+    overflow: visible;
+
+    letter-spacing: -1px;
+}
+
+/* English name */
+.premium-logo-en {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+
+    margin: 10px auto 0;
+    padding-top: 8px;
+
+    line-height: 1.2;
+}
+
+/* Tagline should never collide */
+.premium-tagline {
+    display: block;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+/* =========================
+   PAPER NAME / DAILY FIX
+   ========================= */
+
+.paper-name {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    padding: 3px 0 8px;
+
+    color: #111;
+
+    font-size: clamp(38px, 5vw, 68px);
+    line-height: 1.25;
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.paper-name-en {
+    display: block;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+/* =========================
+   HEADER GRID IMPROVEMENT
+   ========================= */
+
+.premium-header-main {
+    grid-template-columns:
+        minmax(180px, 1fr)
+        minmax(300px, auto)
+        minmax(180px, 1fr);
+
+    align-items: center;
+}
+
+/* =========================
+   FEATURED CARDS
+   ========================= */
+
+.featured-card {
+    overflow: hidden;
+}
+
+.featured-card h2,
+.featured-card h3 {
+    line-height: 1.4;
+}
+
+/* =========================
+   HERO
+   ========================= */
+
+#heroTitle {
+    line-height: 1.35;
+    overflow-wrap: break-word;
+}
+
+/* =========================
+   MOBILE PROFESSIONAL
+   ========================= */
+
+@media (max-width: 900px) {
+
+    .premium-header-main {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .premium-brand {
+        width: 100%;
+        order: -1;
+    }
+
+    .premium-logo {
+        white-space: normal;
+        text-align: center;
+        font-size: clamp(48px, 10vw, 75px);
+        line-height: 1.2;
+    }
+
+    .paper-name {
+        font-size: clamp(38px, 9vw, 58px);
+    }
+}
+
+@media (max-width: 700px) {
+
+    /* Navbar stays readable */
+    .premium-nav-inner {
+        display: flex;
+        justify-content: center;
+        gap: 3px;
+    }
+
+    .premium-nav-item {
+        color: #ffffff !important;
+        min-height: 40px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .premium-nav-item:hover,
+    .premium-nav-item.active {
+        color: #ffffff !important;
+        background: var(--red);
+    }
+
+    /* Logo */
+    .premium-logo {
+        font-size: clamp(42px, 13vw, 62px);
+        line-height: 1.25;
+        letter-spacing: 0;
+    }
+
+    .premium-logo-en {
+        font-size: 16px;
+        letter-spacing: 2px;
+    }
+
+    .premium-tagline {
+        font-size: 10px;
+        line-height: 1.6;
+    }
+
+    /* Paper title */
+    .paper-name {
+        font-size: clamp(34px, 11vw, 48px);
+        line-height: 1.3;
+        padding-bottom: 10px;
+    }
+
+    .paper-name-en {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .paper-heading {
+        gap: 15px;
+    }
+
+    .editor-block {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* =========================
+   VERY SMALL MOBILE
+   ========================= */
+
+@media (max-width: 450px) {
+
+    .premium-logo {
+        font-size: 42px;
+        line-height: 1.3;
+    }
+
+    .premium-logo-en {
+        font-size: 14px;
+        letter-spacing: 1.5px;
+    }
+
+    .premium-nav-inner {
+        overflow-x: auto;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .premium-nav-inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    .premium-nav-item {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        padding: 8px 11px;
+        font-size: 11px;
+    }
+
+    .paper-name {
+        font-size: 34px;
+        line-height: 1.35;
+    }
+
+    .paper-name-en {
+        font-size: 12px;
+    }
+}/* =========================================
+   WHITE NAVBAR - FINAL FIX
+   ========================================= */
+
+.premium-nav {
+    background: #ffffff !important;
+    border-bottom: 3px solid #e61a22 !important;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.12) !important;
+}
+
+.premium-nav-inner {
+    background: #ffffff !important;
+}
+
+.premium-nav-item {
+    color: #222222 !important;
+    background: transparent !important;
+    text-shadow: none !important;
+}
+
+.premium-nav-item:hover {
+    background: #e61a22 !important;
+    color: #ffffff !important;
+}
+
+.premium-nav-item.active {
+    background: #e61a22 !important;
+    color: #ffffff !important;
+}
+
+/* जर nav मध्ये span/a असेल तरी text काळाच */
+.premium-nav-item span,
+.premium-nav-item a {
+    color: #222222 !important;
+}
+
+.premium-nav-item:hover span,
+.premium-nav-item:hover a,
+.premium-nav-item.active span,
+.premium-nav-item.active a {
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   END
+   ========================================================= */

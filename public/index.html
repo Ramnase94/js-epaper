@@ -1,1795 +1,1984 @@
+
 <!DOCTYPE html>
 <html lang="mr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#b3131b">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="दैनिक लोकभारती - Digital E-Paper Portal"
+    >
+
     <title>दैनिक लोकभारती | Digital E-Paper</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+    <!-- =====================================================
+         PDF.JS
+    ====================================================== -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+
+    <!-- =====================================================
+         JSPDF
+    ====================================================== -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <style>
-        :root{
-            --primary:#b3131b;
-            --primary-dark:#7d0c12;
-            --accent:#e11d2e;
-            --ink:#171717;
-            --muted:#6b7280;
-            --line:#e5e7eb;
-            --paper:#ffffff;
-            --bg:#f3f4f6;
-            --dark:#17191d;
-            --dark2:#20242a;
-            --shadow:0 10px 30px rgba(0,0,0,.10);
-            --radius:14px;
-        }
 
-        *{box-sizing:border-box}
+    <!-- =====================================================
+         YOUR CSS
+         सध्याची style.css वापरली जाईल
+    ====================================================== -->
 
-        html{scroll-behavior:smooth}
-
-        body{
-            margin:0;
-            font-family:"Noto Sans Devanagari",Arial,sans-serif;
-            color:var(--ink);
-            background:var(--bg);
-        }
-
-        a{text-decoration:none;color:inherit}
-
-        /* PREMIUM NEWS HEADER */
-        .date-weather-strip{
-            background:#f7f7f8;
-            border-bottom:1px solid #e4e5e7;
-            color:#4b4f56;
-        }
-
-        .date-weather-inner{
-            max-width:1280px;
-            min-height:38px;
-            margin:auto;
-            padding:0 20px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:15px;
-            font-size:12px;
-            font-weight:700;
-        }
-
-        .date-weather-left,
-        .date-weather-right{
-            display:flex;
-            align-items:center;
-            gap:16px;
-            flex-wrap:wrap;
-        }
-
-        .date-pill,.weather-pill,.edition-pill{
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
-            white-space:nowrap;
-        }
-
-        .weather-pill{
-            color:#6b3b00;
-        }
-
-        .edition-pill{
-            color:var(--primary);
-        }
-
-        .premium-header{
-            background:#fff;
-            border-bottom:1px solid #dfe1e4;
-        }
-
-        .premium-header-main{
-            max-width:1280px;
-            margin:auto;
-            min-height:118px;
-            padding:18px 20px 14px;
-            display:grid;
-            grid-template-columns:1fr auto 1fr;
-            align-items:center;
-            gap:20px;
-        }
-
-        .header-side{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            min-width:0;
-        }
-
-        .header-side.right{
-            justify-content:flex-end;
-        }
-
-        .mini-stat{
-            display:flex;
-            flex-direction:column;
-            gap:2px;
-            padding:8px 12px;
-            border-left:3px solid #eee;
-            min-width:115px;
-        }
-
-        .mini-stat small{
-            color:#777;
-            font-size:10px;
-            font-weight:800;
-            text-transform:uppercase;
-            letter-spacing:.5px;
-        }
-
-        .mini-stat strong{
-            color:#222;
-            font-size:13px;
-        }
-
-        .premium-brand{
-            text-align:center;
-            position:relative;
-            padding:0 28px;
-        }
-
-        .premium-brand:before,
-        .premium-brand:after{
-            content:"";
-            position:absolute;
-            top:50%;
-            width:55px;
-            height:1px;
-            background:#cfd1d4;
-        }
-
-        .premium-brand:before{left:-5px}
-        .premium-brand:after{right:-5px}
-
-        .brand-kicker{
-            margin:0 0 2px;
-            color:#222;
-            font-size:12px;
-            font-weight:800;
-            letter-spacing:5px;
-        }
-
-        .premium-logo{
-            margin:0;
-            color:var(--primary);
-            font-family:Georgia,"Noto Sans Devanagari",serif;
-            font-size:55px;
-            line-height:1;
-            font-weight:900;
-            letter-spacing:-1px;
-        }
-
-        .premium-logo-en{
-            margin:5px 0 0;
-            color:#222;
-            font-family:Georgia,"Times New Roman",serif;
-            font-size:18px;
-            font-weight:700;
-            letter-spacing:4px;
-        }
-
-        .premium-tagline{
-            margin:6px 0 0;
-            color:#777;
-            font-size:10px;
-            font-weight:700;
-            letter-spacing:1.4px;
-        }
-
-        .premium-actions{
-            display:flex;
-            justify-content:flex-end;
-            align-items:center;
-            gap:9px;
-        }
-
-        .premium-action{
-            min-height:40px;
-            padding:8px 13px;
-            border:1px solid #d9dce0;
-            border-radius:8px;
-            background:#fff;
-            color:#292c30;
-            font:inherit;
-            font-size:13px;
-            font-weight:800;
-            transition:.2s;
-        }
-
-        .premium-action:hover{
-            transform:translateY(-1px);
-            box-shadow:0 5px 14px rgba(0,0,0,.09);
-        }
-
-        .premium-action.admin{
-            color:#fff;
-            background:var(--primary);
-            border-color:var(--primary);
-        }
-
-        .premium-nav{
-            background:#121417;
-            border-top:1px solid #24272c;
-            border-bottom:3px solid var(--primary);
-        }
-
-        .premium-nav-inner{
-            max-width:1280px;
-            min-height:49px;
-            margin:auto;
-            padding:0 20px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            gap:2px;
-        }
-
-        .premium-nav-item{
-            border:0;
-            background:transparent;
-            color:#e6e8eb;
-            padding:13px 17px 11px;
-            font:inherit;
-            font-size:13px;
-            font-weight:800;
-            cursor:pointer;
-            border-bottom:3px solid transparent;
-            transition:.2s;
-        }
-
-        .premium-nav-item:hover,
-        .premium-nav-item.active{
-            color:#fff;
-            background:#25292e;
-            border-bottom-color:#fff;
-        }
-
-        /* FEATURED NEWS PORTAL AREA */
-        .featured-section{
-            background:#fff;
-            border-bottom:1px solid #ddd;
-            padding:25px 20px 27px;
-        }
-
-        .featured-inner{
-            max-width:1280px;
-            margin:auto;
-        }
-
-        .section-kicker{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            margin-bottom:14px;
-        }
-
-        .section-kicker:after{
-            content:"";
-            flex:1;
-            height:1px;
-            background:#dedfe2;
-        }
-
-        .section-kicker span{
-            color:var(--primary);
-            font-size:12px;
-            font-weight:900;
-            letter-spacing:.7px;
-        }
-
-        .featured-grid{
-            display:grid;
-            grid-template-columns:1.7fr 1fr 1fr;
-            gap:14px;
-        }
-
-        .featured-card{
-            min-height:155px;
-            padding:20px;
-            border:1px solid #e0e2e5;
-            border-radius:11px;
-            background:#fff;
-            box-shadow:0 6px 20px rgba(0,0,0,.05);
-            position:relative;
-            overflow:hidden;
-        }
-
-        .featured-card.main{
-            background:
-                radial-gradient(circle at 90% 10%,rgba(179,19,27,.16),transparent 35%),
-                linear-gradient(135deg,#fff,#fafafa);
-            border-top:4px solid var(--primary);
-        }
-
-        .featured-card.dark{
-            background:#191b1f;
-            border-color:#191b1f;
-            color:#fff;
-        }
-
-        .featured-card.gold{
-            border-top:4px solid #b7791f;
-        }
-
-        .featured-label{
-            display:inline-flex;
-            padding:4px 8px;
-            border-radius:5px;
-            background:#fbe7e8;
-            color:var(--primary);
-            font-size:10px;
-            font-weight:900;
-            margin-bottom:11px;
-        }
-
-        .featured-card.dark .featured-label{
-            background:#3a2023;
-            color:#ffb3b7;
-        }
-
-        .featured-card h2{
-            margin:0;
-            font-size:23px;
-            line-height:1.3;
-        }
-
-        .featured-card h3{
-            margin:0;
-            font-size:17px;
-            line-height:1.35;
-        }
-
-        .featured-card p{
-            margin:8px 0 0;
-            color:#70757d;
-            font-size:12px;
-            line-height:1.6;
-        }
-
-        .featured-card.dark p{
-            color:#b8bdc5;
-        }
-
-        .featured-meta{
-            position:absolute;
-            left:20px;
-            right:20px;
-            bottom:16px;
-            display:flex;
-            justify-content:space-between;
-            gap:10px;
-            color:#777;
-            font-size:11px;
-            font-weight:700;
-        }
-
-        .featured-card.dark .featured-meta{
-            color:#b8bdc5;
-        }
-
-        .featured-link{
-            margin-top:13px;
-            display:inline-flex;
-            align-items:center;
-            gap:5px;
-            color:var(--primary);
-            font-size:12px;
-            font-weight:900;
-        }
-
-        /* TOP STRIP */
-        .top-strip{
-            background:#101214;
-            color:#d9dde2;
-            font-size:13px;
-        }
-
-        .top-strip-inner{
-            max-width:1280px;
-            margin:auto;
-            min-height:34px;
-            padding:0 20px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:20px;
-        }
-
-        .top-strip strong{color:#fff}
-
-        /* MAIN HEADER */
-        .site-header{
-            background:#fff;
-            border-bottom:1px solid #ddd;
-            position:sticky;
-            top:0;
-            z-index:1000;
-            box-shadow:0 2px 12px rgba(0,0,0,.06);
-        }
-
-        .header-main{
-            max-width:1280px;
-            margin:auto;
-            min-height:92px;
-            padding:12px 20px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:24px;
-        }
-
-        .brand{
-            display:flex;
-            align-items:center;
-            gap:14px;
-            min-width:0;
-        }
-
-        .brand-mark{
-            width:58px;
-            height:58px;
-            flex:0 0 58px;
-            border-radius:12px;
-            background:linear-gradient(145deg,var(--primary),#e02a34);
-            color:#fff;
-            display:grid;
-            place-items:center;
-            font-size:31px;
-            box-shadow:0 6px 18px rgba(179,19,27,.28);
-        }
-
-        .brand-text{min-width:0}
-
-        .brand-title{
-            margin:0;
-            color:var(--primary);
-            font-size:32px;
-            line-height:1.05;
-            font-weight:800;
-            white-space:nowrap;
-        }
-
-        .brand-subtitle{
-            margin:5px 0 0;
-            color:#555;
-            font-size:13px;
-            letter-spacing:.7px;
-            font-weight:600;
-        }
-
-        .header-actions{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            flex-wrap:wrap;
-            justify-content:flex-end;
-        }
-
-        .header-btn{
-            display:inline-flex;
-            align-items:center;
-            justify-content:center;
-            gap:7px;
-            min-height:42px;
-            padding:9px 16px;
-            border-radius:9px;
-            font-weight:700;
-            font-size:14px;
-            border:1px solid #d9dce0;
-            background:#fff;
-            color:#262626;
-            transition:.2s;
-        }
-
-        .header-btn:hover{
-            transform:translateY(-1px);
-            box-shadow:0 5px 14px rgba(0,0,0,.10);
-        }
-
-        .header-btn.admin{
-            color:#fff;
-            background:var(--primary);
-            border-color:var(--primary);
-        }
-
-        /* NAV */
-        .nav-bar{
-            background:#fff;
-            border-top:1px solid #f0f0f0;
-        }
-
-        .nav-inner{
-            max-width:1280px;
-            margin:auto;
-            padding:0 20px;
-            min-height:48px;
-            display:flex;
-            align-items:center;
-            gap:5px;
-        }
-
-        .nav-item{
-            border:0;
-            background:transparent;
-            padding:11px 17px;
-            font:inherit;
-            font-size:14px;
-            font-weight:700;
-            color:#4b5563;
-            cursor:pointer;
-            border-bottom:3px solid transparent;
-        }
-
-        .nav-item:hover,.nav-item.active{
-            color:var(--primary);
-            border-bottom-color:var(--primary);
-        }
-
-        /* BREAKING BAR */
-        .breaking-wrap{
-            background:#fff;
-            border-bottom:1px solid var(--line);
-        }
-
-        .breaking{
-            max-width:1280px;
-            margin:auto;
-            padding:10px 20px;
-            display:flex;
-            align-items:center;
-            gap:12px;
-        }
-
-        .breaking-label{
-            flex:0 0 auto;
-            background:var(--primary);
-            color:#fff;
-            padding:6px 12px;
-            border-radius:6px;
-            font-size:12px;
-            font-weight:800;
-        }
-
-        .breaking-text{
-            font-size:13px;
-            color:#444;
-            white-space:nowrap;
-            overflow:hidden;
-            text-overflow:ellipsis;
-        }
-
-        /* HERO / PAPER SELECT */
-        .hero{
-            background:
-                radial-gradient(circle at 80% 20%,rgba(179,19,27,.12),transparent 28%),
-                linear-gradient(135deg,#17191d,#262a30);
-            color:#fff;
-            padding:34px 20px 28px;
-        }
-
-        .hero-inner{
-            max-width:1280px;
-            margin:auto;
-        }
-
-        .eyebrow{
-            display:inline-flex;
-            align-items:center;
-            gap:7px;
-            color:#fca5a5;
-            font-size:13px;
-            font-weight:800;
-            margin-bottom:8px;
-        }
-
-        .hero h1{
-            margin:0;
-            font-size:31px;
-            line-height:1.25;
-            font-weight:800;
-        }
-
-        .hero p{
-            margin:8px 0 20px;
-            color:#cbd0d7;
-            font-size:14px;
-        }
-
-        .category-tabs{
-            display:flex;
-            gap:10px;
-            flex-wrap:wrap;
-        }
-
-        .tab-btn{
-            border:1px solid rgba(255,255,255,.18);
-            background:#272b31;
-            color:#e8eaed;
-            border-radius:9px;
-            padding:11px 18px;
-            font:inherit;
-            font-size:14px;
-            font-weight:800;
-            cursor:pointer;
-            transition:.2s;
-        }
-
-        .tab-btn:hover{background:#333840}
-
-        .tab-btn.active{
-            background:var(--primary);
-            border-color:var(--primary);
-            color:#fff;
-            box-shadow:0 5px 16px rgba(179,19,27,.30);
-        }
-
-        .archive-row{
-            max-width:1280px;
-            margin:0 auto;
-            padding:20px;
-            display:grid;
-            grid-template-columns:1fr 340px;
-            gap:18px;
-            align-items:center;
-        }
-
-        .archive-copy h2{
-            margin:0 0 4px;
-            font-size:20px;
-        }
-
-        .archive-copy p{
-            margin:0;
-            color:var(--muted);
-            font-size:13px;
-        }
-
-        .select-wrap{
-            position:relative;
-        }
-
-        .select-label{
-            display:block;
-            font-size:12px;
-            color:#6b7280;
-            font-weight:800;
-            margin-bottom:6px;
-        }
-
-        #paper-select{
-            width:100%;
-            height:46px;
-            border:1px solid #d1d5db;
-            border-radius:9px;
-            padding:0 13px;
-            background:#fff;
-            color:#222;
-            font:inherit;
-            font-size:14px;
-            font-weight:700;
-            outline:none;
-        }
-
-        #paper-select:focus{
-            border-color:var(--primary);
-            box-shadow:0 0 0 3px rgba(179,19,27,.10);
-        }
-
-        /* PAPER INFO */
-        .paper-card{
-            max-width:1280px;
-            margin:0 auto 22px;
-            padding:0 20px;
-        }
-
-        .paper-card-inner{
-            background:#fff;
-            border:1px solid #e2e4e7;
-            border-radius:var(--radius);
-            overflow:hidden;
-            box-shadow:var(--shadow);
-        }
-
-        .paper-heading{
-            padding:24px 26px 18px;
-            border-bottom:1px solid var(--line);
-            display:flex;
-            justify-content:space-between;
-            gap:20px;
-            align-items:flex-start;
-        }
-
-        .paper-heading-left{
-            min-width:0;
-        }
-
-        .paper-type{
-            color:var(--primary);
-            font-size:12px;
-            font-weight:800;
-            letter-spacing:.4px;
-            text-transform:uppercase;
-        }
-
-        .paper-name{
-            margin:4px 0 2px;
-            font-family:Georgia,"Noto Sans Devanagari",serif;
-            font-size:42px;
-            line-height:1;
-            font-weight:800;
-            color:#171717;
-        }
-
-        .paper-name-en{
-            margin:8px 0 0;
-            color:#555;
-            font-family:Georgia,serif;
-            font-size:18px;
-            letter-spacing:2px;
-            font-weight:600;
-        }
-
-        .editor-block{
-            text-align:right;
-            font-size:13px;
-            color:#4b5563;
-            line-height:1.8;
-            white-space:nowrap;
-        }
-
-        .editor-block strong{color:#222}
-
-        .info-grid{
-            display:grid;
-            grid-template-columns:repeat(6,1fr);
-            border-bottom:1px solid var(--line);
-        }
-
-        .info-item{
-            padding:15px 13px;
-            border-right:1px solid var(--line);
-            min-width:0;
-        }
-
-        .info-item:last-child{border-right:0}
-
-        .info-label{
-            display:block;
-            color:#7b8088;
-            font-size:11px;
-            font-weight:800;
-            margin-bottom:4px;
-        }
-
-        .info-value{
-            display:block;
-            color:#202124;
-            font-size:14px;
-            font-weight:800;
-            word-break:break-word;
-        }
-
-        .rni-item .info-value{
-            font-size:12px;
-        }
-
-        .paper-contact{
-            padding:12px 20px;
-            background:#fafafa;
-            display:flex;
-            gap:20px;
-            flex-wrap:wrap;
-            color:#555;
-            font-size:12px;
-            font-weight:600;
-        }
-
-        /* VIEWER */
-        .viewer-section{
-            background:#17191d;
-            border-top:1px solid #2a2e34;
-            padding-bottom:45px;
-        }
-
-        .viewer-toolbar{
-            max-width:1280px;
-            margin:auto;
-            padding:15px 20px;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            gap:15px;
-            color:#fff;
-        }
-
-        .viewer-title{
-            display:flex;
-            align-items:center;
-            gap:9px;
-            font-size:15px;
-            font-weight:800;
-        }
-
-        .viewer-hint{
-            color:#9ca3af;
-            font-size:12px;
-        }
-
-        #epaper-container{
-            width:100%;
-            min-height:500px;
-            padding:10px 15px 40px;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            background:
-                radial-gradient(circle at 50% 0%,#34383f 0,#202329 35%,#15171a 72%);
-        }
-
-        .viewer-loading,.empty-state{
-            width:min(680px,100%);
-            margin:70px auto;
-            padding:35px 25px;
-            text-align:center;
-            border:1px solid #353a42;
-            border-radius:14px;
-            background:#202329;
-            color:#d6d9de;
-        }
-
-        .empty-state h3{
-            margin:0 0 8px;
-            color:#fff;
-        }
-
-        .empty-state p{
-            margin:0;
-            color:#9ca3af;
-            font-size:13px;
-        }
-
-        .canvas-wrapper{
-            position:relative;
-            margin:12px auto 24px;
-            background:#fff;
-            box-shadow:0 12px 35px rgba(0,0,0,.55);
-            line-height:0;
-            max-width:100%;
-            cursor:crosshair;
-            border-radius:2px;
-            overflow:visible;
-        }
-
-        canvas{
-            display:block;
-            max-width:100%;
-            height:auto;
-        }
-
-        #selector{
-            position:fixed;
-            display:none;
-            z-index:5000;
-            border:2px dashed #ef233c;
-            background:rgba(239,35,60,.16);
-            pointer-events:none;
-        }
-
-        /* MODAL */
-        #modalBackground{
-            display:none;
-            position:fixed;
-            inset:0;
-            background:rgba(0,0,0,.78);
-            z-index:6000;
-            backdrop-filter:blur(3px);
-        }
-
-        #downloadModal{
-            display:none;
-            position:fixed;
-            left:50%;
-            top:50%;
-            transform:translate(-50%,-50%);
-            width:min(620px,92vw);
-            max-height:90vh;
-            overflow:auto;
-            z-index:6001;
-            background:#fff;
-            border-radius:16px;
-            box-shadow:0 20px 70px rgba(0,0,0,.45);
-            padding:24px;
-        }
-
-        .modal-header{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            gap:15px;
-            border-bottom:1px solid var(--line);
-            padding-bottom:15px;
-            margin-bottom:16px;
-        }
-
-        .modal-header h3{
-            margin:0;
-            color:var(--primary);
-            font-size:19px;
-        }
-
-        .modal-close{
-            border:0;
-            background:#f3f4f6;
-            width:34px;
-            height:34px;
-            border-radius:50%;
-            cursor:pointer;
-            font-size:18px;
-        }
-
-        #newsHeadingInput{
-            width:100%;
-            padding:12px 13px;
-            border:1px solid #d1d5db;
-            border-radius:8px;
-            font:inherit;
-            outline:none;
-        }
-
-        #newsHeadingInput:focus{
-            border-color:var(--primary);
-            box-shadow:0 0 0 3px rgba(179,19,27,.10);
-        }
-
-        #downloadArea{
-            margin-top:14px;
-            padding:15px;
-            background:#f7f7f7;
-            border:1px solid var(--line);
-            border-radius:10px;
-            text-align:center;
-        }
-
-        #liveHeading{
-            min-height:0;
-            margin-bottom:10px;
-            font-size:22px;
-            line-height:1.35;
-            font-weight:800;
-            color:#111;
-        }
-
-        #croppedPreview{
-            display:block;
-            max-width:100%;
-            max-height:52vh;
-            margin:auto;
-            border:1px solid #ddd;
-            background:#fff;
-        }
-
-        .modal-actions{
-            display:flex;
-            gap:10px;
-            justify-content:flex-end;
-            margin-top:17px;
-        }
-
-        .btn{
-            border:0;
-            border-radius:8px;
-            padding:11px 18px;
-            font:inherit;
-            font-weight:800;
-            cursor:pointer;
-        }
-
-        .btn-success{background:#15803d;color:#fff}
-        .btn-danger{background:#e5e7eb;color:#222}
-
-        /* FOOTER */
-        footer{
-            background:#101214;
-            color:#b8bdc5;
-            padding:28px 20px;
-        }
-
-        .footer-inner{
-            max-width:1280px;
-            margin:auto;
-            display:flex;
-            justify-content:space-between;
-            gap:20px;
-            flex-wrap:wrap;
-            font-size:12px;
-        }
-
-        .footer-brand{
-            color:#fff;
-            font-weight:800;
-        }
-
-        /* RESPONSIVE */
-        @media(max-width:1100px){
-            .premium-header-main{
-                grid-template-columns:1fr;
-                gap:10px;
-                padding-top:14px;
-            }
-
-            .premium-brand{order:1}
-            .header-side.left{order:2;justify-content:center}
-            .header-side.right{order:3;justify-content:center}
-            .premium-actions{justify-content:center}
-            .premium-brand:before,.premium-brand:after{display:none}
-            .featured-grid{grid-template-columns:1fr 1fr}
-            .featured-card.main{grid-column:1/-1}
-        }
-
-        @media(max-width:900px){
-            .header-main{min-height:78px}
-            .brand-title{font-size:26px}
-            .brand-mark{width:50px;height:50px;flex-basis:50px;font-size:27px}
-            .archive-row{grid-template-columns:1fr}
-            .info-grid{grid-template-columns:repeat(3,1fr)}
-            .info-item:nth-child(3){border-right:0}
-            .info-item:nth-child(n+4){border-top:1px solid var(--line)}
-            .paper-heading{flex-direction:column}
-            .editor-block{text-align:left;white-space:normal}
-        }
-
-        @media(max-width:650px){
-            .date-weather-inner{
-                padding:0 12px;
-                min-height:34px;
-                justify-content:center;
-                font-size:10px;
-            }
-
-            .date-weather-right{display:none}
-
-            .premium-header-main{
-                padding:12px;
-                min-height:auto;
-            }
-
-            .premium-logo{font-size:40px}
-            .premium-logo-en{font-size:12px;letter-spacing:2px}
-            .brand-kicker{font-size:9px;letter-spacing:3px}
-            .premium-tagline{font-size:8px}
-
-            .header-side.left .mini-stat:nth-child(2){display:none}
-            .header-side.right .mini-stat{display:none}
-
-            .premium-actions{width:100%}
-            .premium-action{flex:1;font-size:11px;padding:8px 7px}
-
-            .premium-nav-inner{
-                justify-content:flex-start;
-                overflow-x:auto;
-                white-space:nowrap;
-                padding:0 8px;
-            }
-
-            .premium-nav-item{padding:11px 12px;font-size:11px}
-
-            .featured-section{padding:18px 12px}
-            .featured-grid{grid-template-columns:1fr}
-            .featured-card.main{grid-column:auto}
-            .featured-card{min-height:145px}
-            .featured-card h2{font-size:20px}
-            .featured-card h3{font-size:16px}
-
-            .top-strip-inner{padding:0 12px}
-            .top-strip-inner span:last-child{display:none}
-
-            .header-main{
-                padding:10px 12px;
-                gap:10px;
-            }
-
-            .brand-title{font-size:22px}
-            .brand-subtitle{font-size:10px}
-            .brand-mark{width:44px;height:44px;flex-basis:44px;font-size:23px}
-            .header-actions .home-btn{display:none}
-            .header-btn{padding:8px 10px;font-size:12px}
-
-            .nav-inner{
-                padding:0 10px;
-                overflow-x:auto;
-                white-space:nowrap;
-            }
-
-            .nav-item{padding:10px 12px;font-size:12px}
-
-            .breaking{padding:8px 12px}
-            .breaking-text{font-size:11px}
-
-            .hero{padding:24px 12px}
-            .hero h1{font-size:24px}
-            .hero p{font-size:12px}
-
-            .archive-row{padding:15px 12px}
-            .archive-copy h2{font-size:17px}
-
-            .paper-card{padding:0 12px}
-            .paper-heading{padding:20px 16px 15px}
-            .paper-name{font-size:32px}
-            .paper-name-en{font-size:14px;letter-spacing:1.5px}
-
-            .info-grid{grid-template-columns:repeat(2,1fr)}
-            .info-item:nth-child(3){border-right:1px solid var(--line)}
-            .info-item:nth-child(2n){border-right:0}
-            .info-item:nth-child(n+3){border-top:1px solid var(--line)}
-
-            .paper-contact{padding:11px 16px;gap:8px 16px}
-
-            .viewer-toolbar{
-                padding:12px;
-                flex-direction:column;
-                align-items:flex-start;
-            }
-
-            #epaper-container{padding:5px 6px 30px}
-
-            .canvas-wrapper{
-                margin-bottom:15px;
-                width:100%;
-            }
-
-            .canvas-wrapper canvas{
-                width:100%;
-                height:auto;
-            }
-
-            #downloadModal{padding:18px}
-            .modal-actions{flex-direction:column}
-            .modal-actions .btn{width:100%}
-        }
-    </style>
 </head>
+
 
 <body>
 
-    <!-- DATE / WEATHER STYLE STRIP -->
-    <div class="date-weather-strip">
-        <div class="date-weather-inner">
-            <div class="date-weather-left">
-                <span class="date-pill">📅 <span id="todayDateMr">आजची तारीख</span></span>
-                <span class="edition-pill">● <span id="editionStatus">डिजिटल आवृत्ती उपलब्ध</span></span>
-            </div>
-            <div class="date-weather-right">
-                <span class="weather-pill">☀️ हवामान • महाराष्ट्र</span>
-                <span>लोकभारती डिजिटल न्यूज पोर्टल</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- PREMIUM LOGO HEADER -->
-    <header class="premium-header">
-        <div class="premium-header-main">
+<!-- =========================================================
+     DATE / WEATHER STRIP
+========================================================= -->
 
-            <div class="header-side left">
-                <div class="mini-stat">
-                    <small>आजचा अंक</small>
-                    <strong id="headerIssue">लोड होत आहे...</strong>
-                </div>
-                <div class="mini-stat">
-                    <small>आवृत्ती</small>
-                    <strong id="headerEdition">दैनिक</strong>
-                </div>
-            </div>
+<div class="date-weather-strip">
 
-            <a href="/" class="premium-brand" aria-label="दैनिक लोकभारती मुख्यपृष्ठ">
-                <p class="brand-kicker">दैनिक</p>
-                <h1 class="premium-logo">लोकभारती</h1>
-                <p class="premium-logo-en">DAILY LOKBHARTI</p>
-                <p class="premium-tagline">विश्वसनीय बातम्या • अधिकृत ई-पेपर • डिजिटल संग्रह</p>
-            </a>
+    <div class="date-weather-inner">
 
-            <div class="header-side right">
-                <div class="mini-stat">
-                    <small>संपर्क</small>
-                    <strong>lokbharti777@gmail.com</strong>
-                </div>
-                <div class="premium-actions">
-                    <a href="/" class="premium-action">⌂ मुख्यपृष्ठ</a>
-                    <a href="/admin-login.html" class="premium-action admin">🔐 Admin</a>
-                </div>
-            </div>
+        <div class="date-weather-left">
 
-        </div>
-
-        <!-- CATEGORY NAVIGATION -->
-        <nav class="premium-nav">
-            <div class="premium-nav-inner">
-                <button class="premium-nav-item active" onclick="setNavActive(this);scrollToSection('latest')">मुख्यपृष्ठ</button>
-                <button class="premium-nav-item" onclick="setNavActive(this);switchCategory('daily');scrollToSection('latest')">📰 दैनिक</button>
-                <button class="premium-nav-item" onclick="setNavActive(this);switchCategory('weekly');scrollToSection('latest')">📅 साप्ताहिक</button>
-                <button class="premium-nav-item" onclick="setNavActive(this);scrollToSection('archive')">📚 अंक संग्रह</button>
-                <button class="premium-nav-item" onclick="setNavActive(this);scrollToSection('epaper')">📖 ई-पेपर</button>
-            </div>
-        </nav>
-    </header>
-
-    <!-- BREAKING BAR -->
-    <div class="breaking-wrap">
-        <div class="breaking">
-            <span class="breaking-label">ताज्या अपडेट्स</span>
-            <span class="breaking-text" id="breakingText">
-                दैनिक लोकभारतीचा डिजिटल अंक वाचा • उपलब्ध अंक संग्रहातून मागील अंक निवडा.
+            <span class="date-pill">
+                📅
+                <span id="todayDateMr">
+                    आजची तारीख
+                </span>
             </span>
+
+
+            <span class="edition-pill">
+
+                ●
+
+                <span id="editionStatus">
+                    डिजिटल आवृत्ती उपलब्ध
+                </span>
+
+            </span>
+
         </div>
+
+
+        <div class="date-weather-right">
+
+            <span
+                class="weather-pill"
+                id="currentWeather"
+            >
+                🌤️ हवामान शोधत आहे...
+            </span>
+
+
+            <span>
+                लोकभारती डिजिटल न्यूज पोर्टल
+            </span>
+
+        </div>
+
     </div>
 
-    <!-- FEATURED NEWS PORTAL LAYOUT -->
-    <section class="featured-section">
-        <div class="featured-inner">
-            <div class="section-kicker">
-                <span>आजचे लोकभारती</span>
+</div>
+
+
+
+<!-- =========================================================
+     PREMIUM HEADER
+========================================================= -->
+
+<header class="premium-header">
+
+    <div class="premium-header-main">
+
+
+        <!-- LEFT -->
+
+        <div class="header-side left">
+
+            <div class="mini-stat">
+
+                <small>
+                    आजचा अंक
+                </small>
+
+                <strong id="headerIssue">
+                    लोड होत आहे...
+                </strong>
+
             </div>
 
-            <div class="featured-grid">
-                <article class="featured-card main">
-                    <span class="featured-label">आजचा डिजिटल अंक</span>
-                    <h2 id="featuredIssueTitle">दैनिक लोकभारती — आजचा ई-पेपर</h2>
-                    <p id="featuredIssueText">
-                        आजचा उपलब्ध अंक थेट ई-पेपरमध्ये वाचा. अंक क्रमांक, तारीख आणि इतर अधिकृत माहिती खाली दिली आहे.
-                    </p>
-                    <a class="featured-link" href="#epaper" onclick="scrollToSection('epaper')">
-                        ई-पेपर वाचा →
-                    </a>
-                    <div class="featured-meta">
-                        <span id="featuredDate">तारीख: —</span>
-                        <span id="featuredIssue">अंक: —</span>
-                    </div>
-                </article>
 
-                <article class="featured-card dark">
-                    <span class="featured-label">आवृत्ती</span>
-                    <h3 id="featuredEdition">दैनिक आवृत्ती</h3>
-                    <p>दैनिक आणि साप्ताहिक आवृत्त्यांमध्ये सहज बदल करा.</p>
-                    <a class="featured-link" href="#latest" onclick="switchCategory('daily');scrollToSection('latest')">
-                        आवृत्ती निवडा →
-                    </a>
-                </article>
+            <div class="mini-stat">
 
-                <article class="featured-card gold">
-                    <span class="featured-label">डिजिटल संग्रह</span>
-                    <h3>मागील अंक एका ठिकाणी</h3>
-                    <p>तारीख आणि अंक क्रमांकानुसार उपलब्ध ई-पेपर निवडा.</p>
-                    <a class="featured-link" href="#archive" onclick="scrollToSection('archive')">
-                        अंक संग्रह पाहा →
-                    </a>
-                </article>
-            </div>
-        </div>
-    </section>
+                <small>
+                    आवृत्ती
+                </small>
 
-    <section class="hero" id="latest">
-        <div class="hero-inner">
-            <div class="eyebrow">● DIGITAL EDITION</div>
-            <h1 id="heroTitle">आजचा डिजिटल ई-पेपर</h1>
-            <p>दैनिक आणि साप्ताहिक आवृत्तीमधून आपला आवडता अंक निवडा.</p>
+                <strong id="headerEdition">
+                    दैनिक
+                </strong>
 
-            <div class="category-tabs">
-                <button id="btn-daily" class="tab-btn active" onclick="switchCategory('daily')">
-                    📆 दैनिक आवृत्ती
-                </button>
-
-                <button id="btn-weekly" class="tab-btn" onclick="switchCategory('weekly')">
-                    📅 साप्ताहिक आवृत्ती
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <section class="archive-row" id="archive">
-        <div class="archive-copy">
-            <h2>अंक संग्रह</h2>
-            <p>उपलब्ध अंकांमधून तारीख आणि अंक क्रमांकानुसार पेपर निवडा.</p>
-        </div>
-
-        <div class="select-wrap">
-            <label class="select-label" for="paper-select">पाहण्यासाठी अंक निवडा</label>
-            <select id="paper-select" onchange="changePaper(this.value)">
-                <option value="">अंक उपलब्ध नाही</option>
-            </select>
-        </div>
-    </section>
-
-    <section class="paper-card">
-        <div class="paper-card-inner">
-
-            <div class="paper-heading">
-                <div class="paper-heading-left">
-                    <div class="paper-type" id="paper-type-text">दैनिक आवृत्ती</div>
-                    <div class="paper-name">लोकभारती</div>
-                    <div class="paper-name-en">DAILY LOKBHARTI</div>
-                </div>
-
-                <div class="editor-block">
-                    <div><strong>संपादक:</strong> <span id="disp-editor">-</span></div>
-                    <div><strong>मोबा. नंबर:</strong> <span id="disp-mobile">-</span></div>
-                    <div><strong>ई-मेल:</strong> lokbharti777@gmail.com</div>
-                </div>
-            </div>
-
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">वर्ष / Year</span>
-                    <span class="info-value" id="disp-year1">-</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">अंक क्रमांक / Issue No.</span>
-                    <span class="info-value" id="disp-issue1">-</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">तारीख / Date</span>
-                    <span class="info-value" id="disp-date-mr">-</span>
-                </div>
-
-                <div class="info-item rni-item">
-                    <span class="info-label">पी.आर.जी.आय. / PRGI</span>
-                    <span class="info-value">PRGI/MHMAR/26/A<span id="disp-rni1">-</span></span>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">किंमत / Price</span>
-                    <span class="info-value" id="disp-price1">-</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="info-label">पृष्ठे / Pages</span>
-                    <span class="info-value" id="disp-pages1">-</span>
-                </div>
-            </div>
-
-            <div class="paper-contact">
-                <span>Year: <strong id="disp-year2">-</strong></span>
-                <span>Issue No.: <strong id="disp-issue2">-</strong></span>
-                <span>Date: <strong id="disp-date-en">-</strong></span>
-                <span>PRGI: <strong>PRGI/MHMAR/26/A<span id="disp-rni2">-</span></strong></span>
-                <span>Price: <strong id="disp-price2">-</strong>/- Rs.</span>
-                <span>Pages: <strong id="disp-pages2">-</strong></span>
             </div>
 
         </div>
-    </section>
 
-    <section class="viewer-section" id="epaper">
-        <div class="viewer-toolbar">
-            <div class="viewer-title">📖 ई-पेपर वाचन</div>
-            <div class="viewer-hint">बातमी कापण्यासाठी PDF पानावर माउसने भाग select करा.</div>
-        </div>
 
-        <div id="epaper-container">
-            <div class="viewer-loading">
-                ई-पेपर Loading...
+
+        <!-- BRAND -->
+
+        <a
+            href="/"
+            class="premium-brand"
+            aria-label="दैनिक लोकभारती मुख्यपृष्ठ"
+        >
+
+            <p class="brand-kicker">
+                दैनिक
+            </p>
+
+            <h1 class="premium-logo">
+                लोकभारती
+            </h1>
+
+            <p class="premium-logo-en">
+                DAILY LOKBHARTI
+            </p>
+
+            <p class="premium-tagline">
+                विश्वसनीय बातम्या • अधिकृत ई-पेपर • डिजिटल संग्रह
+            </p>
+
+        </a>
+
+
+
+        <!-- RIGHT -->
+
+        <div class="header-side right">
+
+            <div class="mini-stat">
+
+                <small>
+                    संपर्क
+                </small>
+
+                <strong>
+                    lokbharti777@gmail.com
+                </strong>
+
             </div>
+
+
+            <div class="premium-actions">
+
+                <a
+                    href="/"
+                    class="premium-action"
+                >
+                    ⌂ मुख्यपृष्ठ
+                </a>
+
+
+                <a
+                    href="/admin-login.html"
+                    class="premium-action admin"
+                >
+                    🔐 Admin
+                </a>
+
+            </div>
+
         </div>
-    </section>
 
-    <div id="selector"></div>
+    </div>
 
-   <div id="modalBackground"></div>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="premium-nav">
+
+        <div class="premium-nav-inner">
+
+            <button
+                class="premium-nav-item active"
+                onclick="handleNav(this, 'home')"
+            >
+                मुख्यपृष्ठ
+            </button>
+
+
+            <button
+                class="premium-nav-item"
+                onclick="handleNav(this, 'daily')"
+            >
+                📰 दैनिक
+            </button>
+
+
+            <button
+                class="premium-nav-item"
+                onclick="handleNav(this, 'weekly')"
+            >
+                📅 साप्ताहिक
+            </button>
+
+
+            <button
+                class="premium-nav-item"
+                onclick="handleNav(this, 'archive')"
+            >
+                📚 अंक संग्रह
+            </button>
+
+
+            <button
+                class="premium-nav-item"
+                onclick="handleNav(this, 'epaper')"
+            >
+                📖 ई-पेपर
+            </button>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+
+<!-- =========================================================
+     BREAKING BAR
+========================================================= -->
+
+<div class="breaking-wrap">
+
+    <div class="breaking">
+
+        <span class="breaking-label">
+            ताज्या अपडेट्स
+        </span>
+
+
+        <span
+            class="breaking-text"
+            id="breakingText"
+        >
+            दैनिक लोकभारतीचा डिजिटल अंक वाचा •
+            उपलब्ध अंक संग्रहातून मागील अंक निवडा.
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     FEATURED SECTION
+========================================================= -->
+
+<section class="featured-section">
+
+    <div class="featured-inner">
+
+        <div class="section-kicker">
+
+            <span>
+                आजचे लोकभारती
+            </span>
+
+        </div>
+
+
+        <div class="featured-grid">
+
+
+            <!-- MAIN -->
+
+            <article class="featured-card main">
+
+                <span class="featured-label">
+                    आजचा डिजिटल अंक
+                </span>
+
+
+                <h2 id="featuredIssueTitle">
+                    दैनिक लोकभारती — आजचा ई-पेपर
+                </h2>
+
+
+                <p id="featuredIssueText">
+
+                    आजचा उपलब्ध अंक थेट
+                    ई-पेपरमध्ये वाचा.
+                    अंक क्रमांक, तारीख आणि
+                    इतर अधिकृत माहिती खाली दिली आहे.
+
+                </p>
+
+
+                <a
+                    class="featured-link"
+                    href="#epaper"
+                    onclick="scrollToSection('epaper')"
+                >
+                    ई-पेपर वाचा →
+                </a>
+
+
+                <div class="featured-meta">
+
+                    <span id="featuredDate">
+                        तारीख: —
+                    </span>
+
+                    <span id="featuredIssue">
+                        अंक: —
+                    </span>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- EDITION -->
+
+            <article class="featured-card dark">
+
+                <span class="featured-label">
+                    आवृत्ती
+                </span>
+
+
+                <h3 id="featuredEdition">
+                    दैनिक आवृत्ती
+                </h3>
+
+
+                <p>
+                    दैनिक आणि साप्ताहिक
+                    आवृत्त्यांमध्ये सहज बदल करा.
+                </p>
+
+
+                <a
+                    class="featured-link"
+                    href="#latest"
+                    onclick="switchCategory('daily'); scrollToSection('latest')"
+                >
+                    आवृत्ती निवडा →
+                </a>
+
+            </article>
+
+
+
+            <!-- ARCHIVE -->
+
+            <article class="featured-card gold">
+
+                <span class="featured-label">
+                    डिजिटल संग्रह
+                </span>
+
+
+                <h3>
+                    मागील अंक एका ठिकाणी
+                </h3>
+
+
+                <p>
+                    तारीख आणि अंक क्रमांकानुसार
+                    उपलब्ध ई-पेपर निवडा.
+                </p>
+
+
+                <a
+                    class="featured-link"
+                    href="#archive"
+                    onclick="scrollToSection('archive')"
+                >
+                    अंक संग्रह पाहा →
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section
+    class="hero"
+    id="latest"
+>
+
+    <div class="hero-inner">
+
+        <div class="eyebrow">
+            ● DIGITAL EDITION
+        </div>
+
+
+        <h1 id="heroTitle">
+            आजचा डिजिटल ई-पेपर
+        </h1>
+
+
+        <p>
+            दैनिक आणि साप्ताहिक आवृत्तीमधून
+            आपला आवडता अंक निवडा.
+        </p>
+
+
+        <div class="category-tabs">
+
+            <button
+                id="btn-daily"
+                class="tab-btn active"
+                onclick="switchCategory('daily')"
+            >
+                📆 दैनिक आवृत्ती
+            </button>
+
+
+            <button
+                id="btn-weekly"
+                class="tab-btn"
+                onclick="switchCategory('weekly')"
+            >
+                📅 साप्ताहिक आवृत्ती
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     ARCHIVE
+========================================================= -->
+
+<section
+    class="archive-row"
+    id="archive"
+>
+
+    <div class="archive-copy">
+
+        <h2>
+            अंक संग्रह
+        </h2>
+
+
+        <p>
+            उपलब्ध अंकांमधून तारीख आणि
+            अंक क्रमांकानुसार पेपर निवडा.
+        </p>
+
+    </div>
+
+
+    <div class="select-wrap">
+
+        <label
+            class="select-label"
+            for="paper-select"
+        >
+            पाहण्यासाठी अंक निवडा
+        </label>
+
+
+        <select
+            id="paper-select"
+            onchange="changePaper(this.value)"
+        >
+
+            <option value="">
+                अंक उपलब्ध नाही
+            </option>
+
+        </select>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PAPER INFORMATION CARD
+========================================================= -->
+
+<section class="paper-card">
+
+    <div class="paper-card-inner">
+
+
+        <div class="paper-heading">
+
+
+            <div class="paper-heading-left">
+
+                <div
+                    class="paper-type"
+                    id="paper-type-text"
+                >
+                    दैनिक आवृत्ती
+                </div>
+
+
+                <div class="paper-name">
+                    लोकभारती
+                </div>
+
+
+                <div class="paper-name-en">
+                    DAILY LOKBHARTI
+                </div>
+
+            </div>
+
+
+
+            <div class="editor-block">
+
+                <div>
+                    <strong>
+                        संपादक:
+                    </strong>
+
+                    <span id="disp-editor">
+                        -
+                    </span>
+                </div>
+
+
+                <div>
+                    <strong>
+                        मोबा. नंबर:
+                    </strong>
+
+                    <span id="disp-mobile">
+                        -
+                    </span>
+                </div>
+
+
+                <div>
+                    <strong>
+                        ई-मेल:
+                    </strong>
+
+                    lokbharti777@gmail.com
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- INFORMATION GRID -->
+
+        <div class="info-grid">
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    वर्ष / Year
+                </span>
+
+                <span
+                    class="info-value"
+                    id="disp-year1"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    अंक क्रमांक / Issue No.
+                </span>
+
+                <span
+                    class="info-value"
+                    id="disp-issue1"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    तारीख / Date
+                </span>
+
+                <span
+                    class="info-value"
+                    id="disp-date-mr"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+
+            <div class="info-item rni-item">
+
+                <span class="info-label">
+                    पी.आर.जी.आय. / PRGI
+                </span>
+
+                <span class="info-value">
+
+                    PRGI/MHMAR/26/A<span
+                        id="disp-rni1"
+                    >-</span>
+
+                </span>
+
+            </div>
+
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    किंमत / Price
+                </span>
+
+                <span
+                    class="info-value"
+                    id="disp-price1"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    पृष्ठे / Pages
+                </span>
+
+                <span
+                    class="info-value"
+                    id="disp-pages1"
+                >
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ENGLISH CONTACT -->
+
+        <div class="paper-contact">
+
+            <span>
+                Year:
+                <strong id="disp-year2">
+                    -
+                </strong>
+            </span>
+
+
+            <span>
+                Issue No.:
+                <strong id="disp-issue2">
+                    -
+                </strong>
+            </span>
+
+
+            <span>
+                Date:
+                <strong id="disp-date-en">
+                    -
+                </strong>
+            </span>
+
+
+            <span>
+                PRGI:
+                <strong>
+                    PRGI/MHMAR/26/A<span
+                        id="disp-rni2"
+                    >-</span>
+                </strong>
+            </span>
+
+
+            <span>
+                Price:
+                <strong id="disp-price2">
+                    -
+                </strong>
+                /- Rs.
+            </span>
+
+
+            <span>
+                Pages:
+                <strong id="disp-pages2">
+                    -
+                </strong>
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     E-PAPER VIEWER
+========================================================= -->
+
+<section
+    class="viewer-section"
+    id="epaper"
+>
+
+    <div class="viewer-toolbar">
+
+        <div class="viewer-title">
+            📖 ई-पेपर वाचन
+        </div>
+
+
+        <div class="viewer-hint">
+            बातमी कापण्यासाठी PDF पानावर माउसने
+            भाग select करा.
+        </div>
+
+    </div>
+
+
+    <div id="epaper-container">
+
+        <div class="viewer-loading">
+            📖 ई-पेपर Loading...
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CROP SELECTOR
+========================================================= -->
+
+<div id="selector"></div>
+
+
+
+<!-- =========================================================
+     MODAL BACKGROUND
+========================================================= -->
+
+<div id="modalBackground"></div>
+
+
+
+<!-- =========================================================
+     DOWNLOAD MODAL
+========================================================= -->
 
 <div id="downloadModal">
 
+
     <div class="modal-header">
-        <h3>✂️ कापलेली बातमी</h3>
+
+        <h3>
+            ✂️ कापलेली बातमी
+        </h3>
+
 
         <button
             class="modal-close"
             onclick="closeModal()"
-            aria-label="Close">
+            aria-label="Close"
+        >
             ×
         </button>
+
     </div>
 
-    <!-- AUTOMATIC NEWSPAPER HEADING -->
+
+
+    <!-- AUTOMATIC HEADING -->
+
     <div id="automaticPaperHeading">
+
         दैनिक लोकभारती
+
     </div>
+
+
+
+    <!-- DOWNLOAD AREA -->
 
     <div id="downloadArea">
 
+
         <div id="liveHeading"></div>
+
 
         <img
             id="croppedPreview"
             src=""
-            alt="कापलेली बातमी">
+            alt="कापलेली बातमी"
+        >
 
     </div>
+
+
 
     <div class="download-info">
+
         HD Quality मध्ये डाउनलोड करा
+
     </div>
-<div class="modal-actions">
 
-    <button class="btn btn-success" onclick="downloadNews('png')">
-        🖼️ PNG HD
-    </button>
 
-    <button class="btn btn-success" onclick="downloadNews('jpg')">
-        📷 JPG HD
-    </button>
 
-    <button class="btn btn-success" onclick="downloadNews('pdf')">
-        📄 PDF HD
-    </button>
+    <!-- DOWNLOAD BUTTONS -->
 
-    <button class="btn btn-danger" onclick="closeModal()">
-        रद्द करा
-    </button>
+    <div class="modal-actions">
+
+
+        <button
+            class="btn btn-success"
+            onclick="downloadNews('png')"
+        >
+            🖼️ PNG HD
+        </button>
+
+
+        <button
+            class="btn btn-success"
+            onclick="downloadNews('jpg')"
+        >
+            📷 JPG HD
+        </button>
+
+
+        <button
+            class="btn btn-success"
+            onclick="downloadNews('pdf')"
+        >
+            📄 PDF HD
+        </button>
+
+
+        <button
+            class="btn btn-danger"
+            onclick="closeModal()"
+        >
+            रद्द करा
+        </button>
+
+    </div>
 
 </div>
 
-</div>
-   <!-- ================================
-     PREMIUM FOOTER
-     ================================ -->
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
 <footer>
+
     <div class="footer-inner">
 
+
         <div class="footer-left">
-            <strong>दैनिक लोकभारती</strong>
-            <span>Digital E-Paper Portal</span>
+
+            <strong>
+                दैनिक लोकभारती
+            </strong>
+
+            <span>
+                Digital E-Paper Portal
+            </span>
+
         </div>
+
+
 
         <div class="footer-center">
-            <span>Developed by</span>
-            <strong>R TECHNOLOGIES</strong>
-            <small>Digital Solutions • Web Technology</small>
+
+            <span>
+                Developed by
+            </span>
+
+            <strong>
+                R TECHNOLOGIES
+            </strong>
+
+            <small>
+                Digital Solutions • Web Technology
+            </small>
+
         </div>
 
+
+
         <div class="footer-right">
-            <span>सर्व हक्क राखीव</span>
-            <span>© <span id="footerYear"></span></span>
+
+            <span>
+                सर्व हक्क राखीव
+            </span>
+
+            <span>
+                ©
+                <span id="footerYear"></span>
+            </span>
+
         </div>
 
     </div>
+
 </footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script>
+
+
+/* =========================================================
+   PDF.JS WORKER
+========================================================= */
+
+if (
+    typeof pdfjsLib !== 'undefined'
+) {
+
     pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    let allPaperData = {};
-    let currentCategory = 'daily';
-    let currentCropCanvas = null;
-
-    const $ = id => document.getElementById(id);
+}
 
 
-    /* =====================================================
-       COMMON FUNCTIONS
-       ===================================================== */
 
-    function scrollToSection(id) {
-        const el = $(id);
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
 
-        if (el) {
-            el.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+let allPaperData = {};
+
+let currentCategory = 'daily';
+
+let currentCropCanvas = null;
+
+
+
+/* =========================================================
+   SHORT DOM HELPER
+========================================================= */
+
+function $(id) {
+
+    return document.getElementById(id);
+
+}
+
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollToSection(id) {
+
+    const element =
+        $(id);
+
+
+    if (!element) {
+
+        return;
+
     }
 
 
-    function setNavActive(button) {
+    element.scrollIntoView({
 
-        document
-            .querySelectorAll('.premium-nav-item')
-            .forEach(item => {
-                item.classList.remove('active');
-            });
+        behavior:
+            'smooth',
 
-        if (button) {
-            button.classList.add('active');
-        }
+        block:
+            'start'
+
+    });
+
+}
+
+
+
+/* =========================================================
+   NAV ACTIVE
+========================================================= */
+
+function setNavActive(button) {
+
+    document
+        .querySelectorAll(
+            '.premium-nav-item'
+        )
+        .forEach(function(item) {
+
+            item.classList.remove(
+                'active'
+            );
+
+        });
+
+
+    if (button) {
+
+        button.classList.add(
+            'active'
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   NAVIGATION HANDLER
+========================================================= */
+
+function handleNav(button, action) {
+
+    setNavActive(button);
+
+
+    if (
+        action === 'daily'
+    ) {
+
+        switchCategory(
+            'daily'
+        );
+
+        scrollToSection(
+            'latest'
+        );
+
+        return;
+
     }
 
 
-    function updateHeaderDate() {
+    if (
+        action === 'weekly'
+    ) {
 
-        const now = new Date();
+        switchCategory(
+            'weekly'
+        );
 
-        const dateText =
-            now.toLocaleDateString('mr-IN', {
-                weekday: 'long',
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric'
-            });
+        scrollToSection(
+            'latest'
+        );
 
-        $('todayDateMr').innerText = dateText;
+        return;
+
     }
 
 
-    /* =====================================================
-       LOAD PAPER DATA
-       ===================================================== */
+    if (
+        action === 'archive'
+    ) {
 
-    function loadAllData() {
+        scrollToSection(
+            'archive'
+        );
 
-        fetch('/get-paper-info')
+        return;
 
-            .then(response => {
+    }
 
-                if (!response.ok) {
-                    throw new Error('Paper data load failed');
+
+    if (
+        action === 'epaper'
+    ) {
+
+        scrollToSection(
+            'epaper'
+        );
+
+        return;
+
+    }
+
+
+    scrollToSection(
+        'latest'
+    );
+
+}
+
+
+
+/* =========================================================
+   HEADER DATE
+========================================================= */
+
+function updateHeaderDate() {
+
+    const element =
+        $('todayDateMr');
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    element.innerText =
+        now.toLocaleDateString(
+            'mr-IN',
+            {
+
+                weekday:
+                    'long',
+
+                day:
+                    '2-digit',
+
+                month:
+                    'long',
+
+                year:
+                    'numeric'
+
+            }
+        );
+
+}
+
+
+
+/* =========================================================
+   LOAD ALL PAPER DATA
+========================================================= */
+
+async function loadAllData() {
+
+    try {
+
+        const response =
+            await fetch(
+                '/get-paper-info',
+                {
+                    cache: 'no-store'
                 }
+            );
 
-                return response.json();
-            })
 
-            .then(data => {
+        if (!response.ok) {
 
-                allPaperData = data || {};
+            throw new Error(
+                'Paper data load failed'
+            );
 
-                renderCategory();
-            })
+        }
 
-            .catch(error => {
 
-                console.error(error);
+        const data =
+            await response.json();
 
-                $('epaper-container').innerHTML = `
-                    <div class="empty-state">
-                        <h3>पेपर डेटा लोड करता आला नाही</h3>
-                        <p>
-                            Server चालू आहे का ते तपासा
-                            आणि पेज refresh करा.
-                        </p>
-                    </div>
-                `;
-            });
+
+        allPaperData =
+            data || {};
+
+
+        renderCategory();
+
+
+        updateEditionStatus();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            'Paper Data Error:',
+            error
+        );
+
+
+        if ($('epaper-container')) {
+
+            $('epaper-container').innerHTML = `
+
+                <div class="empty-state">
+
+                    <h3>
+                        पेपर डेटा लोड करता आला नाही
+                    </h3>
+
+                    <p>
+                        Server चालू आहे का ते तपासा
+                        आणि पेज refresh करा.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SWITCH CATEGORY
+========================================================= */
+
+function switchCategory(category) {
+
+    if (
+        category !== 'daily' &&
+        category !== 'weekly'
+    ) {
+
+        category =
+            'daily';
+
     }
 
 
-    /* =====================================================
-       CATEGORY SWITCH
-       ===================================================== */
+    currentCategory =
+        category;
 
-    function switchCategory(cat) {
 
-        currentCategory = cat;
+    /* ---------------------------------------------
+       TABS
+    --------------------------------------------- */
+
+    if ($('btn-daily')) {
 
         $('btn-daily').classList.toggle(
             'active',
-            cat === 'daily'
+            category === 'daily'
         );
 
-        $('btn-weekly').classList.toggle(
-            'active',
-            cat === 'weekly'
-        );
-
-        $('paper-type-text').innerText =
-            cat === 'daily'
-                ? 'दैनिक आवृत्ती'
-                : 'साप्ताहिक आवृत्ती';
-
-        $('heroTitle').innerText =
-            cat === 'daily'
-                ? 'आजचा डिजिटल ई-पेपर'
-                : 'साप्ताहिक डिजिटल ई-पेपर';
-
-        $('headerEdition').innerText =
-            cat === 'daily'
-                ? 'दैनिक'
-                : 'साप्ताहिक';
-
-        $('featuredEdition').innerText =
-            cat === 'daily'
-                ? 'दैनिक आवृत्ती'
-                : 'साप्ताहिक आवृत्ती';
-
-        $('breakingText').innerText =
-            cat === 'daily'
-                ? 'दैनिक लोकभारतीचा डिजिटल अंक वाचा • उपलब्ध अंक संग्रहातून मागील अंक निवडा.'
-                : 'लोकभारतीची साप्ताहिक डिजिटल आवृत्ती वाचा • उपलब्ध अंक संग्रहातून अंक निवडा.';
-
-        renderCategory();
     }
 
 
-    /* =====================================================
-       RENDER CATEGORY
-       ===================================================== */
+    if ($('btn-weekly')) {
 
-    function renderCategory() {
+        $('btn-weekly').classList.toggle(
+            'active',
+            category === 'weekly'
+        );
 
-        const list =
-            Array.isArray(
-                allPaperData[currentCategory]
-            )
-                ? allPaperData[currentCategory]
-                : [];
+    }
 
-        const select =
-            $('paper-select');
 
-        select.innerHTML = '';
+    /* ---------------------------------------------
+       PAPER TYPE
+    --------------------------------------------- */
 
-        if (list.length === 0) {
+    if ($('paper-type-text')) {
 
-            select.innerHTML =
-                '<option value="">अंक उपलब्ध नाही</option>';
+        $('paper-type-text').innerText =
+            category === 'daily'
+                ? 'दैनिक आवृत्ती'
+                : 'साप्ताहिक आवृत्ती';
+
+    }
+
+
+    /* ---------------------------------------------
+       HERO
+    --------------------------------------------- */
+
+    if ($('heroTitle')) {
+
+        $('heroTitle').innerText =
+            category === 'daily'
+                ? 'आजचा डिजिटल ई-पेपर'
+                : 'साप्ताहिक डिजिटल ई-पेपर';
+
+    }
+
+
+    /* ---------------------------------------------
+       HEADER EDITION
+    --------------------------------------------- */
+
+    if ($('headerEdition')) {
+
+        $('headerEdition').innerText =
+            category === 'daily'
+                ? 'दैनिक'
+                : 'साप्ताहिक';
+
+    }
+
+
+    /* ---------------------------------------------
+       FEATURED EDITION
+    --------------------------------------------- */
+
+    if ($('featuredEdition')) {
+
+        $('featuredEdition').innerText =
+            category === 'daily'
+                ? 'दैनिक आवृत्ती'
+                : 'साप्ताहिक आवृत्ती';
+
+    }
+
+
+    /* ---------------------------------------------
+       BREAKING TEXT
+    --------------------------------------------- */
+
+    if ($('breakingText')) {
+
+        $('breakingText').innerText =
+            category === 'daily'
+
+                ? 'दैनिक लोकभारतीचा डिजिटल अंक वाचा • उपलब्ध अंक संग्रहातून मागील अंक निवडा.'
+
+                : 'लोकभारतीची साप्ताहिक डिजिटल आवृत्ती वाचा • उपलब्ध अंक संग्रहातून अंक निवडा.';
+
+    }
+
+
+    renderCategory();
+
+    updateEditionStatus();
+
+}
+
+
+
+/* =========================================================
+   UPDATE EDITION STATUS
+========================================================= */
+
+function updateEditionStatus() {
+
+    const element =
+        $('editionStatus');
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    const list =
+        Array.isArray(
+            allPaperData[currentCategory]
+        )
+            ? allPaperData[currentCategory]
+            : [];
+
+
+    if (list.length > 0) {
+
+        element.innerText =
+            currentCategory === 'daily'
+                ? 'दैनिक डिजिटल आवृत्ती उपलब्ध'
+                : 'साप्ताहिक डिजिटल आवृत्ती उपलब्ध';
+
+    }
+
+    else {
+
+        element.innerText =
+            'डिजिटल आवृत्ती उपलब्ध नाही';
+
+    }
+
+}
+
+
+
+/* =========================================================
+   RENDER CATEGORY
+========================================================= */
+
+function renderCategory() {
+
+    const list =
+        Array.isArray(
+            allPaperData[currentCategory]
+        )
+            ? allPaperData[currentCategory]
+            : [];
+
+
+    const select =
+        $('paper-select');
+
+
+    if (!select) {
+
+        return;
+
+    }
+
+
+    select.innerHTML =
+        '';
+
+
+    /* ---------------------------------------------
+       NO PAPER
+    --------------------------------------------- */
+
+    if (
+        list.length === 0
+    ) {
+
+        select.innerHTML = `
+
+            <option value="">
+                अंक उपलब्ध नाही
+            </option>
+
+        `;
+
+
+        if ($('epaper-container')) {
 
             $('epaper-container').innerHTML = `
+
                 <div class="empty-state">
+
                     <h3>
-                        या कॅटेगरीमध्ये सध्या कोणताही पेपर उपलब्ध नाही.
+                        या कॅटेगरीमध्ये सध्या
+                        कोणताही पेपर उपलब्ध नाही.
                     </h3>
 
                     <p>
                         Admin Panel मधून नवीन PDF अंक
                         अपलोड केल्यावर तो येथे दिसेल.
                     </p>
+
                 </div>
+
             `;
 
-            clearHeader();
-
-            return;
         }
 
 
-        list.forEach((paper, index) => {
+        clearHeader();
 
-            const opt =
-                document.createElement('option');
+        updateEditionStatus();
 
-            opt.value = index;
+        return;
 
-            opt.innerText =
-                `${paper.date_mr || 'तारीख नाही'} • अंक ${paper.issue || '-'}`;
-
-            select.appendChild(opt);
-        });
-
-
-        select.value = '0';
-
-        displayPaperDetails(list[0]);
     }
 
 
-    function changePaper(index) {
+    /* ---------------------------------------------
+       PAPER OPTIONS
+    --------------------------------------------- */
 
-        const list =
-            allPaperData[currentCategory] || [];
+    list.forEach(
+        function(paper, index) {
 
-        const paper =
-            list[index];
+            const option =
+                document.createElement(
+                    'option'
+                );
 
-        if (!paper) {
-            return;
+
+            option.value =
+                String(index);
+
+
+            option.innerText =
+
+                (
+                    paper.date_mr ||
+                    'तारीख नाही'
+                ) +
+
+                ' • अंक ' +
+
+                (
+                    paper.issue ||
+                    '-'
+                );
+
+
+            select.appendChild(
+                option
+            );
+
         }
+    );
 
-        displayPaperDetails(paper);
 
-        scrollToSection('epaper');
+    select.value =
+        '0';
+
+
+    displayPaperDetails(
+        list[0]
+    );
+
+
+}
+
+
+
+/* =========================================================
+   CHANGE PAPER
+========================================================= */
+
+function changePaper(index) {
+
+    const list =
+        allPaperData[currentCategory] || [];
+
+
+    const numericIndex =
+        Number(index);
+
+
+    if (
+        Number.isNaN(
+            numericIndex
+        )
+    ) {
+
+        return;
+
     }
 
 
-    /* =====================================================
-       DISPLAY PAPER DETAILS
-       ===================================================== */
+    const paper =
+        list[numericIndex];
 
-    function displayPaperDetails(paper) {
+
+    if (!paper) {
+
+        return;
+
+    }
+
+
+    displayPaperDetails(
+        paper
+    );
+
+
+    scrollToSection(
+        'epaper'
+    );
+
+}
+
+
+
+/* =========================================================
+   DISPLAY PAPER DETAILS
+========================================================= */
+
+function displayPaperDetails(paper) {
+
+    if (!paper) {
+
+        clearHeader();
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       EDITOR
+    --------------------------------------------- */
+
+    if ($('disp-editor')) {
 
         $('disp-editor').innerText =
-            paper.editor || '-';
+            paper.editor ||
+            '-';
+
+    }
+
+
+    /* ---------------------------------------------
+       MOBILE
+    --------------------------------------------- */
+
+    if ($('disp-mobile')) {
 
         $('disp-mobile').innerText =
-            paper.mobile || '-';
+            paper.mobile ||
+            '-';
+
+    }
+
+
+    /* ---------------------------------------------
+       YEAR
+    --------------------------------------------- */
+
+    if ($('disp-year1')) {
 
         $('disp-year1').innerText =
-            paper.year || '-';
+            paper.year ||
+            '-';
+
+    }
+
+
+    if ($('disp-year2')) {
+
+        const year =
+            String(
+                paper.year ||
+                ''
+            ).replace(
+                /[^0-9]/g,
+                ''
+            );
+
 
         $('disp-year2').innerText =
-            (paper.year || '')
-                .replace(/[^0-9]/g, '') || '-';
+            year ||
+            '-';
+
+    }
+
+
+    /* ---------------------------------------------
+       ISSUE
+    --------------------------------------------- */
+
+    if ($('disp-issue1')) {
 
         $('disp-issue1').innerText =
-            paper.issue || '-';
+            paper.issue ||
+            '-';
+
+    }
+
+
+    if ($('disp-issue2')) {
 
         $('disp-issue2').innerText =
-            paper.issue || '-';
+            paper.issue ||
+            '-';
+
+    }
+
+
+    /* ---------------------------------------------
+       DATE
+    --------------------------------------------- */
+
+    if ($('disp-date-mr')) {
 
         $('disp-date-mr').innerText =
-            paper.date_mr || '-';
+            paper.date_mr ||
+            '-';
+
+    }
+
+
+    if ($('disp-date-en')) {
 
         $('disp-date-en').innerText =
-            paper.date_en || '-';
+            paper.date_en ||
+            '-';
+
+    }
 
 
-        const rni =
-            paper.rni || '-';
+    /* ---------------------------------------------
+       PRGI
+    --------------------------------------------- */
 
-        const rniPart =
-            rni.split('/').pop() || '-';
+    const rni =
+        paper.rni ||
+        '-';
+
+
+    const rniPart =
+        String(
+            rni
+        ).split(
+            '/'
+        ).pop() ||
+        '-';
+
+
+    if ($('disp-rni1')) {
 
         $('disp-rni1').innerText =
             rniPart;
 
+    }
+
+
+    if ($('disp-rni2')) {
+
         $('disp-rni2').innerText =
             rniPart;
 
+    }
+
+
+    /* ---------------------------------------------
+       PRICE
+    --------------------------------------------- */
+
+    if ($('disp-price1')) {
+
         $('disp-price1').innerText =
-            paper.price || '-';
+            paper.price ||
+            '-';
+
+    }
+
+
+    if ($('disp-price2')) {
+
+        const price =
+            String(
+                paper.price ||
+                ''
+            ).replace(
+                /[^0-9.]/g,
+                ''
+            );
+
 
         $('disp-price2').innerText =
-            (paper.price || '')
-                .replace(/[^0-9.]/g, '') || '-';
+            price ||
+            '-';
+
+    }
+
+
+    /* ---------------------------------------------
+       PAGES
+    --------------------------------------------- */
+
+    if ($('disp-pages1')) {
 
         $('disp-pages1').innerText =
-            paper.pages || '-';
+            paper.pages ||
+            '-';
+
+    }
+
+
+    if ($('disp-pages2')) {
 
         $('disp-pages2').innerText =
-            paper.pages || '-';
+            paper.pages ||
+            '-';
 
+    }
+
+
+    /* ---------------------------------------------
+       HEADER ISSUE
+    --------------------------------------------- */
+
+    if ($('headerIssue')) {
 
         $('headerIssue').innerText =
+
             paper.issue
-                ? 'अंक क्र. ' + paper.issue
+
+                ? 'अंक क्र. ' +
+                  paper.issue
+
                 : 'अंक उपलब्ध';
 
+    }
+
+
+    /* ---------------------------------------------
+       FEATURED TITLE
+    --------------------------------------------- */
+
+    if ($('featuredIssueTitle')) {
 
         $('featuredIssueTitle').innerText =
+
             currentCategory === 'daily'
+
                 ? 'दैनिक लोकभारती — आजचा ई-पेपर'
+
                 : 'लोकभारती — साप्ताहिक ई-पेपर';
 
+    }
+
+
+    /* ---------------------------------------------
+       FEATURED DATE
+    --------------------------------------------- */
+
+    if ($('featuredDate')) {
 
         $('featuredDate').innerText =
             'तारीख: ' +
-            (paper.date_mr || '—');
+            (
+                paper.date_mr ||
+                '—'
+            );
 
+    }
+
+
+    /* ---------------------------------------------
+       FEATURED ISSUE
+    --------------------------------------------- */
+
+    if ($('featuredIssue')) {
 
         $('featuredIssue').innerText =
             'अंक: ' +
-            (paper.issue || '—');
-
-
-        $('featuredIssueText').innerText =
-            'वर्ष ' +
-            (paper.year || '—') +
-            ' • अंक क्र. ' +
-            (paper.issue || '—') +
-            ' • पृष्ठे ' +
-            (paper.pages || '—') +
-            ' • किंमत ' +
-            (paper.price || '—');
-
-
-        if (paper.pdfPath) {
-
-            loadPDF(
-                paper.pdfPath
+            (
+                paper.issue ||
+                '—'
             );
 
-        } else {
+    }
+
+
+    /* ---------------------------------------------
+       FEATURED DESCRIPTION
+    --------------------------------------------- */
+
+    if ($('featuredIssueText')) {
+
+        $('featuredIssueText').innerText =
+
+            'वर्ष ' +
+            (
+                paper.year ||
+                '—'
+            ) +
+
+            ' • अंक क्र. ' +
+            (
+                paper.issue ||
+                '—'
+            ) +
+
+            ' • पृष्ठे ' +
+            (
+                paper.pages ||
+                '—'
+            ) +
+
+            ' • किंमत ' +
+            (
+                paper.price ||
+                '—'
+            );
+
+    }
+
+
+    /* ---------------------------------------------
+       LOAD PDF
+    --------------------------------------------- */
+
+    if (
+        paper.pdfPath
+    ) {
+
+        loadPDF(
+            paper.pdfPath
+        );
+
+    }
+
+    else {
+
+        if ($('epaper-container')) {
 
             $('epaper-container').innerHTML = `
+
                 <div class="empty-state">
 
                     <h3>
@@ -1801,208 +1990,387 @@
                     </p>
 
                 </div>
+
             `;
+
         }
+
+    }
+
+}
+
+
+
+/* =========================================================
+   CLEAR PAPER HEADER
+========================================================= */
+
+function clearHeader() {
+
+    const ids = [
+
+        'disp-editor',
+        'disp-mobile',
+
+        'disp-year1',
+        'disp-year2',
+
+        'disp-issue1',
+        'disp-issue2',
+
+        'disp-date-mr',
+        'disp-date-en',
+
+        'disp-rni1',
+        'disp-rni2',
+
+        'disp-price1',
+        'disp-price2',
+
+        'disp-pages1',
+        'disp-pages2'
+
+    ];
+
+
+    ids.forEach(
+        function(id) {
+
+            if ($(id)) {
+
+                $(id).innerText =
+                    '-';
+
+            }
+
+        }
+    );
+
+
+    if ($('headerIssue')) {
+
+        $('headerIssue').innerText =
+            'अंक उपलब्ध';
+
     }
 
 
-    /* =====================================================
-       LOAD PDF
-       ===================================================== */
+    if ($('featuredDate')) {
 
-    function loadPDF(pdfUrl) {
+        $('featuredDate').innerText =
+            'तारीख: —';
 
-        const container =
-            $('epaper-container');
+    }
+
+
+    if ($('featuredIssue')) {
+
+        $('featuredIssue').innerText =
+            'अंक: —';
+
+    }
+
+}
+
+
+
+/* =========================================================
+   LOAD PDF
+========================================================= */
+
+async function loadPDF(pdfUrl) {
+
+    const container =
+        $('epaper-container');
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    if (
+        typeof pdfjsLib ===
+        'undefined'
+    ) {
 
         container.innerHTML = `
-            <div class="viewer-loading">
-                📖 ई-पेपर Loading...
+
+            <div class="empty-state">
+
+                <h3>
+                    PDF Viewer उपलब्ध नाही.
+                </h3>
+
+                <p>
+                    PDF.js library तपासा.
+                </p>
+
             </div>
+
         `;
 
+        return;
 
-        pdfjsLib.getDocument(pdfUrl).promise
-
-            .then(async pdf => {
-
-                container.innerHTML = '';
+    }
 
 
-                for (
-                    let pageNum = 1;
-                    pageNum <= pdf.numPages;
-                    pageNum++
-                ) {
+    container.innerHTML = `
 
-                    try {
+        <div class="viewer-loading">
+            📖 ई-पेपर Loading...
+        </div>
 
-                        await renderPage(
-                            pdf,
-                            pageNum,
-                            container
-                        );
-
-                    } catch (error) {
-
-                        console.error(
-                            'Page Render Error:',
-                            pageNum,
-                            error
-                        );
-                    }
+    `;
 
 
-                    await new Promise(
-                        resolve =>
-                            setTimeout(
-                                resolve,
-                                50
-                            )
-                    );
-                }
+    try {
 
-            })
+        const pdf =
+            await pdfjsLib
+                .getDocument(
+                    pdfUrl
+                )
+                .promise;
 
-            .catch(error => {
+
+        container.innerHTML =
+            '';
+
+
+        for (
+            let pageNum = 1;
+            pageNum <= pdf.numPages;
+            pageNum++
+        ) {
+
+            try {
+
+                await renderPage(
+                    pdf,
+                    pageNum,
+                    container
+                );
+
+            }
+
+            catch (error) {
 
                 console.error(
-                    'PDF Loading Error:',
+                    'Page Render Error:',
+                    pageNum,
                     error
                 );
 
-                container.innerHTML = `
-                    <div class="empty-state">
+            }
 
-                        <h3>
-                            PDF उघडताना एरर आली.
-                        </h3>
 
-                        <p>
-                            PDF file उपलब्ध आहे का
-                            आणि uploads folder मध्ये आहे का
-                            ते तपासा.
-                        </p>
+            await new Promise(
+                function(resolve) {
 
-                    </div>
-                `;
-            });
+                    setTimeout(
+                        resolve,
+                        20
+                    );
+
+                }
+            );
+
+        }
+
     }
 
+    catch (error) {
 
-    /* =====================================================
-       RENDER PDF PAGE
-       ===================================================== */
-
-    function renderPage(
-        pdf,
-        pageNum,
-        container
-    ) {
-
-        return pdf.getPage(pageNum)
-
-            .then(page => {
-
-                const displayWidth =
-                    Math.min(
-                        window.innerWidth - 30,
-                        950
-                    );
+        console.error(
+            'PDF Loading Error:',
+            error
+        );
 
 
-                const baseViewport =
-                    page.getViewport({
-                        scale: 1
-                    });
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <h3>
+                    PDF उघडताना एरर आली.
+                </h3>
+
+                <p>
+                    PDF file उपलब्ध आहे का
+                    आणि uploads folder मध्ये आहे का
+                    ते तपासा.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
 
 
-                const displayScale =
-                    displayWidth /
-                    baseViewport.width;
+
+/* =========================================================
+   RENDER PDF PAGE
+========================================================= */
+
+async function renderPage(
+    pdf,
+    pageNum,
+    container
+) {
+
+    const page =
+        await pdf.getPage(
+            pageNum
+        );
 
 
-                const HD_SCALE = 2.5;
+    /* ---------------------------------------------
+       DISPLAY WIDTH
+    --------------------------------------------- */
+
+    const displayWidth =
+        Math.min(
+            window.innerWidth - 30,
+            950
+        );
 
 
-                const renderScale =
-                    Math.max(
-                        1.5,
-                        displayScale * HD_SCALE
-                    );
+    /* ---------------------------------------------
+       BASE VIEWPORT
+    --------------------------------------------- */
+
+    const baseViewport =
+        page.getViewport({
+
+            scale:
+                1
+
+        });
 
 
-                const viewport =
-                    page.getViewport({
-                        scale: renderScale
-                    });
+    const displayScale =
+        displayWidth /
+        baseViewport.width;
 
 
-                const wrapper =
-                    document.createElement(
-                        'div'
-                    );
+    /* ---------------------------------------------
+       HD SCALE
+    --------------------------------------------- */
 
-                wrapper.className =
-                    'canvas-wrapper';
-
-
-                const canvas =
-                    document.createElement(
-                        'canvas'
-                    );
+    const HD_SCALE =
+        2.5;
 
 
-                const context =
-                    canvas.getContext(
-                        '2d',
-                        {
-                            alpha: false
-                        }
-                    );
+    const renderScale =
+        Math.max(
+            1.5,
+            displayScale *
+            HD_SCALE
+        );
 
 
-                canvas.width =
-                    Math.round(
-                        viewport.width
-                    );
+    const viewport =
+        page.getViewport({
 
-                canvas.height =
-                    Math.round(
-                        viewport.height
-                    );
+            scale:
+                renderScale
+
+        });
 
 
-                canvas.style.width =
-                    displayWidth + 'px';
+    /* ---------------------------------------------
+       WRAPPER
+    --------------------------------------------- */
 
-                canvas.style.height =
-                    'auto';
-
-                canvas.style.display =
-                    'block';
-
-
-                wrapper.appendChild(
-                    canvas
-                );
-
-                container.appendChild(
-                    wrapper
-                );
+    const wrapper =
+        document.createElement(
+            'div'
+        );
 
 
-                return page.render({
+    wrapper.className =
+        'canvas-wrapper';
 
-                    canvasContext:
-                        context,
 
-                    viewport:
-                        viewport
+    /* ---------------------------------------------
+       CANVAS
+    --------------------------------------------- */
 
-                }).promise
+    const canvas =
+        document.createElement(
+            'canvas'
+        );
 
-                   .then(() => {
+
+    const context =
+        canvas.getContext(
+            '2d',
+            {
+                alpha:
+                    false
+            }
+        );
+
+
+    canvas.width =
+        Math.round(
+            viewport.width
+        );
+
+
+    canvas.height =
+        Math.round(
+            viewport.height
+        );
+
+
+    canvas.style.width =
+        displayWidth +
+        'px';
+
+
+    canvas.style.height =
+        'auto';
+
+
+    canvas.style.display =
+        'block';
+
+
+    wrapper.appendChild(
+        canvas
+    );
+
+
+    container.appendChild(
+        wrapper
+    );
+
+
+    /* ---------------------------------------------
+       RENDER
+    --------------------------------------------- */
+
+    await page.render({
+
+        canvasContext:
+            context,
+
+        viewport:
+            viewport
+
+    }).promise;
+
+
+    /* ---------------------------------------------
+       ENABLE MOBILE ZOOM
+    --------------------------------------------- */
 
     initMobileZoom(
         wrapper,
@@ -2010,140 +2378,145 @@
     );
 
 
+    /* ---------------------------------------------
+       ENABLE CROP
+    --------------------------------------------- */
+
     initCropper(
         wrapper,
         canvas
     );
 
-})
-
-                    .catch(error => {
-
-                        console.error(
-                            'PDF Page Render Error:',
-                            pageNum,
-                            error
-                        );
-                    });
-
-            })
-
-            .catch(error => {
-
-                console.error(
-                    'PDF getPage Error:',
-                    pageNum,
-                    error
-                );
-            });
-    }
+}
 
 
-    /* =====================================================
-       CLEAR HEADER
-       ===================================================== */
 
-    function clearHeader() {
-
-        [
-            'disp-editor',
-            'disp-mobile',
-            'disp-year1',
-            'disp-year2',
-            'disp-issue1',
-            'disp-issue2',
-            'disp-date-mr',
-            'disp-date-en',
-            'disp-rni1',
-            'disp-rni2',
-            'disp-price1',
-            'disp-price2',
-            'disp-pages1',
-            'disp-pages2'
-
-        ].forEach(id => {
-
-            if ($(id)) {
-                $(id).innerText = '-';
-            }
-        });
-    }
-
-    /* =====================================================
+/* =========================================================
    MOBILE PINCH ZOOM + PAN
-   Existing Crop ला disturb न करता
-   ===================================================== */
+========================================================= */
 
-function initMobileZoom(wrapper, canvas) {
+function initMobileZoom(
+    wrapper,
+    canvas
+) {
 
-    let scale = 1;
-    let lastDistance = 0;
-
-    let startPanX = 0;
-    let startPanY = 0;
-
-    let panX = 0;
-    let panY = 0;
-
-    let isPinching = false;
-
-    const MIN_SCALE = 1;
-    const MAX_SCALE = 4;
+    let scale =
+        1;
 
 
-    function getDistance(touch1, touch2) {
+    let lastDistance =
+        0;
+
+
+    let startPanX =
+        0;
+
+
+    let startPanY =
+        0;
+
+
+    let panX =
+        0;
+
+
+    let panY =
+        0;
+
+
+    let isPinching =
+        false;
+
+
+    const MIN_SCALE =
+        1;
+
+
+    const MAX_SCALE =
+        4;
+
+
+
+    function getDistance(
+        touch1,
+        touch2
+    ) {
 
         const dx =
             touch2.clientX -
             touch1.clientX;
 
+
         const dy =
             touch2.clientY -
             touch1.clientY;
+
 
         return Math.sqrt(
             dx * dx +
             dy * dy
         );
+
     }
+
 
 
     function applyTransform() {
 
         canvas.style.transform =
-            `translate(${panX}px, ${panY}px) scale(${scale})`;
+            'translate(' +
+            panX +
+            'px, ' +
+            panY +
+            'px) scale(' +
+            scale +
+            ')';
+
 
         canvas.style.transformOrigin =
             'center center';
+
     }
+
 
 
     function resetZoom() {
 
-        scale = 1;
+        scale =
+            1;
 
-        panX = 0;
-        panY = 0;
+        panX =
+            0;
 
-        isPinching = false;
+        panY =
+            0;
+
+        isPinching =
+            false;
+
+        lastDistance =
+            0;
 
         applyTransform();
+
     }
 
 
-    /* =================================================
-       TOUCH START
-       ================================================= */
 
     wrapper.addEventListener(
         'touchstart',
         function(e) {
 
-            if (e.touches.length === 2) {
+            if (
+                e.touches.length === 2
+            ) {
 
                 e.preventDefault();
 
-                isPinching = true;
+
+                isPinching =
+                    true;
+
 
                 lastDistance =
                     getDistance(
@@ -2151,53 +2524,49 @@ function initMobileZoom(wrapper, canvas) {
                         e.touches[1]
                     );
 
+
                 startPanX =
+
                     (
                         e.touches[0].clientX +
                         e.touches[1].clientX
                     ) / 2;
 
+
                 startPanY =
+
                     (
                         e.touches[0].clientY +
                         e.touches[1].clientY
                     ) / 2;
+
             }
 
         },
         {
-            passive: false
+            passive:
+                false
         }
     );
 
 
-    /* =================================================
-       TOUCH MOVE
-       ================================================= */
 
     wrapper.addEventListener(
         'touchmove',
         function(e) {
 
-            /*
-             * फक्त 2 fingers असतील
-             * तर Zoom + Pan
-             */
-
             if (
                 e.touches.length !== 2 ||
                 !isPinching
             ) {
+
                 return;
+
             }
 
 
             e.preventDefault();
 
-
-            /* =========================
-               PINCH DISTANCE
-               ========================= */
 
             const newDistance =
                 getDistance(
@@ -2206,14 +2575,17 @@ function initMobileZoom(wrapper, canvas) {
                 );
 
 
-            if (lastDistance > 0) {
+            if (
+                lastDistance > 0
+            ) {
 
                 const zoomFactor =
                     newDistance /
                     lastDistance;
 
 
-                scale *= zoomFactor;
+                scale *=
+                    zoomFactor;
 
 
                 scale =
@@ -2224,6 +2596,7 @@ function initMobileZoom(wrapper, canvas) {
                             scale
                         )
                     );
+
             }
 
 
@@ -2231,11 +2604,8 @@ function initMobileZoom(wrapper, canvas) {
                 newDistance;
 
 
-            /* =========================
-               TWO FINGER PAN
-               ========================= */
-
             const centerX =
+
                 (
                     e.touches[0].clientX +
                     e.touches[1].clientX
@@ -2243,6 +2613,7 @@ function initMobileZoom(wrapper, canvas) {
 
 
             const centerY =
+
                 (
                     e.touches[0].clientY +
                     e.touches[1].clientY
@@ -2262,6 +2633,7 @@ function initMobileZoom(wrapper, canvas) {
             startPanX =
                 centerX;
 
+
             startPanY =
                 centerY;
 
@@ -2270,14 +2642,12 @@ function initMobileZoom(wrapper, canvas) {
 
         },
         {
-            passive: false
+            passive:
+                false
         }
     );
 
 
-    /* =================================================
-       TOUCH END
-       ================================================= */
 
     wrapper.addEventListener(
         'touchend',
@@ -2287,23 +2657,30 @@ function initMobileZoom(wrapper, canvas) {
                 e.touches.length < 2
             ) {
 
-                isPinching = false;
+                isPinching =
+                    false;
 
-                lastDistance = 0;
+                lastDistance =
+                    0;
+
             }
 
         },
         {
-            passive: true
+            passive:
+                true
         }
     );
 
 
-    /* =================================================
-       DOUBLE TAP = RESET ZOOM
-       ================================================= */
 
-    let lastTap = 0;
+    /* ---------------------------------------------
+       DOUBLE TAP RESET
+    --------------------------------------------- */
+
+    let lastTap =
+        0;
+
 
     wrapper.addEventListener(
         'touchend',
@@ -2312,7 +2689,9 @@ function initMobileZoom(wrapper, canvas) {
             if (
                 e.changedTouches.length !== 1
             ) {
+
                 return;
+
             }
 
 
@@ -2330,155 +2709,572 @@ function initMobileZoom(wrapper, canvas) {
             }
 
 
-            lastTap = now;
+            lastTap =
+                now;
 
         },
         {
-            passive: true
+            passive:
+                true
         }
     );
+
 }
 
 
-    /* =====================================================
-       CROP SELECTION
-       SCROLL SAFE
-       ===================================================== */
 
-    function initCropper(
-        wrapper,
-        canvas
-    ) {
+/* =========================================================
+   CROP SYSTEM
+========================================================= */
 
-        let startX = 0;
-        let startY = 0;
-
-        let currentX = 0;
-        let currentY = 0;
-
-        let isSelecting = false;
-        let potentialSelection = false;
-
-        let activePointerId = null;
-
-        let movedDistance = 0;
-
-        const SELECTION_THRESHOLD = 12;
-
-
-        const selector =
-            document.getElementById(
-                'selector'
-            );
-
-
-        if (!selector) {
-
-            console.error(
-                'selector element सापडला नाही.'
-            );
-
-            return;
-        }
-
-
-        /*
-         * IMPORTANT:
-         * Canvas वर direct touch selection
-         * सुरू होणार नाही.
-         */
-/* =================================================
-   MOBILE ZOOM + CROP TOUCH CONTROL
-   ================================================= */
-
-if (
-    window.matchMedia('(max-width: 650px)').matches
+function initCropper(
+    wrapper,
+    canvas
 ) {
 
-    canvas.style.touchAction =
-        'none';
-
-    wrapper.style.touchAction =
-        'pan-y';
-
-} else {
-
-    canvas.style.touchAction =
-        'none';
-
-    wrapper.style.touchAction =
-        'none';
-}
-
-        /* =================================================
-           GET POINTER POSITION
-           ================================================= */
-
-        function getPointerPosition(e) {
-
-            const rect =
-                canvas.getBoundingClientRect();
+    let startX =
+        0;
 
 
-            let x =
-                e.clientX -
-                rect.left;
+    let startY =
+        0;
 
 
-            let y =
-                e.clientY -
-                rect.top;
+    let currentX =
+        0;
 
 
-            x =
-                Math.max(
-                    0,
-                    Math.min(
-                        x,
-                        rect.width
-                    )
+    let currentY =
+        0;
+
+
+    let isSelecting =
+        false;
+
+
+    let potentialSelection =
+        false;
+
+
+    let activePointerId =
+        null;
+
+
+    let movedDistance =
+        0;
+
+
+    const SELECTION_THRESHOLD =
+        12;
+
+
+    const selector =
+        $('selector');
+
+
+    if (!selector) {
+
+        console.error(
+            'selector element सापडला नाही.'
+        );
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       TOUCH BEHAVIOR
+    --------------------------------------------- */
+
+    if (
+        window.matchMedia(
+            '(max-width: 650px)'
+        ).matches
+    ) {
+
+        canvas.style.touchAction =
+            'none';
+
+
+        wrapper.style.touchAction =
+            'pan-y';
+
+    }
+
+    else {
+
+        canvas.style.touchAction =
+            'none';
+
+
+        wrapper.style.touchAction =
+            'none';
+
+    }
+
+
+
+    /* ---------------------------------------------
+       POINTER POSITION
+    --------------------------------------------- */
+
+    function getPointerPosition(e) {
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        let x =
+            e.clientX -
+            rect.left;
+
+
+        let y =
+            e.clientY -
+            rect.top;
+
+
+        x =
+            Math.max(
+                0,
+                Math.min(
+                    x,
+                    rect.width
+                )
+            );
+
+
+        y =
+            Math.max(
+                0,
+                Math.min(
+                    y,
+                    rect.height
+                )
+            );
+
+
+        return {
+
+            x:
+                x,
+
+            y:
+                y
+
+        };
+
+    }
+
+
+
+    /* ---------------------------------------------
+       RED SELECTOR
+    --------------------------------------------- */
+
+    function updateSelector() {
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        const x =
+            Math.min(
+                startX,
+                currentX
+            );
+
+
+        const y =
+            Math.min(
+                startY,
+                currentY
+            );
+
+
+        const width =
+            Math.abs(
+                currentX -
+                startX
+            );
+
+
+        const height =
+            Math.abs(
+                currentY -
+                startY
+            );
+
+
+        selector.style.left =
+            (
+                rect.left +
+                x
+            ) +
+            'px';
+
+
+        selector.style.top =
+            (
+                rect.top +
+                y
+            ) +
+            'px';
+
+
+        selector.style.width =
+            width +
+            'px';
+
+
+        selector.style.height =
+            height +
+            'px';
+
+    }
+
+
+
+    /* ---------------------------------------------
+       POINTER DOWN
+    --------------------------------------------- */
+
+    canvas.addEventListener(
+        'pointerdown',
+        function(e) {
+
+            if (
+                e.pointerType === 'touch' &&
+                e.isPrimary === false
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                activePointerId !== null
+            ) {
+
+                return;
+
+            }
+
+
+            activePointerId =
+                e.pointerId;
+
+
+            const pos =
+                getPointerPosition(
+                    e
                 );
 
 
-            y =
-                Math.max(
-                    0,
-                    Math.min(
-                        y,
-                        rect.height
-                    )
-                );
+            startX =
+                pos.x;
 
 
-            return {
-                x: x,
-                y: y
-            };
+            startY =
+                pos.y;
+
+
+            currentX =
+                pos.x;
+
+
+            currentY =
+                pos.y;
+
+
+            movedDistance =
+                0;
+
+
+            isSelecting =
+                false;
+
+
+            potentialSelection =
+                e.pointerType ===
+                'touch';
+
+
+            selector.style.display =
+                'none';
+
+
+            /* -------------------------------------
+               MOUSE
+            ------------------------------------- */
+
+            if (
+                e.pointerType !== 'touch'
+            ) {
+
+                isSelecting =
+                    true;
+
+
+                selector.style.display =
+                    'block';
+
+
+                try {
+
+                    canvas.setPointerCapture(
+                        e.pointerId
+                    );
+
+                }
+
+                catch (error) {}
+
+            }
+
+        },
+        {
+            passive:
+                true
         }
+    );
 
 
-        /* =================================================
-           UPDATE RED SELECTOR
-           ================================================= */
 
-        function updateSelector() {
+    /* ---------------------------------------------
+       POINTER MOVE
+    --------------------------------------------- */
 
-            const rect =
-                canvas.getBoundingClientRect();
+    canvas.addEventListener(
+        'pointermove',
+        function(e) {
+
+            if (
+                activePointerId === null ||
+                e.pointerId !==
+                activePointerId
+            ) {
+
+                return;
+
+            }
 
 
-            const x =
-                Math.min(
-                    startX,
-                    currentX
+            const pos =
+                getPointerPosition(
+                    e
                 );
 
 
-            const y =
-                Math.min(
-                    startY,
-                    currentY
+            const dx =
+                pos.x -
+                startX;
+
+
+            const dy =
+                pos.y -
+                startY;
+
+
+            movedDistance =
+                Math.sqrt(
+                    dx * dx +
+                    dy * dy
                 );
+
+
+            /* -------------------------------------
+               MOBILE SCROLL PROTECTION
+            ------------------------------------- */
+
+            if (
+                potentialSelection &&
+                e.pointerType === 'touch'
+            ) {
+
+                if (
+                    movedDistance <
+                    SELECTION_THRESHOLD
+                ) {
+
+                    return;
+
+                }
+
+
+                /* -------------------------------
+                   VERTICAL = SCROLL
+                -------------------------------- */
+
+                if (
+                    Math.abs(dy) >
+                    Math.abs(dx)
+                ) {
+
+                    potentialSelection =
+                        false;
+
+
+                    isSelecting =
+                        false;
+
+
+                    activePointerId =
+                        null;
+
+
+                    selector.style.display =
+                        'none';
+
+
+                    return;
+
+                }
+
+
+                /* -------------------------------
+                   HORIZONTAL = CROP
+                -------------------------------- */
+
+                potentialSelection =
+                    false;
+
+
+                isSelecting =
+                    true;
+
+
+                selector.style.display =
+                    'block';
+
+
+                try {
+
+                    canvas.setPointerCapture(
+                        e.pointerId
+                    );
+
+                }
+
+                catch (error) {}
+
+            }
+
+
+            if (!isSelecting) {
+
+                return;
+
+            }
+
+
+            e.preventDefault();
+
+
+            currentX =
+                pos.x;
+
+
+            currentY =
+                pos.y;
+
+
+            updateSelector();
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+
+    /* ---------------------------------------------
+       POINTER UP
+    --------------------------------------------- */
+
+    canvas.addEventListener(
+        'pointerup',
+        function(e) {
+
+            if (
+                activePointerId === null ||
+                e.pointerId !==
+                activePointerId
+            ) {
+
+                return;
+
+            }
+
+
+            const pos =
+                getPointerPosition(
+                    e
+                );
+
+
+            currentX =
+                pos.x;
+
+
+            currentY =
+                pos.y;
+
+
+            /* -------------------------------------
+               NO SELECTION
+            ------------------------------------- */
+
+            if (!isSelecting) {
+
+                potentialSelection =
+                    false;
+
+
+                activePointerId =
+                    null;
+
+
+                selector.style.display =
+                    'none';
+
+
+                return;
+
+            }
+
+
+            e.preventDefault();
+
+
+            updateSelector();
+
+
+            isSelecting =
+                false;
+
+
+            potentialSelection =
+                false;
+
+
+            try {
+
+                canvas.releasePointerCapture(
+                    e.pointerId
+                );
+
+            }
+
+            catch (error) {}
+
+
+            activePointerId =
+                null;
 
 
             const width =
@@ -2495,1087 +3291,1043 @@ if (
                 );
 
 
-            selector.style.left =
-                (
-                    rect.left +
-                    x
-                ) + 'px';
-
-
-            selector.style.top =
-                (
-                    rect.top +
-                    y
-                ) + 'px';
-
-
-            selector.style.width =
-                width + 'px';
-
-
-            selector.style.height =
-                height + 'px';
-        }
-
-
-        /* =================================================
-           POINTER DOWN
-           ================================================= */
-
-        canvas.addEventListener(
-            'pointerdown',
-            function(e) {
-
-                /*
-                 * Multi-touch ignore
-                 */
-
-                if (
-                    e.pointerType === 'touch' &&
-                    e.isPrimary === false
-                ) {
-                    return;
-                }
-
-
-                if (activePointerId !== null) {
-                    return;
-                }
-
-activePointerId =
-    e.pointerId;
-
-const pos =
-    getPointerPosition(e);
-
-startX =
-    pos.x;
-
-startY =
-    pos.y;
-
-currentX =
-    pos.x;
-
-currentY =
-    pos.y;
-
-movedDistance = 0;
-
-isSelecting = false;
-
-/*
- * Touch साठी selection लगेच सुरू करू नका.
- * आधी user scroll करतोय की drag करतोय
- * ते ठरू द्या.
- */
-potentialSelection =
-    e.pointerType === 'touch';
-
-selector.style.display =
-    'none';
-
-                /*
-                 * Mouse साठी selection
-                 * लगेच सुरू करू शकतो.
-                 *
-                 * Touch साठी आधी movement
-                 * check होईल.
-                 */
-
-                if (
-                    e.pointerType !== 'touch'
-                ) {
-
-                    isSelecting =
-                        true;
-
-                    selector.style.display =
-                        'block';
-
-                    try {
-
-                        canvas.setPointerCapture(
-                            e.pointerId
-                        );
-
-                    } catch (err) {}
-                }
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        /* =================================================
-           POINTER MOVE
-           ================================================= */
-
-        canvas.addEventListener(
-            'pointermove',
-            function(e) {
-
-                if (
-                    activePointerId === null ||
-                    e.pointerId !== activePointerId
-                ) {
-                    return;
-                }
-
-
-                const pos =
-                    getPointerPosition(e);
-
-
-                const dx =
-                    pos.x -
-                    startX;
-
-
-                const dy =
-                    pos.y -
-                    startY;
-
-
-                movedDistance =
-                    Math.sqrt(
-                        dx * dx +
-                        dy * dy
-                    );
-
-
-                /* =========================================
-                   TOUCH SCROLL PROTECTION
-                   ========================================= */
-
-                if (
-                    potentialSelection &&
-                    e.pointerType === 'touch'
-                ) {
-
-                    if (
-                        movedDistance <
-                        SELECTION_THRESHOLD
-                    ) {
-                        return;
-                    }
-
-
-                    /*
-                     * Vertical movement =
-                     * PAGE SCROLL
-                     */
-
-                    if (
-                        Math.abs(dy) >
-                        Math.abs(dx)
-                    ) {
-
-                        potentialSelection =
-                            false;
-
-                        isSelecting =
-                            false;
-
-                        activePointerId =
-                            null;
-
-                        selector.style.display =
-                            'none';
-
-                        return;
-                    }
-
-
-                    /*
-                     * Horizontal / diagonal
-                     * deliberate drag =
-                     * selection
-                     */
-
-                    potentialSelection =
-                        false;
-
-                    isSelecting =
-                        true;
-
-
-                    selector.style.display =
-                        'block';
-
-
-                    try {
-
-                        canvas.setPointerCapture(
-                            e.pointerId
-                        );
-
-                    } catch (err) {}
-                }
-
-
-                if (!isSelecting) {
-                    return;
-                }
-
-
-                /*
-                 * आता selection चालू आहे,
-                 * म्हणून browser scroll थांबवतो.
-                 */
-
-                e.preventDefault();
-
-
-                currentX =
-                    pos.x;
-
-                currentY =
-                    pos.y;
-
-
-                updateSelector();
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-        /* =================================================
-           POINTER UP
-           ================================================= */
-
-        canvas.addEventListener(
-            'pointerup',
-            function(e) {
-
-                if (
-                    activePointerId === null ||
-                    e.pointerId !== activePointerId
-                ) {
-                    return;
-                }
-
-
-                const pos =
-                    getPointerPosition(e);
-
-
-                currentX =
-                    pos.x;
-
-                currentY =
-                    pos.y;
-
-
-                /*
-                 * Selection सुरू झाली नसेल
-                 * तर काही करू नका.
-                 */
-
-                if (!isSelecting) {
-
-                    potentialSelection =
-                        false;
-
-                    activePointerId =
-                        null;
-
-                    selector.style.display =
-                        'none';
-
-                    return;
-                }
-
-
-                e.preventDefault();
-
-
-                updateSelector();
-
-
-                isSelecting =
-                    false;
-
-                potentialSelection =
-                    false;
-
-
-                try {
-
-                    canvas.releasePointerCapture(
-                        e.pointerId
-                    );
-
-                } catch (err) {}
-
-
-                activePointerId =
-                    null;
-
-
-                const width =
-                    Math.abs(
-                        currentX -
-                        startX
-                    );
-
-
-                const height =
-                    Math.abs(
-                        currentY -
-                        startY
-                    );
-
-
-                selector.style.display =
-                    'none';
-
-
-                /*
-                 * खूप छोटा selection
-                 */
-
-                if (
-                    width < 10 ||
-                    height < 10
-                ) {
-                    return;
-                }
-
-
-                /*
-                 * FINAL CROP
-                 */
-
-                createCropPreview(
-                    canvas,
-                    startX,
-                    startY,
-                    currentX,
-                    currentY
-                );
-
-            },
-            {
-                passive: false
-            }
-        );
-
-
-        /* =================================================
-           POINTER CANCEL
-           ================================================= */
-
-        canvas.addEventListener(
-            'pointercancel',
-            function(e) {
-
-                if (
-                    activePointerId !== null &&
-                    e.pointerId !== activePointerId
-                ) {
-                    return;
-                }
-
-
-                isSelecting =
-                    false;
-
-                potentialSelection =
-                    false;
-
-                activePointerId =
-                    null;
-
-
-                selector.style.display =
-                    'none';
-
-
-                try {
-
-                    canvas.releasePointerCapture(
-                        e.pointerId
-                    );
-
-                } catch (err) {}
-            }
-        );
-
-
-        /* =================================================
-           LOST POINTER CAPTURE
-           ================================================= */
-
-        canvas.addEventListener(
-            'lostpointercapture',
-            function() {
-
-                isSelecting =
-                    false;
-
-                potentialSelection =
-                    false;
-
-                activePointerId =
-                    null;
-
-
-                selector.style.display =
-                    'none';
-            }
-        );
-    }
-
-
-    /* =====================================================
-       CREATE HD CROP
-       ===================================================== */
-
-    function createCropPreview(
-        canvas,
-        startX,
-        startY,
-        endX,
-        endY
-    ) {
-
-        const rect =
-            canvas.getBoundingClientRect();
-
-
-        let sx =
-            Math.min(
-                startX,
-                endX
-            );
-
-
-        let sy =
-            Math.min(
-                startY,
-                endY
-            );
-
-
-        let ex =
-            Math.max(
-                startX,
-                endX
-            );
-
-
-        let ey =
-            Math.max(
-                startY,
-                endY
-            );
-
-
-        sx =
-            Math.max(
-                0,
-                Math.min(
-                    sx,
-                    rect.width
-                )
-            );
-
-
-        sy =
-            Math.max(
-                0,
-                Math.min(
-                    sy,
-                    rect.height
-                )
-            );
-
-
-        ex =
-            Math.max(
-                0,
-                Math.min(
-                    ex,
-                    rect.width
-                )
-            );
-
-
-        ey =
-            Math.max(
-                0,
-                Math.min(
-                    ey,
-                    rect.height
-                )
-            );
-
-
-        const displayWidth =
-            ex - sx;
-
-
-        const displayHeight =
-            ey - sy;
-
-
-        if (
-            displayWidth < 10 ||
-            displayHeight < 10
-        ) {
-            return;
-        }
-
-
-        const scaleX =
-            canvas.width /
-            rect.width;
-
-
-        const scaleY =
-            canvas.height /
-            rect.height;
-
-
-        const x =
-            Math.round(
-                sx * scaleX
-            );
-
-
-        const y =
-            Math.round(
-                sy * scaleY
-            );
-
-
-        const width =
-            Math.round(
-                displayWidth * scaleX
-            );
-
-
-        const height =
-            Math.round(
-                displayHeight * scaleY
-            );
-
-
-        if (
-            width < 20 ||
-            height < 20
-        ) {
-            return;
-        }
-
-
-        const cropCanvas =
-            document.createElement(
-                'canvas'
-            );
-
-
-        cropCanvas.width =
-            width;
-
-        cropCanvas.height =
-            height;
-
-
-        const ctx =
-            cropCanvas.getContext(
-                '2d'
-            );
-
-
-        if (!ctx) {
-
-            console.error(
-                'Crop canvas context मिळाला नाही.'
-            );
-
-            return;
-        }
-
-
-        ctx.imageSmoothingEnabled =
-            true;
-
-        ctx.imageSmoothingQuality =
-            'high';
-
-
-        ctx.drawImage(
-
-            canvas,
-
-            x,
-            y,
-            width,
-            height,
-
-            0,
-            0,
-            width,
-            height
-        );
-
-
-        currentCropCanvas =
-            cropCanvas;
-
-
-        /* =================================================
-           NEWSPAPER NAME
-           ================================================= */
-
-        let newspaperHeading =
-            'लोकभारती';
-
-
-        if (
-            currentCategory === 'daily'
-        ) {
-
-            newspaperHeading =
-                'दैनिक लोकभारती';
-
-        } else if (
-            currentCategory === 'weekly'
-        ) {
-
-            newspaperHeading =
-                'साप्ताहिक लोकभारती';
-        }
-
-
-        const headingInput =
-            $('newsHeadingInput');
-
-
-        if (headingInput) {
-
-            headingInput.value =
-                newspaperHeading;
-
-            headingInput.style.display =
+            selector.style.display =
                 'none';
-        }
 
-
-        const liveHeading =
-            $('liveHeading');
-
-
-        if (liveHeading) {
-
-            liveHeading.innerText =
-                newspaperHeading;
-
-            liveHeading.style.color =
-                '#b3131b';
-
-            liveHeading.style.fontWeight =
-                '900';
-
-            liveHeading.style.fontSize =
-                '24px';
-        }
-
-
-        const preview =
-            $('croppedPreview');
-
-
-        if (preview) {
-
-            preview.src =
-                cropCanvas.toDataURL(
-                    'image/png'
-                );
-        }
-
-
-        const modalBackground =
-            $('modalBackground');
-
-
-        const downloadModal =
-            $('downloadModal');
-
-
-        if (modalBackground) {
-
-            modalBackground.style.display =
-                'block';
-        }
-
-
-        if (downloadModal) {
-
-            downloadModal.style.display =
-                'block';
-        }
-    }
-
-
-    /* =====================================================
-       DOWNLOAD NEWS
-       ===================================================== */
-
-    function downloadNews(format) {
-
-        if (!currentCropCanvas) {
-
-            alert(
-                'कृपया आधी बातमी select करा.'
-            );
-
-            return;
-        }
-
-
-        let newspaperHeading =
-            'लोकभारती';
-
-
-        if (
-            currentCategory === 'daily'
-        ) {
-
-            newspaperHeading =
-                'दैनिक लोकभारती';
-
-        } else if (
-            currentCategory === 'weekly'
-        ) {
-
-            newspaperHeading =
-                'साप्ताहिक लोकभारती';
-        }
-
-
-        const padding =
-            40;
-
-
-        const headingHeight =
-            100;
-
-
-        const footerHeight =
-            70;
-
-
-        const finalCanvas =
-            document.createElement(
-                'canvas'
-            );
-
-
-        finalCanvas.width =
-            currentCropCanvas.width +
-            padding * 2;
-
-
-        finalCanvas.height =
-            currentCropCanvas.height +
-            headingHeight +
-            footerHeight +
-            padding * 2;
-
-
-        const ctx =
-            finalCanvas.getContext(
-                '2d'
-            );
-
-
-        ctx.imageSmoothingEnabled =
-            true;
-
-
-        ctx.imageSmoothingQuality =
-            'high';
-
-
-        /* =================================================
-           WHITE BACKGROUND
-           ================================================= */
-
-        ctx.fillStyle =
-            '#ffffff';
-
-
-        ctx.fillRect(
-            0,
-            0,
-            finalCanvas.width,
-            finalCanvas.height
-        );
-
-
-        /* =================================================
-           NEWSPAPER HEADING
-           ================================================= */
-
-        ctx.fillStyle =
-            '#b3131b';
-
-
-        ctx.font =
-            '900 42px "Noto Sans Devanagari", Arial';
-
-
-        ctx.textAlign =
-            'center';
-
-
-        ctx.textBaseline =
-            'middle';
-
-
-        ctx.fillText(
-
-            newspaperHeading,
-
-            finalCanvas.width / 2,
-
-            headingHeight / 2
-        );
-
-
-        /* =================================================
-           RED LINE
-           ================================================= */
-
-        ctx.fillStyle =
-            '#b3131b';
-
-
-        ctx.fillRect(
-
-            padding,
-
-            headingHeight - 8,
-
-            finalCanvas.width -
-                padding * 2,
-
-            3
-        );
-
-
-        /* =================================================
-           CROPPED NEWS
-           ================================================= */
-
-        ctx.drawImage(
-
-            currentCropCanvas,
-
-            padding,
-
-            headingHeight + padding
-        );
-
-
-        /* =================================================
-           FOOTER
-           ================================================= */
-
-        const footerY =
-            finalCanvas.height -
-            footerHeight;
-
-
-        ctx.fillStyle =
-            '#b3131b';
-
-
-        ctx.fillRect(
-
-            padding,
-
-            footerY,
-
-            finalCanvas.width -
-                padding * 2,
-
-            3
-        );
-
-
-        ctx.fillStyle =
-            '#555555';
-
-
-        ctx.font =
-            '600 20px Arial, "Noto Sans Devanagari"';
-
-
-        ctx.textAlign =
-            'center';
-
-
-        ctx.textBaseline =
-            'middle';
-
-
-        const footerText =
-            '© ' +
-            new Date().getFullYear() +
-            ' लोकभारती  |  Developed by R Technologies  |  Digital Newspaper Portal';
-
-
-        ctx.fillText(
-
-            footerText,
-
-            finalCanvas.width / 2,
-
-            footerY +
-                footerHeight / 2
-        );
-
-
-        /* =================================================
-           FILE NAME
-           ================================================= */
-
-        const fileName =
-
-            (
-                currentCategory === 'daily'
-                    ? 'Dainik-Lokbharti-News-'
-                    : 'Saptahik-Lokbharti-News-'
-            ) +
-
-            Date.now();
-
-
-        /* =================================================
-           PNG
-           ================================================= */
-
-        if (
-            format === 'png'
-        ) {
-
-            const link =
-                document.createElement(
-                    'a'
-                );
-
-
-            link.download =
-                fileName + '.png';
-
-
-            link.href =
-                finalCanvas.toDataURL(
-                    'image/png'
-                );
-
-
-            link.click();
-
-
-            closeModal();
-
-            return;
-        }
-
-
-        /* =================================================
-           JPG
-           ================================================= */
-
-        if (
-            format === 'jpg'
-        ) {
-
-            const link =
-                document.createElement(
-                    'a'
-                );
-
-
-            link.download =
-                fileName + '.jpg';
-
-
-            link.href =
-                finalCanvas.toDataURL(
-                    'image/jpeg',
-                    0.95
-                );
-
-
-            link.click();
-
-
-            closeModal();
-
-            return;
-        }
-
-
-        /* =================================================
-           PDF
-           ================================================= */
-
-        if (
-            format === 'pdf'
-        ) {
 
             if (
-                typeof window.jspdf === 'undefined' ||
-                !window.jspdf.jsPDF
+                width < 10 ||
+                height < 10
             ) {
 
-                alert(
-                    'PDF सुविधा उपलब्ध नाही. jsPDF library तपासा.'
-                );
-
                 return;
+
             }
 
 
-            const {
-                jsPDF
-            } =
-                window.jspdf;
+            createCropPreview(
+
+                canvas,
+
+                startX,
+                startY,
+
+                currentX,
+                currentY
+
+            );
+
+        },
+        {
+            passive:
+                false
+        }
+    );
+
+
+
+    /* ---------------------------------------------
+       POINTER CANCEL
+    --------------------------------------------- */
+
+    canvas.addEventListener(
+        'pointercancel',
+        function(e) {
+
+            isSelecting =
+                false;
+
+
+            potentialSelection =
+                false;
+
+
+            activePointerId =
+                null;
+
+
+            selector.style.display =
+                'none';
+
+
+            try {
+
+                canvas.releasePointerCapture(
+                    e.pointerId
+                );
+
+            }
+
+            catch (error) {}
+
+        }
+    );
+
+
+
+    /* ---------------------------------------------
+       LOST POINTER CAPTURE
+    --------------------------------------------- */
+
+    canvas.addEventListener(
+        'lostpointercapture',
+        function() {
+
+            isSelecting =
+                false;
+
+
+            potentialSelection =
+                false;
+
+
+            activePointerId =
+                null;
+
+
+            selector.style.display =
+                'none';
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   CREATE HD CROP PREVIEW
+========================================================= */
+
+function createCropPreview(
+
+    canvas,
+
+    startX,
+    startY,
+
+    endX,
+    endY
+
+) {
+
+    if (!canvas) {
+
+        return;
+
+    }
+
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    let sx =
+        Math.min(
+            startX,
+            endX
+        );
+
+
+    let sy =
+        Math.min(
+            startY,
+            endY
+        );
+
+
+    let ex =
+        Math.max(
+            startX,
+            endX
+        );
+
+
+    let ey =
+        Math.max(
+            startY,
+            endY
+        );
+
+
+    /* ---------------------------------------------
+       BOUNDARIES
+    --------------------------------------------- */
+
+    sx =
+        Math.max(
+            0,
+            Math.min(
+                sx,
+                rect.width
+            )
+        );
+
+
+    sy =
+        Math.max(
+            0,
+            Math.min(
+                sy,
+                rect.height
+            )
+        );
+
+
+    ex =
+        Math.max(
+            0,
+            Math.min(
+                ex,
+                rect.width
+            )
+        );
+
+
+    ey =
+        Math.max(
+            0,
+            Math.min(
+                ey,
+                rect.height
+            )
+        );
+
+
+    const displayWidth =
+        ex -
+        sx;
+
+
+    const displayHeight =
+        ey -
+        sy;
+
+
+    if (
+        displayWidth < 10 ||
+        displayHeight < 10
+    ) {
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       DISPLAY TO REAL SCALE
+    --------------------------------------------- */
+
+    const scaleX =
+        canvas.width /
+        rect.width;
+
+
+    const scaleY =
+        canvas.height /
+        rect.height;
+
+
+    const sourceX =
+        Math.round(
+            sx *
+            scaleX
+        );
+
+
+    const sourceY =
+        Math.round(
+            sy *
+            scaleY
+        );
+
+
+    const sourceWidth =
+        Math.round(
+            displayWidth *
+            scaleX
+        );
+
+
+    const sourceHeight =
+        Math.round(
+            displayHeight *
+            scaleY
+        );
+
+
+    if (
+        sourceWidth < 20 ||
+        sourceHeight < 20
+    ) {
+
+        return;
+
+    }
+
+
+    /* ---------------------------------------------
+       CROP CANVAS
+    --------------------------------------------- */
+
+    const cropCanvas =
+        document.createElement(
+            'canvas'
+        );
+
+
+    cropCanvas.width =
+        sourceWidth;
+
+
+    cropCanvas.height =
+        sourceHeight;
+
+
+    const ctx =
+        cropCanvas.getContext(
+            '2d'
+        );
+
+
+    if (!ctx) {
+
+        return;
+
+    }
+
+
+    ctx.imageSmoothingEnabled =
+        true;
+
+
+    ctx.imageSmoothingQuality =
+        'high';
+
+
+    ctx.drawImage(
+
+        canvas,
+
+        sourceX,
+        sourceY,
+
+        sourceWidth,
+        sourceHeight,
+
+        0,
+        0,
+
+        sourceWidth,
+        sourceHeight
+
+    );
+
+
+    currentCropCanvas =
+        cropCanvas;
+
+
+    /* ---------------------------------------------
+       HEADING
+    --------------------------------------------- */
+
+    const heading =
+        getNewspaperHeading();
+
+
+    const liveHeading =
+        $('liveHeading');
+
+
+    if (liveHeading) {
+
+        liveHeading.innerText =
+            heading;
+
+
+        liveHeading.style.display =
+            'block';
+
+
+        liveHeading.style.color =
+            '#b3131b';
+
+
+        liveHeading.style.fontWeight =
+            '900';
+
+
+        liveHeading.style.fontSize =
+            '24px';
+
+
+        liveHeading.style.textAlign =
+            'center';
+
+    }
+
+
+    /* ---------------------------------------------
+       OPTIONAL INPUT
+    --------------------------------------------- */
+
+    const headingInput =
+        $('newsHeadingInput');
+
+
+    if (headingInput) {
+
+        headingInput.value =
+            heading;
+
+
+        headingInput.style.display =
+            'none';
+
+    }
+
+
+    /* ---------------------------------------------
+       PREVIEW
+    --------------------------------------------- */
+
+    const preview =
+        $('croppedPreview');
+
+
+    if (preview) {
+
+        preview.src =
+            cropCanvas.toDataURL(
+                'image/png'
+            );
+
+
+        preview.style.display =
+            'block';
+
+    }
+
+
+    /* ---------------------------------------------
+       OPEN MODAL
+    --------------------------------------------- */
+
+    if ($('modalBackground')) {
+
+        $('modalBackground').style.display =
+            'block';
+
+    }
+
+
+    if ($('downloadModal')) {
+
+        $('downloadModal').style.display =
+            'block';
+
+    }
+
+
+    document.body.classList.add(
+        'modal-open'
+    );
+
+}
+
+
+
+/* =========================================================
+   GET NEWSPAPER HEADING
+========================================================= */
+
+function getNewspaperHeading() {
+
+    if (
+        currentCategory ===
+        'daily'
+    ) {
+
+        return 'दैनिक लोकभारती';
+
+    }
+
+
+    if (
+        currentCategory ===
+        'weekly'
+    ) {
+
+        return 'साप्ताहिक लोकभारती';
+
+    }
+
+
+    return 'लोकभारती';
+
+}
+
+
+
+/* =========================================================
+   CREATE FINAL DOWNLOAD CANVAS
+========================================================= */
+
+function createFinalDownloadCanvas() {
+
+    if (!currentCropCanvas) {
+
+        alert(
+            'कृपया आधी बातमी select करा.'
+        );
+
+        return null;
+
+    }
+
+
+    const heading =
+        getNewspaperHeading();
+
+
+    const padding =
+        40;
+
+
+    const headingHeight =
+        110;
+
+
+    const footerHeight =
+        75;
+
+
+    const cropWidth =
+        currentCropCanvas.width;
+
+
+    const cropHeight =
+        currentCropCanvas.height;
+
+
+    const finalCanvas =
+        document.createElement(
+            'canvas'
+        );
+
+
+    finalCanvas.width =
+        cropWidth +
+        padding * 2;
+
+
+    finalCanvas.height =
+        cropHeight +
+        headingHeight +
+        footerHeight +
+        padding * 2;
+
+
+    const ctx =
+        finalCanvas.getContext(
+            '2d'
+        );
+
+
+    if (!ctx) {
+
+        return null;
+
+    }
+
+
+    ctx.imageSmoothingEnabled =
+        true;
+
+
+    ctx.imageSmoothingQuality =
+        'high';
+
+
+    /* ---------------------------------------------
+       WHITE BACKGROUND
+    --------------------------------------------- */
+
+    ctx.fillStyle =
+        '#ffffff';
+
+
+    ctx.fillRect(
+
+        0,
+        0,
+
+        finalCanvas.width,
+        finalCanvas.height
+
+    );
+
+
+    /* ---------------------------------------------
+       HEADING
+    --------------------------------------------- */
+
+    ctx.fillStyle =
+        '#b3131b';
+
+
+    ctx.font =
+        '900 42px "Noto Sans Devanagari", Arial, sans-serif';
+
+
+    ctx.textAlign =
+        'center';
+
+
+    ctx.textBaseline =
+        'middle';
+
+
+    ctx.fillText(
+
+        heading,
+
+        finalCanvas.width / 2,
+
+        headingHeight / 2
+
+    );
+
+
+    /* ---------------------------------------------
+       RED LINE
+    --------------------------------------------- */
+
+    ctx.fillStyle =
+        '#b3131b';
+
+
+    ctx.fillRect(
+
+        padding,
+
+        headingHeight - 10,
+
+        finalCanvas.width -
+        padding * 2,
+
+        3
+
+    );
+
+
+    /* ---------------------------------------------
+       NEWS IMAGE
+    --------------------------------------------- */
+
+    ctx.drawImage(
+
+        currentCropCanvas,
+
+        padding,
+
+        headingHeight +
+        padding,
+
+        cropWidth,
+        cropHeight
+
+    );
+
+
+    /* ---------------------------------------------
+       FOOTER
+    --------------------------------------------- */
+
+    const footerY =
+        finalCanvas.height -
+        footerHeight;
+
+
+    ctx.fillStyle =
+        '#b3131b';
+
+
+    ctx.fillRect(
+
+        padding,
+
+        footerY,
+
+        finalCanvas.width -
+        padding * 2,
+
+        3
+
+    );
+
+
+    ctx.fillStyle =
+        '#555555';
+
+
+    ctx.font =
+        '600 20px Arial, "Noto Sans Devanagari", sans-serif';
+
+
+    ctx.textAlign =
+        'center';
+
+
+    ctx.textBaseline =
+        'middle';
+
+
+    const footerText =
+
+        '© ' +
+
+        new Date().getFullYear() +
+
+        ' लोकभारती | Developed by R Technologies | Digital Newspaper Portal';
+
+
+    ctx.fillText(
+
+        footerText,
+
+        finalCanvas.width / 2,
+
+        footerY +
+        footerHeight / 2
+
+    );
+
+
+    return finalCanvas;
+
+}
+
+
+
+/* =========================================================
+   DOWNLOAD FILE NAME
+========================================================= */
+
+function getDownloadFileName() {
+
+    const prefix =
+
+        currentCategory ===
+        'daily'
+
+            ? 'Dainik-Lokbharti-News-'
+
+            : 'Saptahik-Lokbharti-News-';
+
+
+    const list =
+        allPaperData[
+            currentCategory
+        ] || [];
+
+
+    const select =
+        $('paper-select');
+
+
+    let issuePart =
+        '';
+
+
+    if (
+        select &&
+        select.value !== ''
+    ) {
+
+        const index =
+            Number(
+                select.value
+            );
+
+
+        const paper =
+            list[index];
+
+
+        if (
+            paper &&
+            paper.issue
+        ) {
+
+            const safeIssue =
+                String(
+                    paper.issue
+                ).replace(
+                    /[^a-zA-Z0-9-]/g,
+                    ''
+                );
+
+
+            issuePart =
+                'Issue-' +
+                safeIssue +
+                '-';
+
+        }
+
+    }
+
+
+    return (
+
+        prefix +
+
+        issuePart +
+
+        Date.now()
+
+    );
+
+}
+
+
+
+/* =========================================================
+   DOWNLOAD NEWS
+========================================================= */
+
+function downloadNews(format) {
+
+    if (!currentCropCanvas) {
+
+        alert(
+            'कृपया आधी बातमी select करा.'
+        );
+
+        return;
+
+    }
+
+
+    const finalCanvas =
+        createFinalDownloadCanvas();
+
+
+    if (!finalCanvas) {
+
+        return;
+
+    }
+
+
+    const fileName =
+        getDownloadFileName();
+
+
+
+    /* =====================================================
+       PNG
+    ====================================================== */
+
+    if (
+        format === 'png'
+    ) {
+
+        try {
+
+            const imageData =
+                finalCanvas.toDataURL(
+                    'image/png'
+                );
+
+
+            const link =
+                document.createElement(
+                    'a'
+                );
+
+
+            link.download =
+                fileName +
+                '.png';
+
+
+            link.href =
+                imageData;
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            link.remove();
+
+
+            closeModal();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                'PNG Download Error:',
+                error
+            );
+
+
+            alert(
+                'PNG डाउनलोड करता आले नाही.'
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+
+    /* =====================================================
+       JPG
+    ====================================================== */
+
+    if (
+        format === 'jpg'
+    ) {
+
+        try {
+
+            const imageData =
+                finalCanvas.toDataURL(
+                    'image/jpeg',
+                    0.98
+                );
+
+
+            const link =
+                document.createElement(
+                    'a'
+                );
+
+
+            link.download =
+                fileName +
+                '.jpg';
+
+
+            link.href =
+                imageData;
+
+
+            document.body.appendChild(
+                link
+            );
+
+
+            link.click();
+
+
+            link.remove();
+
+
+            closeModal();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                'JPG Download Error:',
+                error
+            );
+
+
+            alert(
+                'JPG डाउनलोड करता आले नाही.'
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+
+    /* =====================================================
+       PDF
+    ====================================================== */
+
+    if (
+        format === 'pdf'
+    ) {
+
+        if (
+            typeof window.jspdf ===
+            'undefined' ||
+            !window.jspdf.jsPDF
+        ) {
+
+            alert(
+                'PDF सुविधा उपलब्ध नाही. jsPDF library तपासा.'
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const jsPDF =
+                window.jspdf.jsPDF;
 
 
             const imgData =
                 finalCanvas.toDataURL(
                     'image/jpeg',
-                    0.95
+                    0.98
                 );
+
+
+            const orientation =
+
+                finalCanvas.width >=
+                finalCanvas.height
+
+                    ? 'landscape'
+
+                    : 'portrait';
 
 
             const pdf =
                 new jsPDF({
 
                     orientation:
-                        finalCanvas.width >=
-                        finalCanvas.height
-                            ? 'landscape'
-                            : 'portrait',
+                        orientation,
 
-                    unit: 'px',
+                    unit:
+                        'px',
 
                     format: [
+
                         finalCanvas.width,
+
                         finalCanvas.height
-                    ]
+
+                    ],
+
+                    compress:
+                        true
+
                 });
 
 
@@ -3586,57 +4338,148 @@ selector.style.display =
                 'JPEG',
 
                 0,
-
                 0,
 
                 finalCanvas.width,
+                finalCanvas.height,
 
-                finalCanvas.height
+                undefined,
+
+                'FAST'
+
             );
 
 
             pdf.save(
-                fileName + '.pdf'
+                fileName +
+                '.pdf'
             );
 
 
             closeModal();
 
-            return;
         }
+
+        catch (error) {
+
+            console.error(
+                'PDF Download Error:',
+                error
+            );
+
+
+            alert(
+                'PDF तयार करता आले नाही.'
+            );
+
+        }
+
+
+        return;
+
     }
 
 
-    /* =====================================================
-       CLOSE MODAL
-       ===================================================== */
+    console.warn(
+        'Unknown download format:',
+        format
+    );
 
-    function closeModal() {
+}
+
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeModal() {
+
+    if ($('downloadModal')) {
 
         $('downloadModal').style.display =
             'none';
 
+    }
+
+
+    if ($('modalBackground')) {
 
         $('modalBackground').style.display =
             'none';
 
+    }
+
+
+    if ($('croppedPreview')) {
 
         $('croppedPreview').src =
             '';
 
+    }
+
+
+    if ($('liveHeading')) {
 
         $('liveHeading').innerText =
             '';
 
-
-        currentCropCanvas =
-            null;
     }
 
 
-    /* =====================================================
-       INITIALIZE
-       ===================================================== */
+    currentCropCanvas =
+        null;
+
+
+    document.body.classList.remove(
+        'modal-open'
+    );
+
+}
+
+
+
+/* =========================================================
+   ESC = CLOSE MODAL
+========================================================= */
+
+document.addEventListener(
+    'keydown',
+    function(e) {
+
+        if (
+            e.key ===
+            'Escape'
+        ) {
+
+            const modal =
+                $('downloadModal');
+
+
+            if (
+                modal &&
+                modal.style.display ===
+                'block'
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   MODAL BACKGROUND
+========================================================= */
+
+if (
+    $('modalBackground')
+) {
 
     $('modalBackground')
         .addEventListener(
@@ -3644,16 +4487,485 @@ selector.style.display =
             closeModal
         );
 
-
-    $('footerYear').innerText =
-        new Date().getFullYear();
+}
 
 
-    updateHeaderDate();
+
+/* =========================================================
+   FOOTER YEAR
+========================================================= */
+
+function updateFooterYear() {
+
+    if ($('footerYear')) {
+
+        $('footerYear').innerText =
+            new Date().getFullYear();
+
+    }
+
+}
 
 
-    loadAllData();
+
+/* =========================================================
+   WEATHER
+========================================================= */
+
+async function loadCurrentWeather() {
+
+    const weatherElement =
+        $('currentWeather');
+
+
+    if (!weatherElement) {
+
+        return;
+
+    }
+
+
+    if (
+        !navigator.geolocation
+    ) {
+
+        weatherElement.innerHTML =
+            '🌤️ हवामान उपलब्ध नाही';
+
+        return;
+
+    }
+
+
+    weatherElement.innerHTML =
+        '📍 ठिकाण शोधत आहे...';
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        async function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+
+            const longitude =
+                position.coords.longitude;
+
+
+            try {
+
+                /* -----------------------------------------
+                   OPEN METEO
+                ----------------------------------------- */
+
+                const weatherURL =
+
+                    'https://api.open-meteo.com/v1/forecast' +
+
+                    '?latitude=' +
+                    latitude +
+
+                    '&longitude=' +
+                    longitude +
+
+                    '&current=' +
+
+                    'temperature_2m,' +
+                    'relative_humidity_2m,' +
+                    'weather_code,' +
+                    'wind_speed_10m' +
+
+                    '&timezone=auto';
+
+
+                const weatherResponse =
+                    await fetch(
+                        weatherURL
+                    );
+
+
+                if (
+                    !weatherResponse.ok
+                ) {
+
+                    throw new Error(
+                        'Weather API Error'
+                    );
+
+                }
+
+
+                const weatherData =
+                    await weatherResponse.json();
+
+
+                /* -----------------------------------------
+                   LOCATION NAME
+                ----------------------------------------- */
+
+                let locationName =
+                    'तुमचे क्षेत्र';
+
+
+                try {
+
+                    const locationURL =
+
+                        'https://nominatim.openstreetmap.org/reverse' +
+
+                        '?format=json' +
+
+                        '&lat=' +
+                        latitude +
+
+                        '&lon=' +
+                        longitude +
+
+                        '&zoom=10' +
+
+                        '&addressdetails=1';
+
+
+                    const locationResponse =
+                        await fetch(
+
+                            locationURL,
+
+                            {
+
+                                headers: {
+
+                                    'Accept-Language':
+                                        'mr'
+
+                                }
+
+                            }
+
+                        );
+
+
+                    if (
+                        locationResponse.ok
+                    ) {
+
+                        const locationData =
+                            await locationResponse.json();
+
+
+                        if (
+                            locationData.address
+                        ) {
+
+                            const address =
+                                locationData.address;
+
+
+                            locationName =
+
+                                address.city ||
+
+                                address.town ||
+
+                                address.municipality ||
+
+                                address.village ||
+
+                                address.county ||
+
+                                address.state_district ||
+
+                                'तुमचे क्षेत्र';
+
+                        }
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    console.log(
+                        'Location Name Error:',
+                        error
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   WEATHER DATA
+                ----------------------------------------- */
+
+                const current =
+                    weatherData.current;
+
+
+                const temperature =
+                    Math.round(
+                        current.temperature_2m
+                    );
+
+
+                const humidity =
+                    current.relative_humidity_2m;
+
+
+                const wind =
+                    Math.round(
+                        current.wind_speed_10m
+                    );
+
+
+                const weatherCode =
+                    current.weather_code;
+
+
+                /* -----------------------------------------
+                   WEATHER DESCRIPTION
+                ----------------------------------------- */
+
+                let weatherIcon =
+                    '🌤️';
+
+
+                let weatherText =
+                    'हवामान';
+
+
+                if (
+                    weatherCode === 0
+                ) {
+
+                    weatherIcon =
+                        '☀️';
+
+                    weatherText =
+                        'स्वच्छ आकाश';
+
+                }
+
+                else if (
+                    weatherCode === 1 ||
+                    weatherCode === 2
+                ) {
+
+                    weatherIcon =
+                        '🌤️';
+
+                    weatherText =
+                        'अंशतः ढगाळ';
+
+                }
+
+                else if (
+                    weatherCode === 3
+                ) {
+
+                    weatherIcon =
+                        '☁️';
+
+                    weatherText =
+                        'ढगाळ';
+
+                }
+
+                else if (
+                    weatherCode === 45 ||
+                    weatherCode === 48
+                ) {
+
+                    weatherIcon =
+                        '🌫️';
+
+                    weatherText =
+                        'धुके';
+
+                }
+
+                else if (
+                    weatherCode >= 51 &&
+                    weatherCode <= 67
+                ) {
+
+                    weatherIcon =
+                        '🌦️';
+
+                    weatherText =
+                        'रिमझिम पाऊस';
+
+                }
+
+                else if (
+                    weatherCode >= 71 &&
+                    weatherCode <= 77
+                ) {
+
+                    weatherIcon =
+                        '❄️';
+
+                    weatherText =
+                        'हिमवृष्टी';
+
+                }
+
+                else if (
+                    weatherCode >= 80 &&
+                    weatherCode <= 82
+                ) {
+
+                    weatherIcon =
+                        '🌧️';
+
+                    weatherText =
+                        'पावसाच्या सरी';
+
+                }
+
+                else if (
+                    weatherCode >= 95 &&
+                    weatherCode <= 99
+                ) {
+
+                    weatherIcon =
+                        '⛈️';
+
+                    weatherText =
+                        'मेघगर्जनेसह पाऊस';
+
+                }
+
+
+                /* -----------------------------------------
+                   FINAL DISPLAY
+                ----------------------------------------- */
+
+                weatherElement.innerHTML =
+
+                    weatherIcon +
+                    ' ' +
+
+                    locationName +
+                    ' • ' +
+
+                    temperature +
+                    '°C • ' +
+
+                    weatherText +
+                    ' • आर्द्रता ' +
+
+                    humidity +
+                    '% • वारा ' +
+
+                    wind +
+                    ' km/h';
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    'Weather Error:',
+                    error
+                );
+
+
+                weatherElement.innerHTML =
+                    '🌤️ हवामान उपलब्ध नाही';
+
+            }
+
+        },
+
+
+        function(error) {
+
+            console.log(
+                'Location Permission:',
+                error.message
+            );
+
+
+            weatherElement.innerHTML =
+                '📍 स्थान परवानगी दिल्यास स्थानिक हवामान दिसेल';
+
+        },
+
+
+        {
+
+            enableHighAccuracy:
+                true,
+
+            timeout:
+                10000,
+
+            maximumAge:
+                300000
+
+        }
+
+    );
+
+}
+
+
+
+/* =========================================================
+   FINAL PAGE INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+
+        /* ---------------------------------------------
+           DATE
+        --------------------------------------------- */
+
+        updateHeaderDate();
+
+
+        /* ---------------------------------------------
+           FOOTER
+        --------------------------------------------- */
+
+        updateFooterYear();
+
+
+        /* ---------------------------------------------
+           WEATHER
+        --------------------------------------------- */
+
+        loadCurrentWeather();
+
+
+        /* ---------------------------------------------
+           PAPER DATA
+        --------------------------------------------- */
+
+        loadAllData();
+
+    }
+);
+
+
+/* =========================================================
+   OPTIONAL:
+   DATE UPDATE EVERY MIDNIGHT / 1 HOUR
+========================================================= */
+
+setInterval(
+    updateHeaderDate,
+    60 * 60 * 1000
+);
+
 
 </script>
+
+
 </body>
+
 </html>
+

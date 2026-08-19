@@ -78,7 +78,24 @@
     </style>
 </head>
 <body>
-
+<div style="
+    max-width:600px;
+    margin:0 auto 20px auto;
+    text-align:right;
+">
+    <button
+        type="button"
+        onclick="logoutAdmin()"
+        style="
+            width:auto;
+            background:#dc2626;
+            padding:10px 20px;
+            margin:0;
+        "
+    >
+        🚪 Logout
+    </button>
+</div>
 <!-- विभाग १: पेपर अपलोड करण्याचा फॉर्म -->
 <div class="form-container">
     <h2>🗞️ दैनिक लोकभारती - नवीन अंक अपलोड</h2>
@@ -390,7 +407,7 @@
 >
     💾 माहिती Update करा
 </button>
-```
+
 
 </form>
 
@@ -616,7 +633,7 @@ const rniNumbers = {
 
     daily: 'PRGI/MHMAR/26/A1903',
 
-    weekly: 'PRGI/MHMAR/26/WEEKLY_NUMBER',
+    weekly: 'PRGI/MAHMAR52659/2023',
 
     monthly: ''
 
@@ -1499,7 +1516,18 @@ if (editDate) {
 loadEditPapers();
 
 
+/* =====================================================
+   ADMIN LOGOUT
+===================================================== */
 
+function logoutAdmin() {
+
+    if (!confirm('ॲडमिन पॅनलमधून Logout करायचे आहे का?')) {
+        return;
+    }
+
+    window.location.href = '/logout';
+}
 </script>
 </body>
 </html>
